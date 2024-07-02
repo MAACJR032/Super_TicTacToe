@@ -7,81 +7,60 @@ using std::vector;
 using std::cout;
 using std::cin;
 
-enum status {EMPTY = 0, X = 1, O = 2};
+enum status {EMPTY = 'N', X = 'X', O = 'O'};
 
-class sub_TicTacToe
-{
-    public:
-        vector<vector<status>> sub;
-        enum status curr_status;
-    
-        sub_TicTacToe();
-
-        void print_sub(void)
-        {   
-            for (size_t i = 0; i < 3; i++)
-            {
-                for (size_t j = 0; j < 3; j++)
-                    cout << sub[i][j] << " ";
-                cout << '\n';
-            }
-        }
-
-        void valid_sub();
-};
-
-sub_TicTacToe::sub_TicTacToe()
-{
-    sub.resize(3);
-    for (size_t i = 0; i < 3; i++)
-    {
-        sub[i].resize(3, EMPTY);
-        curr_status = EMPTY;
-    }
-}
-
-void sub_TicTacToe::valid_sub()
+void valid_sub()
 {
     for (size_t i = 0; i < 3; i++)
     {
-        if (sub[i][0] != EMPTY && sub[i][0] == sub[i][1] && sub[i][0] == sub[i][2])
-            curr_status = sub[i][0];
+        // if (sub[i][0] != EMPTY && sub[i][0] == sub[i][1] && sub[i][0] == sub[i][2])
+        //     curr_status = sub[i][0];
             
-        else if (sub[0][i] != EMPTY && sub[0][i] == sub[1][i] && sub[0][i] == sub[2][i])
-            curr_status = sub[i][0];
+        // else if (sub[0][i] != EMPTY && sub[0][i] == sub[1][i] && sub[0][i] == sub[2][i])
+        //     curr_status = sub[i][0];
         
-        else if (sub[i][0] != EMPTY && sub[i][0] == sub[1][1] && sub[i][0] == sub[2][2])
-            curr_status = sub[i][0];
+        // else if (sub[i][0] != EMPTY && sub[i][0] == sub[1][1] && sub[i][0] == sub[2][2])
+        //     curr_status = sub[i][0];
     }
 }
 
 class TicTacToe
 {
     private:
-        vector<vector<sub_TicTacToe>> tic_tac_toe;
+        vector<vector<status>> tic_tac_toe;
+        vector<status> grids;
+
     public:
         TicTacToe();
         void print_tic_tac_toe();
         void play(enum status player, int square, int sub_square);
-        void valid();
+        enum status win(enum status player);
 };
 
 TicTacToe::TicTacToe()
 {
-    tic_tac_toe.resize(3);
-    for (size_t i = 0; i < 3; i++)
-        tic_tac_toe[i].resize(3);
+    tic_tac_toe.resize(9);
+    for (size_t i = 0; i < 9; i++)
+        tic_tac_toe[i].resize(9, EMPTY);
+    
+    grids.resize(9, EMPTY);
 }
 
 void TicTacToe::print_tic_tac_toe()
 {
-    for (size_t i = 0; i < 3; i++)
+    for (size_t i = 0; i < 9; i++)
     {
-        for (size_t j = 0; j < 3; j++)
+        for (size_t j = 0; j < 9; j++)
         {
-            tic_tac_toe[i][j].print_sub();
-            cout << '\n';
+            printf(" %c", tic_tac_toe[i][j]);
+
+            if (j == 2 || j == 5)
+                cout << "  | ";
         }
+
+        if (i == 2 || i == 5)
+            cout << "\n---------------------------";
+        cout << "\n";
     }
 }
 
@@ -107,17 +86,51 @@ void TicTacToe::play(enum status player, int square, int sub_square)
     }
 }
 
-void TicTacToe::valid()
+enum status TicTacToe::win(enum status player)
 {
+/*
+    0 1 2
+    3 4 5
+    6 7 8
+            */
+
+    // Lines
+    for (size_t i = 0; i < 7; i += 3)
+    {
+        if (grids[i] == player && grids[i+1] == player && grids[i+2] == player)
+        {
+            cout << "Player " << player << "Win !!!";
+
+            // flag de fim
+            return player;
+        }
+    }
+
+    // Columns
     for (size_t i = 0; i < 3; i++)
     {
-        if (tic_tac_toe[i][0].curr_status != EMPTY && tic_tac_toe[i][0].curr_status == tic_tac_toe[i][1].curr_status && tic_tac_toe[i][0].curr_status == tic_tac_toe[i][2].curr_status)
-            cout << "Player " << tic_tac_toe[i][0].curr_status << " Won !!!\n";
-        
-        else if (tic_tac_toe[0][i].curr_status != EMPTY && tic_tac_toe[0][i].curr_status == tic_tac_toe[1][i].curr_status && tic_tac_toe[0][i].curr_status == tic_tac_toe[2][i].curr_status)
-            cout << "Player " << tic_tac_toe[i][0].curr_status << " Won !!!\n";
-        
-        else if (tic_tac_toe[i][0].curr_status != EMPTY && tic_tac_toe[i][0].curr_status == tic_tac_toe[1][1].curr_status && tic_tac_toe[i][0].curr_status == tic_tac_toe[2][2].curr_status)
-            cout << "Player " << tic_tac_toe[i][0].curr_status << " Won !!!\n";
+        if (grids[i] == player && grids[i+3] == player && grids[i+6] == player)
+        {
+            cout << "Player " << player << "Win !!!";
+
+            // flag de fim
+            return player;
+        }
     }
+    
+    // Diagonals
+    if (grids[0] == player && grids[4] == player && grids[8] == player)
+    {
+        cout << "Player " << player << "Win !!!";
+        // flag de fim
+        return player;
+    }
+    else if (grids[2] == player && grids[4] == player && grids[6] == player)
+    {
+        cout << "Player " << player << "Win !!!";
+        // flag de fim
+        return player;
+    }
+    
+    return EMPTY;
 }
