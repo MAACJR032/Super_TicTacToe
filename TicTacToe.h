@@ -36,7 +36,7 @@ class TicTacToe
         TicTacToe();
         void print_tic_tac_toe();
         void play(enum status player, int square, int sub_square);
-        enum status win(enum status player);
+        status win(enum status player);
 };
 
 TicTacToe::TicTacToe()
@@ -125,7 +125,7 @@ void TicTacToe::play(status player, int square, int sub_square)
    
 }
 
-enum status TicTacToe::win(enum status player)
+status TicTacToe::win(enum status player)
 {
 /*
     0 1 2
