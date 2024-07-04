@@ -30,7 +30,7 @@ class TicTacToe
     private:
         vector<vector<status>> tic_tac_toe;
         vector<status> grids;
-        void play_sub(enum status player, int square, int sub_square);
+        void play_sub(status player, int sub_square, int low_limit_i, int low_limit_j);
 
     public:
         TicTacToe();
@@ -48,15 +48,37 @@ TicTacToe::TicTacToe()
     grids.resize(9, EMPTY);
 }
 
-void TicTacToe::play_sub(status player, int square, int sub_square)
+void TicTacToe::play_sub(status player, int sub_square, int low_limit_i, int low_limit_j)
 {
     switch (sub_square)
     {
         case 1:
-            tic_tac_toe[0][0] = player;
-            
+            tic_tac_toe[low_limit_i][low_limit_j] = player;
             break;
-        
+        case 2:
+            tic_tac_toe[low_limit_i][low_limit_j + 1] = player;
+            break;
+        case 3:
+            tic_tac_toe[low_limit_i][low_limit_j + 2] = player;
+            break;
+        case 4:
+            tic_tac_toe[low_limit_i + 1][low_limit_j] = player;
+            break;
+        case 5:
+            tic_tac_toe[low_limit_i + 1][low_limit_j + 1] = player;
+            break;
+        case 6:
+            tic_tac_toe[low_limit_i + 1][low_limit_j + 2] = player;
+            break;
+        case 7:
+            tic_tac_toe[low_limit_i + 2][low_limit_j] = player;
+            break;
+        case 8:
+            tic_tac_toe[low_limit_i + 2][low_limit_j + 1] = player;
+            break;
+        case 9:
+            tic_tac_toe[low_limit_i + 2][low_limit_j + 2] = player;
+            break;
         default:
             break;
     }
@@ -110,12 +132,33 @@ void TicTacToe::play(status player, int square, int sub_square)
 
     switch (square)
     {
-        /* Limit of tic_tac_toe: 
-            i: 0 - 2 and j: 0 - 2*/ 
         case 1:
-            play_sub(player, square, sub_square);
+            play_sub(player, sub_square, 0, 0);
             break;
-        
+        case 2:
+            play_sub(player, sub_square, 0, 2);
+            break;
+        case 3:
+            play_sub(player, sub_square, 2, 0, 6, 8);
+            break;
+        case 4:
+            play_sub(player, sub_square, 3, 5, 3, 5);
+            break;
+        case 5:
+            play_sub(player, sub_square, 3, 5, 3, 5);
+            break;
+        case 6:
+            play_sub(player, sub_square, 3, 5, 3, 5);
+            break;
+        case 7:
+            play_sub(player, sub_square, 3, 5, 6, 8);
+            break;
+        case 8:
+            play_sub(player, sub_square, 3, 5, 6, 8);
+            break;
+        case 9:
+            play_sub(player, sub_square, 3, 5, 6, 8);
+            break;
         default:
             break;
     }
