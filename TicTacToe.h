@@ -35,8 +35,8 @@ class TicTacToe
     public:
         TicTacToe();
         void print_tic_tac_toe();
-        void play(enum status player, int square, int sub_square);
-        status win(enum status player);
+        void play(status player, int square, int sub_square);
+        status win(status player);
 };
 
 TicTacToe::TicTacToe()
@@ -136,28 +136,28 @@ void TicTacToe::play(status player, int square, int sub_square)
             play_sub(player, sub_square, 0, 0);
             break;
         case 2:
-            play_sub(player, sub_square, 0, 2);
+            play_sub(player, sub_square, 0, 3);
             break;
         case 3:
-            play_sub(player, sub_square, 2, 0, 6, 8);
+            play_sub(player, sub_square, 0, 6);
             break;
         case 4:
-            play_sub(player, sub_square, 3, 5, 3, 5);
+            play_sub(player, sub_square, 3, 0);
             break;
         case 5:
-            play_sub(player, sub_square, 3, 5, 3, 5);
+            play_sub(player, sub_square, 3, 3);
             break;
         case 6:
-            play_sub(player, sub_square, 3, 5, 3, 5);
+            play_sub(player, sub_square, 3, 6);
             break;
         case 7:
-            play_sub(player, sub_square, 3, 5, 6, 8);
+            play_sub(player, sub_square, 6, 0);
             break;
         case 8:
-            play_sub(player, sub_square, 3, 5, 6, 8);
+            play_sub(player, sub_square, 6, 3);
             break;
         case 9:
-            play_sub(player, sub_square, 3, 5, 6, 8);
+            play_sub(player, sub_square, 6, 6);
             break;
         default:
             break;
@@ -168,7 +168,7 @@ void TicTacToe::play(status player, int square, int sub_square)
    
 }
 
-status TicTacToe::win(enum status player)
+status TicTacToe::win(status player)
 {
 /*
     0 1 2
