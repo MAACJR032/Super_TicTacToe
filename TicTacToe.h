@@ -10,26 +10,13 @@ using std::cin;
 
 enum status {EMPTY = 'N', X = 'X', O = 'O'};
 
-void valid_sub()
-{
-    for (size_t i = 0; i < 3; i++)
-    {
-        // if (sub[i][0] != EMPTY && sub[i][0] == sub[i][1] && sub[i][0] == sub[i][2])
-        //     curr_status = sub[i][0];
-            
-        // else if (sub[0][i] != EMPTY && sub[0][i] == sub[1][i] && sub[0][i] == sub[2][i])
-        //     curr_status = sub[i][0];
-        
-        // else if (sub[i][0] != EMPTY && sub[i][0] == sub[1][1] && sub[i][0] == sub[2][2])
-        //     curr_status = sub[i][0];
-    }
-}
-
 class TicTacToe
 {
     private:
         vector<status> grids;
-        void play_sub(status player, int sub_square, int low_limit_i, int low_limit_j);
+        void play_sub(status player, int square, int sub_square, int low_limit_i, int low_limit_j);
+        void win_grid(status player, int grid);
+        void check_sub(status player, int square, int low_limit_i, int low_limit_j);
 
     public:
         vector<vector<status>> tic_tac_toe;
@@ -49,9 +36,71 @@ TicTacToe::TicTacToe()
     grids.resize(9, EMPTY);
 }
 
+/* Checks if player win the grid he just played */
+void TicTacToe::win_grid(status player, int grid)
+{
+    switch (grid)
+    {
+        case 1:
+            check_sub(player, grid, 0, 0);
+            break;
+        case 2:
+            check_sub(player, grid, 0, 3);
+            break;
+        case 3:
+            check_sub(player, grid, 0, 6);
+            break;
+        case 4:
+            check_sub(player, grid, 3, 0);
+            break;
+        case 5:
+            check_sub(player, grid, 3, 3);
+            break;
+        case 6:
+            check_sub(player, grid, 3, 6);
+            break;
+        case 7:
+            check_sub(player, grid, 6, 0);
+            break;
+        case 8:
+            check_sub(player, grid, 6, 3);
+            break;
+        case 9:
+            check_sub(player, grid, 6, 6);
+            break;
+        default:
+            break;
+    }
+}
+
+/* Checks all the cases where the player may have scored in a grid */
+void TicTacToe::check_sub(status player, int square, int low_limit_i, int low_limit_j)
+{
+    // Checking the lines
+    for (size_t i = low_limit_i; i < low_limit_i + 3; i++)
+    {
+        if (tic_tac_toe[i][low_limit_j] == player && tic_tac_toe[i][low_limit_j + 1] == player && tic_tac_toe[i][low_limit_j + 2] == player)
+            grids[square - 1] = player;
+    }
+
+    // Checking the columns
+    for (size_t i = low_limit_j; i < low_limit_j + 3; i++)
+    {
+        if (tic_tac_toe[i][low_limit_j] == player && tic_tac_toe[i + 1][low_limit_j] == player && tic_tac_toe[i + 2][low_limit_j] == player)
+            grids[square - 1] = player;
+    }
+    
+    // Diagonals
+    if (tic_tac_toe[low_limit_i][low_limit_j] == player && tic_tac_toe[low_limit_i + 1][low_limit_j + 1] == player && tic_tac_toe[low_limit_i + 2][low_limit_j + 2] == player)
+        grids[square - 1] = player;
+
+    else if (tic_tac_toe[low_limit_i][low_limit_j + 2] == player && tic_tac_toe[low_limit_i + 1][low_limit_j + 1] == player && tic_tac_toe[low_limit_i + 2][low_limit_j] == player)
+        grids[square - 1] = player;
+}
+
 /* Checks if the subgrid is valid and if so, it marks in tic_tac_toe.
    Otherwise it will show the available sub grids to play and ask the player to select again. */
-void TicTacToe::play_sub(status player, int sub_square, int low_limit_i, int low_limit_j)
+void TicTacToe::play_sub(status player, int square, int sub_square, int low_limit_i, int low_limit_j)
 {
     bool valid = false;
     while (!valid)
@@ -143,6 +192,9 @@ void TicTacToe::play_sub(status player, int sub_square, int low_limit_i, int low
             cin >> sub_square;
         }
     }
+
+    // Checks if the played scored
+    win_grid(player, square);
 }
 
 /* Prints the tic tac toe board. N = empty, X = player 1 and O = player 2. */
@@ -162,6 +214,10 @@ void TicTacToe::print_tic_tac_toe()
             cout << "\n---------------------------";
         cout << "\n";
     }
+
+    cout << "Available grids:\n\n";
+    for (size_t i = 0; i < 9; i += 3)
+        printf("%c %c %c\n", grids[i], grids[i+1], grids[i+2]);    
 }
 
 /* Checks if the choosen grid is valid and calls play_sub to handle the subgrid. */
@@ -187,6 +243,7 @@ void TicTacToe::play(status player)
                 cout << i + 1 << " ";
         cout << '\n';
 
+        cout << "grid: ";
         cin >> square;
     }
     
@@ -197,31 +254,31 @@ void TicTacToe::play(status player)
     switch (square)
     {
         case 1:
-            play_sub(player, sub_square, 0, 0);
+            play_sub(player, square, sub_square, 0, 0);
             break;
         case 2:
-            play_sub(player, sub_square, 0, 3);
+            play_sub(player, square, sub_square, 0, 3);
             break;
         case 3:
-            play_sub(player, sub_square, 0, 6);
+            play_sub(player, square, sub_square, 0, 6);
             break;
         case 4:
-            play_sub(player, sub_square, 3, 0);
+            play_sub(player, square, sub_square, 3, 0);
             break;
         case 5:
-            play_sub(player, sub_square, 3, 3);
+            play_sub(player, square, sub_square, 3, 3);
             break;
         case 6:
-            play_sub(player, sub_square, 3, 6);
+            play_sub(player, square, sub_square, 3, 6);
             break;
         case 7:
-            play_sub(player, sub_square, 6, 0);
+            play_sub(player, square, sub_square, 6, 0);
             break;
         case 8:
-            play_sub(player, sub_square, 6, 3);
+            play_sub(player, square, sub_square, 6, 3);
             break;
         case 9:
-            play_sub(player, sub_square, 6, 6);
+            play_sub(player, square, sub_square, 6, 6);
             break;
         default:
             break;

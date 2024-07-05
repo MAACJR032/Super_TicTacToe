@@ -45,7 +45,7 @@ void play(TicTacToe &t, status player, string player_name, int next_grid)
     /* Lógica para checar qual o grid a se jogar */
     t.play(player);
     sleep(1);
-    // t.win(player); // Checks if the player won
+    t.win(player); // Checks if the player won
 }
 
 int main()
