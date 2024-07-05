@@ -28,24 +28,24 @@ void clear()
     system("@cls||clear");
 }
 
-void play(TicTacToe t, status player, string player_name, int next_grid)
+void play(TicTacToe &t, status player, string player_name, int next_grid)
 {
-    sleep(2);
     clear();
 
-    cout << player_name << " turn\n\n";
+    cout << player_name << " turn\n";
+    cout << "Current board:\n\n";
     t.print_tic_tac_toe();
 
-    if (next_grid == -1)
-    {
-        cout << "You can play at any grid\n";
-        cout << "Choose the grid and the sub grid to play\n";
-    }
+    // if (next_grid == -1)
+    // {
+    //     cout << "You can play at any grid\n";
+    //     cout << "Choose the grid and the sub grid to play\n";
+    // }
     
-
     /* Lógica para checar qual o grid a se jogar */
-    t.play(player, 0, 0);
-    t.win(player); // Checks if the player won
+    t.play(player);
+    sleep(1);
+    // t.win(player); // Checks if the player won
 }
 
 int main()
@@ -56,38 +56,33 @@ int main()
 
     cout << "Player 1 (X) name: ";
     cin >> player1;
-    cout << "Player 1 (O) name: ";
+    cout << "Player 2 (O) name: ";
     cin >> player2;
 
-    char turn[2] = {'X', 'O'};
-    int turn_index = 0;
+    /* Instructions */
+    
+    status turn = X;
     int round = 1;
     int next_grid = -1;
 
     while (victory == EMPTY)
     {
-        sleep(2);
-        clear();
-
         cout << "Round " << round << '\n';
-        if (turn[turn_index] == 'X')
+        sleep(2);
+
+        if (turn == X)
         {
             play(t, X, player1, next_grid);
+            turn = O;
         }
         else
         {
-            play(t, O, player1, next_grid);
+            play(t, O, player2, next_grid);
+            turn = X;
         }
 
         round++;
-
-        if (turn_index == 1)
-        {
-            turn_index = 0;
-            continue;
-        }
-
-        turn_index++;
+        clear();
     }
     
     return 0;
