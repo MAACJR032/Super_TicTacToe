@@ -43,12 +43,7 @@ int main()
         if (file.fail())
             cout << "Error opening file\n";
 
-        char c;
-        while (file.get(c))
-        {
-            cout << c;
-        }
-        
+        cout << file.rdbuf();
         file.close();
         
         cout << "\n\nPress Enter to close\n";
