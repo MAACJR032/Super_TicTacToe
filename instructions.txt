@@ -55,7 +55,7 @@ Sub grid:
 
 Example:                  
 
-if the first player choose the top right corner spot on the first grid:
+if the first player choose the top right corner spot on the first grid (grid 1, sub grid 1):
 
      |    |  X    |       |    |       |      |    |
  ____|____|____   |   ____|____|____   |  ____|____|____
@@ -81,7 +81,7 @@ __________________|____________________|____________________
      |    |       |       |    |       |       |    |
                   |                    |
 
-Then the opponent must play in the larger grid's top right corner and so on:
+Then the opponent must play in the larger grid's top right corner (grid 3) and so on:
 
      |    | X     |       |    |       |      |    |
  ____|____|____   |   ____|____|____   |  ____|____|____
