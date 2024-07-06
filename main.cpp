@@ -74,5 +74,21 @@ int main()
         clear();
     }
     
+    t.print_tic_tac_toe();
+    switch (victory)
+    {
+        case X:
+            cout << player1 << " Win !!!\n";
+            break;
+        case O:
+            cout << player2 << " Win !!!\n";
+            break;
+        case TIE:
+            cout << "Tie\n";
+            break;
+        default:
+            break;
+    }
+    
     return 0;
 }
