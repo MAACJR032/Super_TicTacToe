@@ -9,18 +9,20 @@ using std::vector;
 using std::cout;
 using std::cin;
 using std::string;
+using std::pair;
 
-enum status {EMPTY = 'N', X = 'X', O = 'O'};
+enum status {EMPTY = 'N', X = 'X', O = 'O', TIE = 'T'};
 
 class TicTacToe
 {
     private:
-        vector<status> grids;
+        vector<pair<status, int>> grids; // 1 - Status, 2 - size of marked sub grids
         vector<vector<status>> tic_tac_toe;
         int next_grid;
         void win_grid(status player, int grid);
         void check_sub_score(status player, int square, int low_limit_i, int low_limit_j);
         void play_sub_grid(status player, int square, int sub_square, int low_limit_i, int low_limit_j);
+        status tie(int square);
 
     public:
         TicTacToe();
@@ -37,7 +39,7 @@ TicTacToe::TicTacToe()
     for (size_t i = 0; i < 9; i++)
         tic_tac_toe[i].resize(9, EMPTY);
     
-    grids.resize(9, EMPTY);
+    grids.resize(9, {EMPTY, 0});
 
     next_grid = -1;
 }
@@ -93,7 +95,8 @@ void TicTacToe::check_sub_score(status player, int square, int low_limit_i, int 
     {
         if (tic_tac_toe[i][low_limit_j] == player && tic_tac_toe[i][low_limit_j + 1] == player && tic_tac_toe[i][low_limit_j + 2] == player)
         {
-            grids[square - 1] = player;
+            grids[square - 1].first = player;
+            grids[square - 1].second++;
             cout << "grid " << square << " occupied\n";
             return;
         }
@@ -104,7 +107,8 @@ void TicTacToe::check_sub_score(status player, int square, int low_limit_i, int 
     {
         if (tic_tac_toe[low_limit_i][j] == player && tic_tac_toe[low_limit_i + 1][j] == player && tic_tac_toe[low_limit_i + 2][j] == player)
         {
-            grids[square - 1] = player;
+            grids[square - 1].first = player;
+            grids[square - 1].second++;
             cout << "grid " << square << " occupied\n";
             return;
         }
@@ -113,14 +117,16 @@ void TicTacToe::check_sub_score(status player, int square, int low_limit_i, int 
     // Diagonals
     if (tic_tac_toe[low_limit_i][low_limit_j] == player && tic_tac_toe[low_limit_i + 1][low_limit_j + 1] == player && tic_tac_toe[low_limit_i + 2][low_limit_j + 2] == player)
     {
-        grids[square - 1] = player;
+        grids[square - 1].first = player;
+            grids[square - 1].second++;
         cout << "grid " << square << " occupied\n";
     }
 
     else if (tic_tac_toe[low_limit_i][low_limit_j + 2] == player && tic_tac_toe[low_limit_i + 1][low_limit_j + 1] == player && tic_tac_toe[low_limit_i + 2][low_limit_j] == player)
     {
-            grids[square - 1] = player;
-            cout << "grid " << square << " occupied\n";
+        grids[square - 1].first = player;
+        grids[square - 1].second++;
+        cout << "grid " << square << " occupied\n";
     }
 }
 
@@ -223,12 +229,22 @@ void TicTacToe::play_sub_grid(status player, int square, int sub_square, int low
     win_grid(player, square);
 
     // If the next grid was scored then the player can play at any available grid 
-    if (grids[sub_square - 1] == EMPTY)
+    if (grids[sub_square - 1].first == EMPTY)
         next_grid = sub_square;
     else
         next_grid = -1;
-    
+}
 
+status TicTacToe::tie(int square)
+{
+    // Grid is tied if all the 9 sub squares where marked but no player could score
+    if (grids[square - 1].second == 9 && grids[square - 1].first == EMPTY)
+    {
+        grids[square - 1].first = TIE;
+        return TIE;
+    }
+
+    return grids[square - 1].first;
 }
 
 /* Prints the tic tac toe board. N = empty, X = player 1 and O = player 2. */
@@ -251,7 +267,7 @@ void TicTacToe::print_tic_tac_toe() const
 
     cout << "Available grids:\n\n";
     for (size_t i = 0; i < 9; i += 3)
-        printf("%c %c %c\n", grids[i], grids[i+1], grids[i+2]);    
+        printf("%c %c %c\n", grids[i].first, grids[i+1].first, grids[i+2].first);    
 }
 
 /* Checks if the choosen grid is valid and calls play_sub_grid to handle the subgrid. */
@@ -263,18 +279,18 @@ void TicTacToe::play(status player, int next_grid)
     {
         cout << "You can choose any of theese grids to play: ";
         for (size_t i = 0; i < 9; i++)
-            if (grids[i] == EMPTY)
+            if (grids[i].first == EMPTY)
                 cout << i + 1 << " ";
         cout << '\n';
         cin >> square;
 
-        while (square < 0 || square > 9 || grids[square - 1] != EMPTY) 
+        while (square < 0 || square > 9 || grids[square - 1].first != EMPTY) 
         {
             cout << "Invalid grid\n";
             cout << "You can play in these grids: ";
 
             for (size_t i = 0; i < 9; i++)
-                if (grids[i] == EMPTY)
+                if (grids[i].first == EMPTY)
                     cout << i + 1 << " ";
             cout << '\n';
 
@@ -331,7 +347,7 @@ status TicTacToe::win(status player, string player_name)
     // Checking the lines
     for (size_t i = 0; i < 7; i += 3)
     {
-        if (grids[i] == player && grids[i+1] == player && grids[i+2] == player)
+        if (grids[i].first == player && grids[i+1].first == player && grids[i+2].first == player)
         {
             cout << "Player " << player_name << "Win !!!";
             return player;
@@ -341,7 +357,7 @@ status TicTacToe::win(status player, string player_name)
     // Checking the columns
     for (size_t i = 0; i < 3; i++)
     {
-        if (grids[i] == player && grids[i+3] == player && grids[i+6] == player)
+        if (grids[i].first == player && grids[i+3].first == player && grids[i+6].first == player)
         {
             cout << "Player " << player_name << "Win !!!";
             return player;
@@ -349,16 +365,17 @@ status TicTacToe::win(status player, string player_name)
     }
     
     // Diagonals
-    if (grids[0] == player && grids[4] == player && grids[8] == player)
+    if (grids[0].first == player && grids[4].first == player && grids[8].first == player)
     {
         cout << "Player " << player_name << "Win !!!";
         return player;
     }
-    else if (grids[2] == player && grids[4] == player && grids[6] == player)
+    else if (grids[2].first == player && grids[4].first == player && grids[6].first == player)
     {
         cout << "Player " << player_name << "Win !!!";
         return player;
     }
     
+    // tie(square);
     return EMPTY;
 }
