@@ -34,7 +34,6 @@ void play(TicTacToe &t, status player, string player_name)
     t.print_tic_tac_toe();
     
     t.play(player, t.get_next_grid());
-    sleep(1);
     victory = t.win(player, player_name);
 }
 

@@ -94,18 +94,18 @@ void TicTacToe::check_sub_score(status player, int square, int low_limit_i, int 
         if (tic_tac_toe[i][low_limit_j] == player && tic_tac_toe[i][low_limit_j + 1] == player && tic_tac_toe[i][low_limit_j + 2] == player)
         {
             grids[square - 1] = player;
-            cout << "grid " << square << "occupied\n";
+            cout << "grid " << square << " occupied\n";
             return;
         }
     }
 
     // Checking the columns
-    for (size_t i = low_limit_j; i < low_limit_j + 3; i++)
+    for (size_t j = low_limit_j; j < low_limit_j + 3; j++)
     {
-        if (tic_tac_toe[i][low_limit_j] == player && tic_tac_toe[i + 1][low_limit_j] == player && tic_tac_toe[i + 2][low_limit_j] == player)
+        if (tic_tac_toe[low_limit_i][j] == player && tic_tac_toe[low_limit_i + 1][j] == player && tic_tac_toe[low_limit_i + 2][j] == player)
         {
             grids[square - 1] = player;
-            cout << "grid " << square << "occupied\n";
+            cout << "grid " << square << " occupied\n";
             return;
         }
     }
@@ -114,13 +114,13 @@ void TicTacToe::check_sub_score(status player, int square, int low_limit_i, int 
     if (tic_tac_toe[low_limit_i][low_limit_j] == player && tic_tac_toe[low_limit_i + 1][low_limit_j + 1] == player && tic_tac_toe[low_limit_i + 2][low_limit_j + 2] == player)
     {
         grids[square - 1] = player;
-        cout << "grid " << square << "occupied\n";
+        cout << "grid " << square << " occupied\n";
     }
 
     else if (tic_tac_toe[low_limit_i][low_limit_j + 2] == player && tic_tac_toe[low_limit_i + 1][low_limit_j + 1] == player && tic_tac_toe[low_limit_i + 2][low_limit_j] == player)
     {
             grids[square - 1] = player;
-            cout << "grid " << square << "occupied\n";
+            cout << "grid " << square << " occupied\n";
     }
 }
 
@@ -326,7 +326,6 @@ void TicTacToe::play(status player, int next_grid)
 /* Checks if the player won. If the player didn't win it will return EMPTY. */
 status TicTacToe::win(status player, string player_name)
 {
-    /* CHECAR CADA QUADRADO P/ CASO ALGUM GRID SEJA MARCADO */
     /* VER QUESTÃO DE EMPATE */
 
     // Checking the lines
