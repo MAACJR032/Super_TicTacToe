@@ -17,9 +17,6 @@ ___________________|_____________________|____________________
 */
 
 #include "TicTacToe.h"
-#include <string>
-
-using std::string;
 
 enum status victory = EMPTY;
 
@@ -28,24 +25,17 @@ void clear()
     system("@cls||clear");
 }
 
-void play(TicTacToe &t, status player, string player_name, int next_grid)
+void play(TicTacToe &t, status player, string player_name)
 {
     clear();
 
     cout << player_name << " turn\n";
     cout << "Current board:\n\n";
     t.print_tic_tac_toe();
-
-    // if (next_grid == -1)
-    // {
-    //     cout << "You can play at any grid\n";
-    //     cout << "Choose the grid and the sub grid to play\n";
-    // }
     
-    /* Lógica para checar qual o grid a se jogar */
-    t.play(player);
+    t.play(player, t.get_next_grid());
     sleep(1);
-    t.win(player); // Checks if the player won
+    victory = t.win(player, player_name);
 }
 
 int main()
@@ -72,12 +62,12 @@ int main()
 
         if (turn == X)
         {
-            play(t, X, player1, next_grid);
+            play(t, X, player1);
             turn = O;
         }
         else
         {
-            play(t, O, player2, next_grid);
+            play(t, O, player2);
             turn = X;
         }
 
