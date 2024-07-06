@@ -16,7 +16,7 @@ enum status {EMPTY = 'N', X = 'X', O = 'O', TIE = 'T'};
 class TicTacToe
 {
     private:
-        vector<pair<status, int>> grids; // 1 - Status, 2 - size of marked sub grids
+        vector<pair<status, int>> grids; // first - Status, second - how many sub grids where marked down
         vector<vector<status>> tic_tac_toe;
         int next_grid;
         void win_grid(status player, int grid);
@@ -97,6 +97,7 @@ void TicTacToe::check_sub_score(status player, int square, int low_limit_i, int 
         {
             grids[square - 1].first = player;
             cout << "grid " << square << " occupied\n";
+            sleep(1);
             return;
         }
     }
@@ -108,6 +109,7 @@ void TicTacToe::check_sub_score(status player, int square, int low_limit_i, int 
         {
             grids[square - 1].first = player;
             cout << "grid " << square << " occupied\n";
+            sleep(1);
             return;
         }
     }
@@ -117,12 +119,14 @@ void TicTacToe::check_sub_score(status player, int square, int low_limit_i, int 
     {
         grids[square - 1].first = player;
         cout << "grid " << square << " occupied\n";
+        sleep(1);
     }
 
     else if (tic_tac_toe[low_limit_i][low_limit_j + 2] == player && tic_tac_toe[low_limit_i + 1][low_limit_j + 1] == player && tic_tac_toe[low_limit_i + 2][low_limit_j] == player)
     {
         grids[square - 1].first = player;
         cout << "grid " << square << " occupied\n";
+        sleep(1);
     }
 }
 
@@ -240,6 +244,7 @@ void TicTacToe::play_sub_grid(status player, int square, int sub_square, int low
         next_grid = -1;
 }
 
+/* Checks if the given grid is a tie */
 status TicTacToe::tie(int square)
 {
     // Grid is tied if all the 9 sub squares where marked but no player could score
@@ -304,7 +309,10 @@ void TicTacToe::play(status player, int next_grid)
         }
     }
     else
+    {
         square = next_grid;
+        cout << "You must play on grid " << square << '\n';
+    }
     
     // play_sub_grid checks if subgrid is valid and if so it marks in the matrix (board).
     cout << "Sub grid: ";
@@ -349,15 +357,11 @@ void TicTacToe::play(status player, int next_grid)
 /* Checks if the player won or if it's a tie. If the player didn't win and it's not a tie it will return EMPTY. */
 status TicTacToe::win(status player, string player_name)
 {
-    /* VER QUESTÃO DE EMPATE */
-
     // Checking the lines
     for (size_t i = 0; i < 7; i += 3)
     {
         if (grids[i].first == player && grids[i+1].first == player && grids[i+2].first == player)
             return player;
-        else if (grids[i].first == TIE && grids[i+1].first == TIE && grids[i+2].first == TIE)
-            return TIE;
     }
 
     // Checking the columns
@@ -365,20 +369,15 @@ status TicTacToe::win(status player, string player_name)
     {
         if (grids[i].first == player && grids[i+3].first == player && grids[i+6].first == player)
             return player;
-        else if (grids[i].first == TIE && grids[i+3].first == TIE && grids[i+6].first == TIE)
-            return TIE;
     }
     
     // Diagonals
     if (grids[0].first == player && grids[4].first == player && grids[8].first == player)
         return player;
-    else if (grids[0].first == TIE && grids[4].first == TIE && grids[8].first == TIE)
-        return TIE;
     else if (grids[2].first == player && grids[4].first == player && grids[6].first == player)
         return player;
-    else if (grids[2].first == TIE && grids[4].first == TIE && grids[6].first == TIE)
-        return TIE;
 
+    // If neither of the players won and all the grids where marked, then it is a tie
     int complete_grids = 0;
     for (size_t i = 0; i < 9; i++)
         if (grids[i].first != EMPTY)
@@ -387,5 +386,6 @@ status TicTacToe::win(status player, string player_name)
     if (complete_grids == 9)
         return TIE;
     
+    // Otherwise the game is not over
     return EMPTY;
 }
