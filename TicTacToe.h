@@ -13,6 +13,9 @@ using std::pair;
 
 enum status {EMPTY = 'N', X = 'X', O = 'O', TIE = 'T'};
 
+/*
+
+*/
 class TicTacToe
 {
     private:
@@ -21,9 +24,9 @@ class TicTacToe
         int next_grid; // Next grid to be played
 
         void grid_score(status player, int grid);
-        void check_grid_score(status player, int square, int low_limit_i, int low_limit_j);
-        void play_sub_grid(status player, int square, int sub_square, int low_limit_i, int low_limit_j);
-        status check_tie(int square);
+        void check_grid_score(status player, int grid, int low_limit_i, int low_limit_j);
+        void play_sub_grid(status player, int grid, int sub_grid, int low_limit_i, int low_limit_j);
+        status check_tie(int grid);
 
     public:
         TicTacToe();
@@ -89,15 +92,15 @@ void TicTacToe::grid_score(status player, int grid)
 }
 
 /* Checks all the cases where the player may have scored in a grid */
-void TicTacToe::check_grid_score(status player, int square, int low_limit_i, int low_limit_j)
+void TicTacToe::check_grid_score(status player, int grid, int low_limit_i, int low_limit_j)
 {
     // Checking the lines
     for (size_t i = low_limit_i; i < low_limit_i + 3; i++)
     {
         if (tic_tac_toe[i][low_limit_j] == player && tic_tac_toe[i][low_limit_j + 1] == player && tic_tac_toe[i][low_limit_j + 2] == player)
         {
-            grids[square - 1].first = player;
-            cout << "grid " << square << " occupied\n";
+            grids[grid - 1].first = player;
+            cout << "grid " << grid << " scored\n";
             sleep(1);
             return;
         }
@@ -108,43 +111,43 @@ void TicTacToe::check_grid_score(status player, int square, int low_limit_i, int
     {
         if (tic_tac_toe[low_limit_i][j] == player && tic_tac_toe[low_limit_i + 1][j] == player && tic_tac_toe[low_limit_i + 2][j] == player)
         {
-            grids[square - 1].first = player;
-            cout << "grid " << square << " occupied\n";
+            grids[grid - 1].first = player;
+            cout << "grid " << grid << " scored\n";
             sleep(1);
             return;
         }
     }
     
-    // Diagonals
+    // Checking the Diagonals
     if (tic_tac_toe[low_limit_i][low_limit_j] == player && tic_tac_toe[low_limit_i + 1][low_limit_j + 1] == player && tic_tac_toe[low_limit_i + 2][low_limit_j + 2] == player)
     {
-        grids[square - 1].first = player;
-        cout << "grid " << square << " occupied\n";
+        grids[grid - 1].first = player;
+        cout << "grid " << grid << " scored\n";
         sleep(1);
     }
     else if (tic_tac_toe[low_limit_i][low_limit_j + 2] == player && tic_tac_toe[low_limit_i + 1][low_limit_j + 1] == player && tic_tac_toe[low_limit_i + 2][low_limit_j] == player)
     {
-        grids[square - 1].first = player;
-        cout << "grid " << square << " occupied\n";
+        grids[grid - 1].first = player;
+        cout << "grid " << grid << " scored\n";
         sleep(1);
     }
 }
 
 /* Checks if the subgrid is valid and if so, it marks in tic_tac_toe.
    Otherwise it will show the available sub grids to play and ask the player to select again. */
-void TicTacToe::play_sub_grid(status player, int square, int sub_square, int low_limit_i, int low_limit_j)
+void TicTacToe::play_sub_grid(status player, int grid, int sub_grid, int low_limit_i, int low_limit_j)
 {
     bool valid = false;
     while (!valid)
     {
         // Marks the subgrid if it is empty
-        switch (sub_square)
+        switch (sub_grid)
         {
             case 1:
                 if (tic_tac_toe[low_limit_i][low_limit_j] == EMPTY)
                 {
                     tic_tac_toe[low_limit_i][low_limit_j] = player;
-                    grids[square - 1].second++;
+                    grids[grid - 1].second++;
                     valid = true;
                 }
                 break;
@@ -152,7 +155,7 @@ void TicTacToe::play_sub_grid(status player, int square, int sub_square, int low
                 if (tic_tac_toe[low_limit_i][low_limit_j + 1] == EMPTY)
                 {
                     tic_tac_toe[low_limit_i][low_limit_j + 1] = player;
-                    grids[square - 1].second++;
+                    grids[grid - 1].second++;
                     valid = true;
                 }
                 break;
@@ -160,7 +163,7 @@ void TicTacToe::play_sub_grid(status player, int square, int sub_square, int low
                 if (tic_tac_toe[low_limit_i][low_limit_j + 2] == EMPTY)
                 {
                     tic_tac_toe[low_limit_i][low_limit_j + 2] = player;
-                    grids[square - 1].second++;
+                    grids[grid - 1].second++;
                     valid = true;
                 }
                 break;
@@ -168,7 +171,7 @@ void TicTacToe::play_sub_grid(status player, int square, int sub_square, int low
                 if (tic_tac_toe[low_limit_i + 1][low_limit_j] == EMPTY)
                 {
                     tic_tac_toe[low_limit_i + 1][low_limit_j] = player;
-                    grids[square - 1].second++;
+                    grids[grid - 1].second++;
                     valid = true;
                 }
                 break;
@@ -176,7 +179,7 @@ void TicTacToe::play_sub_grid(status player, int square, int sub_square, int low
                 if (tic_tac_toe[low_limit_i + 1][low_limit_j + 1] == EMPTY)
                 {
                     tic_tac_toe[low_limit_i + 1][low_limit_j + 1] = player;
-                    grids[square - 1].second++;
+                    grids[grid - 1].second++;
                     valid = true;
                 }
                 break;
@@ -184,7 +187,7 @@ void TicTacToe::play_sub_grid(status player, int square, int sub_square, int low
                 if (tic_tac_toe[low_limit_i + 1][low_limit_j + 2] == EMPTY)
                 {
                     tic_tac_toe[low_limit_i + 1][low_limit_j + 2] = player;
-                    grids[square - 1].second++;
+                    grids[grid - 1].second++;
                     valid = true;
                 }
                 break;
@@ -192,7 +195,7 @@ void TicTacToe::play_sub_grid(status player, int square, int sub_square, int low
                 if (tic_tac_toe[low_limit_i + 2][low_limit_j] == EMPTY)
                 {
                     tic_tac_toe[low_limit_i + 2][low_limit_j] = player;
-                    grids[square - 1].second++;
+                    grids[grid - 1].second++;
                     valid = true;
                 }
                 break;
@@ -200,7 +203,7 @@ void TicTacToe::play_sub_grid(status player, int square, int sub_square, int low
                 if (tic_tac_toe[low_limit_i + 2][low_limit_j + 1] == EMPTY)
                 {
                     tic_tac_toe[low_limit_i + 2][low_limit_j + 1] = player;
-                    grids[square - 1].second++;
+                    grids[grid - 1].second++;
                     valid = true;
                 }
                 break;
@@ -208,7 +211,7 @@ void TicTacToe::play_sub_grid(status player, int square, int sub_square, int low
                 if (tic_tac_toe[low_limit_i + 2][low_limit_j + 2] == EMPTY)
                 {
                     tic_tac_toe[low_limit_i + 2][low_limit_j + 2] = player;
-                    grids[square - 1].second++;
+                    grids[grid - 1].second++;
                     valid = true;
                 }
                 break;
@@ -232,31 +235,31 @@ void TicTacToe::play_sub_grid(status player, int square, int sub_square, int low
             }
             cout << '\n';
             cout << "sub grid: ";
-            cin >> sub_square;
+            cin >> sub_grid;
         }
     }
 
     // Checks if the played scored
-    grid_score(player, square);
+    grid_score(player, grid);
 
     // If the next grid was scored then the player can play at any available grid 
-    if (grids[sub_square - 1].first == EMPTY)
-        next_grid = sub_square;
+    if (grids[sub_grid - 1].first == EMPTY)
+        next_grid = sub_grid;
     else
         next_grid = -1;
 }
 
 /* Checks if the given grid is a tie */
-status TicTacToe::check_tie(int square)
+status TicTacToe::check_tie(int grid)
 {
     // Grid is tied if all the 9 sub squares where marked but no player could score
-    if (grids[square - 1].second == 9 && grids[square - 1].first == EMPTY)
+    if (grids[grid - 1].second == 9 && grids[grid - 1].first == EMPTY)
     {
-        grids[square - 1].first = TIE;
+        grids[grid - 1].first = TIE;
         return TIE;
     }
 
-    return grids[square - 1].first;
+    return grids[grid - 1].first;
 }
 
 /* Prints the tic tac toe board. N = empty, X = player 1 and O = player 2. */
@@ -285,75 +288,62 @@ void TicTacToe::print_tic_tac_toe() const
 /* Checks if the choosen grid is valid and calls play_sub_grid to handle the subgrid. */
 void TicTacToe::play(status player, int next_grid)
 {
-    int square = 0, sub_square = 0;
+    int sub_grid = 0;
 
-    if (next_grid == -1)
+    // Any grid can be choosen to play
+    while (next_grid < 0 || next_grid > 9 || grids[next_grid - 1].first != EMPTY)
     {
         cout << "You can choose any of theese grids to play: ";
         for (size_t i = 0; i < 9; i++)
             if (grids[i].first == EMPTY)
                 cout << i + 1 << " ";
         cout << '\n';
-        cin >> square;
+        cin >> next_grid;
 
-        while (square < 0 || square > 9 || grids[square - 1].first != EMPTY) 
-        {
+        if (next_grid < 0 || next_grid > 9 || grids[next_grid - 1].first != EMPTY)
             cout << "Invalid grid\n";
-            cout << "You can play in these grids: ";
-
-            for (size_t i = 0; i < 9; i++)
-                if (grids[i].first == EMPTY)
-                    cout << i + 1 << " ";
-            cout << '\n';
-
-            cout << "grid: ";
-            cin >> square;
-        }
     }
-    else
-    {
-        square = next_grid;
-        cout << "You must play on grid " << square << '\n';
-    }
+
+    cout << "You must play on grid " << next_grid << '\n';
     
     // play_sub_grid checks if subgrid is valid and if so it marks in the matrix (board).
     cout << "Sub grid: ";
-    cin >> sub_square;
+    cin >> sub_grid;
 
-    switch (square)
+    switch (next_grid)
     {
         case 1:
-            play_sub_grid(player, square, sub_square, 0, 0);
+            play_sub_grid(player, next_grid, sub_grid, 0, 0);
             break;
         case 2:
-            play_sub_grid(player, square, sub_square, 0, 3);
+            play_sub_grid(player, next_grid, sub_grid, 0, 3);
             break;
         case 3:
-            play_sub_grid(player, square, sub_square, 0, 6);
+            play_sub_grid(player, next_grid, sub_grid, 0, 6);
             break;
         case 4:
-            play_sub_grid(player, square, sub_square, 3, 0);
+            play_sub_grid(player, next_grid, sub_grid, 3, 0);
             break;
         case 5:
-            play_sub_grid(player, square, sub_square, 3, 3);
+            play_sub_grid(player, next_grid, sub_grid, 3, 3);
             break;
         case 6:
-            play_sub_grid(player, square, sub_square, 3, 6);
+            play_sub_grid(player, next_grid, sub_grid, 3, 6);
             break;
         case 7:
-            play_sub_grid(player, square, sub_square, 6, 0);
+            play_sub_grid(player, next_grid, sub_grid, 6, 0);
             break;
         case 8:
-            play_sub_grid(player, square, sub_square, 6, 3);
+            play_sub_grid(player, next_grid, sub_grid, 6, 3);
             break;
         case 9:
-            play_sub_grid(player, square, sub_square, 6, 6);
+            play_sub_grid(player, next_grid, sub_grid, 6, 6);
             break;
         default:
             break;
     }
 
-    check_tie(square);
+    check_tie(next_grid);
 }
 
 /* Checks if the player won or if it's a tie. If the player didn't win and it's not a tie it will return EMPTY. */
