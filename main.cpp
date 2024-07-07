@@ -23,6 +23,11 @@ void play(TicTacToe &t, status player, string player_name)
     victory = t.check_win(player, player_name);
 }
 
+void clear_buffer()
+{
+    while (getchar() != '\n');
+}
+
 int main()
 {
     TicTacToe t;
@@ -34,8 +39,9 @@ int main()
     cin >> player2;
 
     /* Instructions */
-    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear buffer
+    clear_buffer();
     cout << "\nDo you wanna read the instructions ? [Y/N]: ";
+
     if (tolower(getchar()) == 'y')
     {
         ifstream file;
@@ -47,12 +53,11 @@ int main()
         cout << file.rdbuf();
         file.close();
         
+        clear_buffer();
         cout << "\n\nPress Enter to close\n";
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        getchar();
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
-    
+    clear_buffer();
+
     /* Game Loop */ 
     status turn = X;
     int round = 1;
