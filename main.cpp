@@ -1,5 +1,6 @@
-#include "TicTacToe.h"
+#include "TicTacToe.hpp"
 #include <fstream>
+#include <limits>
 
 using std::ifstream;
 
@@ -33,7 +34,7 @@ int main()
     cin >> player2;
 
     /* Instructions */
-    fflush(stdin);
+    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear buffer
     cout << "\nDo you wanna read the instructions ? [Y/N]: ";
     if (tolower(getchar()) == 'y')
     {
@@ -47,8 +48,9 @@ int main()
         file.close();
         
         cout << "\n\nPress Enter to close\n";
-        fflush(stdin);
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         getchar();
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
     
     /* Game Loop */ 
