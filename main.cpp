@@ -1,6 +1,5 @@
 #include "TicTacToe.hpp"
 #include <fstream>
-#include <limits>
 
 using std::ifstream;
 
