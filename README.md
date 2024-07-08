@@ -9,12 +9,12 @@ Super tic-tac-toe is a board game composed of nine tic-tac-toe boards arranged i
 <br>Next the opponent plays, however they are forced to play in the small board indicated by the relative location of the previous move.
 <br>For example, if X plays in the top right square of a small (3 × 3) board,
 <br>then O has to play in the small board located at the top right of the larger board.
+<br>Playing any of the available spots decides in which small board the next player plays.
 <br><br>
   
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Super_tic-tac-toe_rules_example_-_simple.png/330px-Super_tic-tac-toe_rules_example_-_simple.png">
 <br>
 
-<br>Playing any of the available spots decides in which small board the next player plays.
 <br>If a move is played so that it is to win a small board by the rules of normal tic-tac-toe,
 <br>then the entire small board is marked as won by the player in the larger board.
 <br>Once a small board is won by a player or it is filled completely, no more moves may be played in that board.
