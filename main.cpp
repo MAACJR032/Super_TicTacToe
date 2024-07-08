@@ -71,12 +71,12 @@ int main()
         if (turn == X)
         {
             play(t, X, player1);
-            turn = O;
+            turn = O; // Change turn
         }
         else
         {
             play(t, O, player2);
-            turn = X;
+            turn = X; // Change turn
         }
 
         round++;
@@ -94,7 +94,7 @@ int main()
             cout << player2 << " Win !!!\n";
             break;
         case TIE:
-            cout << "It was a Tie\n";
+            cout << "It's a Tie\n";
             break;
         default:
             break;
