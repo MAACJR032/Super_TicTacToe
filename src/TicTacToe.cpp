@@ -1,4 +1,4 @@
-#include "TicTacToe.hpp"
+#include "../include/TicTacToe.hpp"
 
 /* Initializes an empty 9x9 matrix (board). */
 TicTacToe::TicTacToe()
