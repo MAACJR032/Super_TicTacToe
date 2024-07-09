@@ -1,4 +1,4 @@
-#include "TicTacToe.hpp"
+#include "include/TicTacToe.hpp"
 #include <fstream>
 
 using std::ifstream;
