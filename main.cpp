@@ -1,4 +1,4 @@
-#include "include/TicTacToe.hpp"
+#include "TicTacToe.hpp"
 #include <fstream>
 
 using std::ifstream;
@@ -60,7 +60,6 @@ int main()
     /* Game Loop */ 
     status turn = X;
     int round = 1;
-    int next_grid = -1;
 
     while (victory == EMPTY)
     {
