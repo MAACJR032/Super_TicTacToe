@@ -27,7 +27,10 @@ Super tic-tac-toe is a board game composed of nine tic-tac-toe boards arranged i
 </p>
 
 # Compiling
+g++ main.cpp src/TicTacToe.cpp -o main
 
-- Windows: Both ways work
-  - g++ main.cpp src/TicTacToe.cpp -o main
+### Using the Makefile to compile:
+- Windows:
   - mingw32-make.exe
+- Linux:
+  - make   
