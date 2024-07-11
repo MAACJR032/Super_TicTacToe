@@ -14,12 +14,21 @@ MAIN_OBJ = main.o
 TICTACTOE_OBJ = TicTacToe.o
 EXECUTABLE = main
 
+# OS remove command
+ifdef OS
+    RM = del -f
+else
+	ifeq ($(shell uname),Linux)
+		RM = rm -f
+	endif
+endif
+
 # Targets
 all: $(EXECUTABLE)
 
 $(EXECUTABLE): $(MAIN_OBJ) $(TICTACTOE_OBJ)
 	$(CXX) $(MAIN_OBJ) $(TICTACTOE_OBJ) -o $(BIN_DIR)/$(EXECUTABLE)
-	del -f $(MAIN_OBJ) $(TICTACTOE_OBJ)
+	$(RM) $(MAIN_OBJ) $(TICTACTOE_OBJ)
 
 $(MAIN_OBJ): $(MAIN_SRC)
 	$(CXX) $(CXXFLAGS) -c $(MAIN_SRC) -o $(MAIN_OBJ)
@@ -28,4 +37,4 @@ $(TICTACTOE_OBJ): $(TICTACTOE_SRC) $(INC_DIR)/TicTacToe.hpp
 	$(CXX) $(CXXFLAGS) -c $(TICTACTOE_SRC) -o $(TICTACTOE_OBJ)
 
 clean:
-	del -f *.o $(BIN_DIR)/$(EXECUTABLE)
+	$(RM) *.o $(BIN_DIR)/$(EXECUTABLE)
