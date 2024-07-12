@@ -1,6 +1,7 @@
 #include <SFML/graphics.hpp>
 #include <fstream>
 #include "include/TicTacToe.hpp"
+#include "include/Game.hpp"
 
 using std::ifstream;
 
@@ -30,38 +31,19 @@ void clear_buffer()
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(900, 900), "Super Tic Tac Toe", sf::Style::Close);
+    // Init game
+    Game game;
+
     sf::CircleShape shape(250.f);
-    shape.setFillColor(sf::Color::Green);
 
-    while (window.isOpen())
+    // Game loop
+    while (game.running())
     {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            switch (event.type)
-            {
-                case sf::Event::Closed:
-                    window.close();
-                    break;
-                
-                // pressing Esc to close
-                case sf::Event::KeyPressed:
-                    if (event.key.code == sf::Keyboard::Escape)
-                        window.close();
-                    break;
-
-                default:
-                    break;
-            }   
-        }
+        // Update
+        game.update();
 
         // Render
-        window.clear(sf::Color::White); // clear old frame
-
-        window.draw(shape);
-        
-        window.display(); // done drawing
+        game.render();
     }
 
     // TicTacToe t;
