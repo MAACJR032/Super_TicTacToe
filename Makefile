@@ -1,40 +1,8 @@
-# Compiler and flags
-CXX = g++
-CXXFLAGS = -Iinclude
+all: compile link
+	del -f *.o
 
-# Directories
-SRC_DIR = src
-INC_DIR = include
-BIN_DIR = .
+compile:
+	g++ -c main.cpp src/*.cpp -ISFML_src/include
 
-# Files
-MAIN_SRC = main.cpp
-TICTACTOE_SRC = $(SRC_DIR)/TicTacToe.cpp
-MAIN_OBJ = main.o
-TICTACTOE_OBJ = TicTacToe.o
-EXECUTABLE = main
-
-# OS remove command
-ifdef OS
-    RM = del -f
-else
-	ifeq ($(shell uname),Linux)
-		RM = rm -f
-	endif
-endif
-
-# Targets
-all: $(EXECUTABLE)
-
-$(EXECUTABLE): $(MAIN_OBJ) $(TICTACTOE_OBJ)
-	$(CXX) $(MAIN_OBJ) $(TICTACTOE_OBJ) -o $(BIN_DIR)/$(EXECUTABLE)
-	$(RM) $(MAIN_OBJ) $(TICTACTOE_OBJ)
-
-$(MAIN_OBJ): $(MAIN_SRC)
-	$(CXX) $(CXXFLAGS) -c $(MAIN_SRC) -o $(MAIN_OBJ)
-
-$(TICTACTOE_OBJ): $(TICTACTOE_SRC) $(INC_DIR)/TicTacToe.hpp
-	$(CXX) $(CXXFLAGS) -c $(TICTACTOE_SRC) -o $(TICTACTOE_OBJ)
-
-clean:
-	$(RM) *.o $(BIN_DIR)/$(EXECUTABLE)
+link:
+	g++ *.o -o main -LSFML_src/lib -lsfml-graphics -lsfml-window -lsfml-system
