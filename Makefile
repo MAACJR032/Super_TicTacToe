@@ -1,5 +1,11 @@
+ifdef OS
+	RM = del -f
+else
+	RM = rm -f
+endif
+
 all: compile link
-	del -f *.o
+	$(RM) *.o
 
 compile:
 	g++ -c main.cpp src/*.cpp -ISFML_src/include
