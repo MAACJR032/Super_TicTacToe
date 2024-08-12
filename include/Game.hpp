@@ -25,6 +25,10 @@ class Game
         // Game objects
         sf::RectangleShape square;
         vector<vector<sf::RectangleShape>> squares;
+        
+        sf::RectangleShape vertical_line;
+        sf::RectangleShape Horizontal_line;
+        vector<sf::RectangleShape> lines;
 
         void init_variables();
         void init_window();
@@ -38,7 +42,7 @@ class Game
         const bool running() const;
 
         // Functions
-        void spawn_squares();
+        void spawn_board();
         void update_poll_events();
         void update_squares();
         void update_mouse_pos();

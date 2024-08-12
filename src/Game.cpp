@@ -31,6 +31,12 @@ void Game::init_square()
     square.setSize(sf::Vector2f(75.f, 75.f));
     square.setFillColor(sf::Color::Blue);
     square.setOutlineThickness(2.f);
+
+    vertical_line.setSize(sf::Vector2f(10.f, 790.f));
+    vertical_line.setFillColor(sf::Color::Black);
+
+    Horizontal_line.setSize(sf::Vector2f(790.f, 10.f));
+    Horizontal_line.setFillColor(sf::Color::Black);
 }
 
 
@@ -40,7 +46,7 @@ Game::Game()
     init_variables();
     init_window();
     init_square();
-    spawn_squares();
+    spawn_board();
 }
 
 Game::~Game()
@@ -56,16 +62,30 @@ const bool Game::running() const
 // Functions
 
 /* will set the position of all the 81 squares and insert them into the squares vector */
-void Game::spawn_squares()
+void Game::spawn_board()
 {
-    float x1 = 500.f, y1 = 100.f;
+    float x = 500.f, y = 100.f;
     for (size_t i = 0; i < 9; i++)
     {
         for (size_t j = 0; j < 9; j++)
         {
-            square.setPosition({x1 + i * 75, y1 + j * 75});
+            square.setPosition({x + i * 75, y + j * 75});
             squares[i].push_back(square);
         }
+    }
+    
+    // vertical lines
+    for (int i = 0; i < 2; i++)
+    {
+        vertical_line.setPosition({720 + static_cast<float>(225 * i), y-60});
+        lines.push_back(vertical_line);
+    }
+    
+    // horizontal lines
+    for (int i = 0; i < 2; i++)
+    {
+        Horizontal_line.setPosition({x-55, y + 220 + static_cast<float>(225 * i)});
+        lines.push_back(Horizontal_line);
     }
 }
 
@@ -115,6 +135,9 @@ void Game::render_squares()
     for (auto &s : squares)
         for (auto &t : s)
             window->draw(t);
+    
+    for (auto &l : lines)
+        window->draw(l);
 }
 
 void Game::render()
