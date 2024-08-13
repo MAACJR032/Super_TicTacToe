@@ -1,9 +1,11 @@
+#pragma once
+
 #include <SFML/graphics.hpp>
 #include <memory>
 #include <vector>
+#include "input.hpp"
 
 using std::unique_ptr;
-using std::make_unique;
 using std::vector;
 
 class Game
@@ -32,7 +34,7 @@ class Game
 
         void init_variables();
         void init_window();
-        void init_square();
+        void init_board();
 
     public:
         Game();

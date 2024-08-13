@@ -2,6 +2,8 @@
 #include <iostream>
 #include <ctime>
 
+using std::make_unique;
+
 // Private funtions
 void Game::init_variables()
 {
@@ -14,6 +16,8 @@ void Game::init_variables()
     squares.resize(9);
     for (size_t i = 0; i < 9; i++)
         squares[i].reserve(9);
+
+    lines.reserve(4);
 }
 
 void Game::init_window()
@@ -26,7 +30,7 @@ void Game::init_window()
     window->setFramerateLimit(60);
 }
 
-void Game::init_square()
+void Game::init_board()
 {
     square.setSize(sf::Vector2f(75.f, 75.f));
     square.setFillColor(sf::Color::Blue);
@@ -43,9 +47,9 @@ void Game::init_square()
 // Constructor / Destructor
 Game::Game()
 {
-    init_variables();
+    init_variables(); // init game objects
     init_window();
-    init_square();
+    init_board();
     spawn_board();
 }
 
@@ -114,7 +118,14 @@ void Game::update_poll_events()
 /* update the squares if they were scored or selected */
 void Game::update_squares()
 {
-    
+    sf::Mouse::Button button;
+    for (auto &s : squares)
+    {
+        for (auto &t : s)
+        {
+            button_click(button, t, window);
+        }
+    }
 }
 
 /* Updates the mouse position on the game window */
