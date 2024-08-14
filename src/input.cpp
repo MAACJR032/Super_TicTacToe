@@ -1,10 +1,23 @@
 #include "../include/input.hpp"
 
-void button_click(sf::Mouse::Button button, sf::RectangleShape &square, std::unique_ptr<sf::RenderWindow> &window)
+void button_click(sf::Mouse::Button button, Square &square, std::unique_ptr<sf::RenderWindow> &window, TicTacToe &t, Player &player)
 {
-    if (sf::Mouse::isButtonPressed(button) && square.getGlobalBounds().contains((sf::Vector2f) sf::Mouse::getPosition(*window)))
+    if (sf::Mouse::isButtonPressed(button) && square.rect.getGlobalBounds().contains((sf::Vector2f) sf::Mouse::getPosition(*window)))
     {
-        square.setFillColor(sf::Color::Red);
+        if (t.get_next_grid() == -1)
+        {
+            square.rect.setFillColor(sf::Color::Red);
+            square.stat = X;
+            
+            player.play(t);
+            
+            t.print_tic_tac_toe();
+            // Create logic to check wich square was clicked
+        }
+        // else if (t.get_next_grid() == pressed square)
+        // {
+        //     /* code */
+        // }
+        
     } 
 }
-

@@ -28,6 +28,7 @@ class TicTacToe
     public:
         TicTacToe();
         int get_next_grid() const;
+        void set_next_grid(int next);
         void print_tic_tac_toe() const;
         void play(status player, int next_grid);
         status check_win(status player, string player_name);

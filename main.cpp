@@ -24,19 +24,12 @@ void play(TicTacToe &t, status player, string player_name)
     victory = t.check_win(player, player_name);
 }
 
-void clear_buffer()
-{
-    while (getchar() != '\n');
-}
-
 int main()
 {
     std::srand(static_cast<unsigned>(time(NULL)));
 
     // Init game
     Game game;
-
-    sf::CircleShape shape(250.f);
 
     // Game loop
     while (game.running())

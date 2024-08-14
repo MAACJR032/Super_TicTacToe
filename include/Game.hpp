@@ -3,10 +3,18 @@
 #include <SFML/graphics.hpp>
 #include <memory>
 #include <vector>
-#include "input.hpp"
+#include "player.hpp"
+#include "TicTacToe.hpp"
 
 using std::unique_ptr;
 using std::vector;
+
+struct Square
+{
+    pair<int, int> board_pos;
+    status stat;
+    sf::RectangleShape rect;
+};
 
 class Game
 {
@@ -16,17 +24,18 @@ class Game
         sf::VideoMode video_mode;
         sf::Event event;
 
+        TicTacToe tick;
+        Player player;
+
         // Mouse position
         sf::Vector2i mouse_pos;
         
         // Game logic
-        float squares_spawn_timer;
-        float squares_spawn_timer_max;
         int max_squares;
         
         // Game objects
         sf::RectangleShape square;
-        vector<vector<sf::RectangleShape>> squares;
+        vector<vector<Square>> squares;
         
         sf::RectangleShape vertical_line;
         sf::RectangleShape Horizontal_line;

@@ -1,4 +1,5 @@
 #include "../include/Game.hpp"
+#include "../include/input.hpp"
 #include <iostream>
 #include <ctime>
 
@@ -74,7 +75,7 @@ void Game::spawn_board()
         for (size_t j = 0; j < 9; j++)
         {
             square.setPosition({x + i * 75, y + j * 75});
-            squares[i].push_back(square);
+            squares[i].push_back({{i, j}, EMPTY, square});
         }
     }
     
@@ -119,11 +120,11 @@ void Game::update_poll_events()
 void Game::update_squares()
 {
     sf::Mouse::Button button;
-    for (auto &s : squares)
+    for (auto &i : squares)
     {
-        for (auto &t : s)
+        for (auto &s : i)
         {
-            button_click(button, t, window);
+            button_click(button, s, window, tick);
         }
     }
 }
@@ -143,9 +144,9 @@ void Game::update()
 
 void Game::render_squares()
 {
-    for (auto &s : squares)
-        for (auto &t : s)
-            window->draw(t);
+    for (auto &i : squares)
+        for (auto &s : i)
+            window->draw(s.rect);
     
     for (auto &l : lines)
         window->draw(l);

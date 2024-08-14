@@ -18,6 +18,11 @@ int TicTacToe::get_next_grid() const
     return next_grid;
 }
 
+void TicTacToe::set_next_grid(int next)
+{
+    next_grid = next;
+}
+
 /* Checks if player scored in the grid he just played */
 void TicTacToe::grid_score(status player, int grid)
 {
