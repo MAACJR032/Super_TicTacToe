@@ -1,28 +1,24 @@
 #include <SFML/graphics.hpp>
 #include <fstream>
-#include "include/TicTacToe.hpp"
+// #include "include/TicTacToe.hpp"
+#include "include/tic.hpp"
 #include "include/Game.hpp"
 
 using std::ifstream;
 
-enum status victory = EMPTY;
+// enum status victory = EMPTY;
 
-void clear()
-{
-    system("@cls||clear");
-}
+// void play(TicTacToe &t, status player, string player_name)
+// {
+//     clear();
 
-void play(TicTacToe &t, status player, string player_name)
-{
-    clear();
-
-    cout << player_name << " turn\n";
-    cout << "Current board:\n\n";
-    t.print_tic_tac_toe();
+//     cout << player_name << " turn\n";
+//     cout << "Current board:\n\n";
+//     t.print_tic_tac_toe();
     
-    t.play(player, t.get_next_grid());
-    victory = t.check_win(player, player_name);
-}
+//     t.play(player, t.get_next_grid());
+//     victory = t.check_win(player, player_name);
+// }
 
 int main()
 {

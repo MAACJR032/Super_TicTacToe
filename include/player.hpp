@@ -1,4 +1,6 @@
-#include "TicTacToe.hpp"
+#pragma once
+
+#include "tic.hpp"
 
 class Player
 {

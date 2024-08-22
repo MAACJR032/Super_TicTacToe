@@ -1,5 +1,5 @@
 #include "../include/Game.hpp"
-#include "../include/input.hpp"
+#include "../include/events.hpp"
 #include <iostream>
 #include <ctime>
 
@@ -11,12 +11,11 @@ void Game::init_variables()
     window = nullptr;
 
     // Game logic
-    squares_spawn_timer = 0.f;
-    max_squares = 9;
+    // max_squares = 9;
     
-    squares.resize(9);
-    for (size_t i = 0; i < 9; i++)
-        squares[i].reserve(9);
+    // squares.resize(9);
+    // for (size_t i = 0; i < 9; i++)
+    //     squares[i].reserve(9);
 
     lines.reserve(4);
 }
@@ -33,10 +32,6 @@ void Game::init_window()
 
 void Game::init_board()
 {
-    square.setSize(sf::Vector2f(75.f, 75.f));
-    square.setFillColor(sf::Color::Blue);
-    square.setOutlineThickness(2.f);
-
     vertical_line.setSize(sf::Vector2f(10.f, 790.f));
     vertical_line.setFillColor(sf::Color::Black);
 
@@ -73,10 +68,7 @@ void Game::spawn_board()
     for (size_t i = 0; i < 9; i++)
     {
         for (size_t j = 0; j < 9; j++)
-        {
-            square.setPosition({x + i * 75, y + j * 75});
-            squares[i].push_back({{i, j}, EMPTY, square});
-        }
+            tick.board[i][j].rect.setPosition({x + i * 75, y + j * 75});
     }
     
     // vertical lines
@@ -120,11 +112,11 @@ void Game::update_poll_events()
 void Game::update_squares()
 {
     sf::Mouse::Button button;
-    for (auto &i : squares)
+    for (auto &i : tick.board)
     {
         for (auto &s : i)
         {
-            button_click(button, s, window, tick);
+            button_click(button, s, window, tick, player);
         }
     }
 }
@@ -144,7 +136,7 @@ void Game::update()
 
 void Game::render_squares()
 {
-    for (auto &i : squares)
+    for (auto &i : tick.board)
         for (auto &s : i)
             window->draw(s.rect);
     

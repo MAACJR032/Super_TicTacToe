@@ -1,35 +1,41 @@
 #pragma once
 
-#include <iostream>
+#include <SFML/Graphics.hpp>
 #include <vector>
 #include <string>
-#include <unistd.h>
+#include "../include/squares.hpp"
 
 using std::vector;
-using std::cout;
-using std::cin;
 using std::string;
 using std::pair;
 
-enum status {EMPTY = 'N', X = 'X', O = 'O', TIE = 'T'};
+enum status {EMPTY, X, O, TIE};
+
+struct Square
+{
+    int grid;
+    int subgrid;
+    status stat;
+    sf::RectangleShape rect;
+};
 
 class TicTacToe
 {
     private:
         vector<pair<status, int>> grids; // first - Status, second - how many subgrids where played
-        vector<vector<status>> tic_tac_toe; // 9x9 board divided in 9 3x3 grids 
         int next_grid; // Next grid to be played
 
         void grid_score(status player, int grid);
         void check_grid_score(status player, int grid, int low_limit_i, int low_limit_j);
-        void play_subgrid(status player, int grid, int subgrid, int low_limit_i, int low_limit_j);
         status check_tie(int grid);
 
     public:
         TicTacToe();
+        vector<vector<Square>> board;
+        status victory;
+        void win(status player);
         int get_next_grid() const;
         void set_next_grid(int next);
-        void print_tic_tac_toe() const;
-        void play(status player, int next_grid);
+        void play(status player);
         status check_win(status player, string player_name);
 };
