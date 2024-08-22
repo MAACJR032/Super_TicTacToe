@@ -5,20 +5,36 @@ CC = g++
 RM = del -f
 
 # Paths
-MAIN = main.cpp
 SRC_DIR = src
-EXE = main
 SFML_INCLUDE = SFML_src/include
 SFML_LIB = SFML_src/lib
+BIN = bin
+
+# files
+MAIN = main.cpp
+EXE = main
+
+# Find all .cpp files in SRC_DIR and create corresponding .o files in BIN
+SRC_FILES = $(wildcard $(SRC_DIR)/*.cpp)
+OBJS = $(patsubst $(SRC_DIR)/%.cpp,$(BIN)/%.o,$(SRC_FILES)) $(BIN)/main.o
 
 all: compile link
-	$(RM) *.o
+# $(RM) *.o
 
-compile:
-	$(CC) -c $(MAIN) $(SRC_DIR)/*.cpp -I$(SFML_INCLUDE)
+compile: $(OBJS)
+# $(CC) -c $(MAIN) $(SRC_DIR)/*.cpp -I$(SFML_INCLUDE) -o $(BIN)/
+
+# Compile main.cpp separately
+$(BIN)/main.o: $(MAIN)
+	$(CC) -c $< -I$(SFML_INCLUDE) -o $@
+
+# Compile all other .cpp files
+$(BIN)/%.o: $(SRC_DIR)/%.cpp
+	$(CC) -c $< -I$(SFML_INCLUDE) -o $@
 
 link:
-	$(CC) *.o -o $(EXE) -L$(SFML_LIB) -lsfml-graphics -lsfml-window -lsfml-system
+	$(CC) $(OBJS) -o $(EXE) -L$(SFML_LIB) -lsfml-graphics -lsfml-window -lsfml-system
 
 clean:
-	$(RM) $(EXE).exe
+	if exist $(EXE).exe del $(EXE).exe
+	for %%f in ($(BIN)\*.o) do del %%f
