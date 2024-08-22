@@ -34,8 +34,6 @@ class TicTacToe
         vector<vector<Square>> board;
         status victory;
         void win(status player);
-        int get_next_grid() const;
-        void set_next_grid(int next);
-        void play(status player);
+        void play(status player, std::unique_ptr<sf::RenderWindow> &window);
         status check_win(status player, string player_name);
 };

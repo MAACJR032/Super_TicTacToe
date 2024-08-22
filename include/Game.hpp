@@ -5,7 +5,7 @@
 #include <vector>
 #include "player.hpp"
 // #include "TicTacToe.hpp"
-#include "tic.hpp"
+#include "TicTacToe.hpp"
 
 using std::unique_ptr;
 using std::vector;
@@ -13,6 +13,7 @@ using std::vector;
 class Game
 {
     private:
+        friend class TicTacToe;
         // Variables
         unique_ptr<sf::RenderWindow> window;
         sf::VideoMode video_mode;

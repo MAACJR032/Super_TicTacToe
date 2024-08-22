@@ -9,14 +9,6 @@ using std::make_unique;
 void Game::init_variables()
 {
     window = nullptr;
-
-    // Game logic
-    // max_squares = 9;
-    
-    // squares.resize(9);
-    // for (size_t i = 0; i < 9; i++)
-    //     squares[i].reserve(9);
-
     lines.reserve(4);
 }
 
@@ -111,14 +103,7 @@ void Game::update_poll_events()
 /* update the squares if they were scored or selected */
 void Game::update_squares()
 {
-    sf::Mouse::Button button;
-    for (auto &i : tick.board)
-    {
-        for (auto &s : i)
-        {
-            button_click(button, s, window, tick, player);
-        }
-    }
+    tick.play(X, window);
 }
 
 /* Updates the mouse position on the game window */

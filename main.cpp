@@ -1,7 +1,6 @@
 #include <SFML/graphics.hpp>
 #include <fstream>
-// #include "include/TicTacToe.hpp"
-#include "include/tic.hpp"
+#include "include/TicTacToe.hpp"
 #include "include/Game.hpp"
 
 using std::ifstream;

@@ -1,4 +1,6 @@
-#include "../include/tic.hpp"
+#include "../include/TicTacToe.hpp"
+#include "../include/events.hpp"
+#include <iostream>
 
 /* Initializes an empty 9x9 matrix (board). */
 TicTacToe::TicTacToe()
@@ -10,26 +12,21 @@ TicTacToe::TicTacToe()
 
     for (int i = 0; i < 9; i++)
     {
-        board[i].resize(9, Square {.grid = i, .subgrid = 0, .stat = EMPTY, .rect = square});
+        board[i].resize(9, Square {.grid = 0, .subgrid = 0, .stat = EMPTY, .rect = square});    
 
         for (int j = 0; j < 9; j++)
-            board[i][j].subgrid = j;
+        {
+            int grid = (i / 3) * 3 + (j / 3) + 1;
+            int subgrid = (i % 3) * 3 + (j % 3) + 1;
+
+            board[i][j].grid = grid;
+            board[i][j].subgrid = subgrid;
+        }
     }
-    
+
     grids.resize(9, {EMPTY, 0});
 
     next_grid = -1;
-}
-
-/* Return the index of the next grid that the player must play. */
-int TicTacToe::get_next_grid() const
-{
-    return next_grid;
-}
-
-void TicTacToe::set_next_grid(int next)
-{
-    next_grid = next;
 }
 
 /* Checks if player scored in the grid he just played */
@@ -80,6 +77,7 @@ void TicTacToe::check_grid_score(status player, int grid, int low_limit_i, int l
             board[i][low_limit_j + 2].stat == player)
         {
             grids[grid - 1].first = player;
+            next_grid = -1;
             return;
         }
     }
@@ -92,6 +90,7 @@ void TicTacToe::check_grid_score(status player, int grid, int low_limit_i, int l
             board[low_limit_i + 2][j].stat == player)
         {
             grids[grid - 1].first = player;
+            next_grid = -1;
             return;
         }
     }
@@ -102,12 +101,14 @@ void TicTacToe::check_grid_score(status player, int grid, int low_limit_i, int l
         board[low_limit_i + 2][low_limit_j + 2].stat == player)
     {
         grids[grid - 1].first = player;
+        next_grid = -1;
     }
     else if (board[low_limit_i][low_limit_j + 2].stat == player && 
         board[low_limit_i + 1][low_limit_j + 1].stat == player && 
         board[low_limit_i + 2][low_limit_j].stat == player)
     {
         grids[grid - 1].first = player;
+        next_grid = -1;
     }
 }
 
@@ -200,9 +201,9 @@ void TicTacToe::win(status player)
 }
 
 /* Checks if the choosen grid is valid and calls play_subgrid to play on the board. */
-void TicTacToe::play(status player)
+void TicTacToe::play(status player, std::unique_ptr<sf::RenderWindow> &window)
 {
-    int subgrid = 0;
+    sf::Mouse::Button button;
 
     for (auto &g : board)
     {
@@ -212,24 +213,39 @@ void TicTacToe::play(status player)
             if (next_grid == -1)
             {
                 // fica cinza
-                // se apertar marca 
+                // se apertar marca
+                Player p;
+                if (button_click(button, s.rect, window, p) == true)
+                {
+                    s.rect.setFillColor(sf::Color::Red);
+
+                    s.stat = player;
+                    next_grid = s.subgrid;
+
+                    grid_score(player, s.grid);
+                    win(s.stat);
+                    if (victory == EMPTY)
+                        victory = check_tie(s.grid);
+                }
+                 
             }
             else if (next_grid == s.grid)
             {
-                // fica cinza
-                // se apertar muda a cor
-                s.stat = player;
-                next_grid = s.subgrid;
+                Player p;
+                if (button_click(button, s.rect, window, p) == true)
+                {
+                    s.rect.setFillColor(sf::Color::Red);
 
-                // checar vitória, ponto, etc
-                grid_score(player, s.grid);
-                win(s.stat);
-                if (victory == EMPTY)
-                    victory = check_tie(s.grid);
+                    s.stat = player;
+                    next_grid = s.subgrid;
+                    std::cout << next_grid << " " << s.grid << '\n';
+
+                    grid_score(player, s.grid);
+                    win(s.stat);
+                    if (victory == EMPTY)
+                        victory = check_tie(s.grid);
+                }
             }
         }   
     }
-
-    // Check if the played grid is a tie
-    check_tie(next_grid);
 }
