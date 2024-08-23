@@ -5,13 +5,12 @@ Player::Player()
     curr_player = X;
 }
 
-void Player::play(TicTacToe &t)
+void Player::play(TicTacToe &t, std::unique_ptr<sf::RenderWindow> &window)
 {
-    // criar função em tictactoe para checar se o grid/subgrid é valido, e checar isso quando clicar no quadrado
-    // t.play(curr_player);
+    t.play(curr_player, window);
 
-    if (curr_player == X)
-        curr_player = O;
-    else
-        curr_player = X;
+    // if (curr_player == X)
+    //     curr_player = O;
+    // else
+    //     curr_player = X;
 }

@@ -9,12 +9,14 @@ using std::vector;
 using std::string;
 using std::pair;
 
-enum status {EMPTY, X, O, TIE};
+enum status : uint8_t {
+    EMPTY, X, O, TIE
+};
 
 struct Square
 {
-    int grid;
-    int subgrid;
+    int8_t grid;
+    int8_t subgrid;
     status stat;
     sf::RectangleShape rect;
 };
@@ -23,7 +25,7 @@ class TicTacToe
 {
     private:
         vector<pair<status, int>> grids; // first - Status, second - how many subgrids where played
-        int next_grid; // Next grid to be played
+        int8_t next_grid; // Next grid to be played
 
         void grid_score(status player, int grid);
         void check_grid_score(status player, int grid, int low_limit_i, int low_limit_j);

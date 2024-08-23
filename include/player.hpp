@@ -9,6 +9,6 @@ class Player
 
         Player();
 
-        void play(TicTacToe &t);
+        void play(TicTacToe &t, std::unique_ptr<sf::RenderWindow> &window);
 };
 

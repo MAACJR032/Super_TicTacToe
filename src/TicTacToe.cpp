@@ -16,8 +16,8 @@ TicTacToe::TicTacToe()
 
         for (int j = 0; j < 9; j++)
         {
-            int grid = (i / 3) * 3 + (j / 3) + 1;
-            int subgrid = (i % 3) * 3 + (j % 3) + 1;
+            int8_t grid = (i / 3) * 3 + (j / 3) + 1;
+            int8_t subgrid = (i % 3) * 3 + (j % 3) + 1;
 
             board[i][j].grid = grid;
             board[i][j].subgrid = subgrid;
@@ -25,7 +25,6 @@ TicTacToe::TicTacToe()
     }
 
     grids.resize(9, {EMPTY, 0});
-
     next_grid = -1;
 }
 
@@ -77,7 +76,6 @@ void TicTacToe::check_grid_score(status player, int grid, int low_limit_i, int l
             board[i][low_limit_j + 2].stat == player)
         {
             grids[grid - 1].first = player;
-            // next_grid = -1;
             return;
         }
     }
@@ -90,7 +88,6 @@ void TicTacToe::check_grid_score(status player, int grid, int low_limit_i, int l
             board[low_limit_i + 2][j].stat == player)
         {
             grids[grid - 1].first = player;
-            // next_grid = -1;
             return;
         }
     }
@@ -101,14 +98,12 @@ void TicTacToe::check_grid_score(status player, int grid, int low_limit_i, int l
         board[low_limit_i + 2][low_limit_j + 2].stat == player)
     {
         grids[grid - 1].first = player;
-        // next_grid = -1;
     }
     else if (board[low_limit_i][low_limit_j + 2].stat == player && 
         board[low_limit_i + 1][low_limit_j + 1].stat == player && 
         board[low_limit_i + 2][low_limit_j].stat == player)
     {
         grids[grid - 1].first = player;
-        // next_grid = -1;
     }
 }
 
@@ -136,7 +131,9 @@ status TicTacToe::check_win(status player, string player_name)
         if (grids[i].first == player && 
             grids[i+1].first == player && 
             grids[i+2].first == player)
+        {
             return player;
+        }
     }
 
     // Checking the columns
@@ -165,7 +162,7 @@ status TicTacToe::check_win(status player, string player_name)
     }
 
     // If neither of the players won and all the grids where marked, then it is a tie
-    int complete_grids = 0;
+    uint8_t complete_grids = 0;
     for (size_t i = 0; i < 9; i++)
         if (grids[i].first != EMPTY)
             complete_grids++;
@@ -224,18 +221,13 @@ void TicTacToe::play(status player, std::unique_ptr<sf::RenderWindow> &window)
                     if (victory == EMPTY)
                         victory = check_tie(s.grid);
 
+                    if (victory == X || victory == O)
+                        std::cout << "Player " << s.stat << " Wins!\n";
+
                     if (grids[s.subgrid - 1].first == EMPTY)
                         next_grid = s.subgrid;
                     else
                         next_grid = -1;
-
-                    std::cout << "next: " << next_grid << " " << s.grid << '\n';
-
-                    for (auto &s : grids)
-                    {
-                        std::cout << s.first << " ";
-                    }
-                    std::cout << '\n';
                 }
                  
             }
@@ -251,19 +243,14 @@ void TicTacToe::play(status player, std::unique_ptr<sf::RenderWindow> &window)
                     win(s.stat);
                     if (victory == EMPTY)
                         victory = check_tie(s.grid);
-
+                    
+                    if (victory == X || victory == O)
+                        std::cout << "Player " << s.stat << " Wins!\n";
+                    
                     if (grids[s.subgrid - 1].first == EMPTY)
                         next_grid = s.subgrid;
                     else
                         next_grid = -1;
-
-                    std::cout << "next: " << next_grid << " " << s.grid << '\n';
-
-                    for (auto &s : grids)
-                    {
-                        std::cout << s.first << " ";
-                    }
-                    std::cout << '\n';
                 }
             }
         }   

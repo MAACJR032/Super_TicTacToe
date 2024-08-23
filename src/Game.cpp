@@ -57,11 +57,9 @@ const bool Game::running() const
 void Game::spawn_board()
 {
     float x = 500.f, y = 100.f;
-    for (size_t i = 0; i < 9; i++)
-    {
-        for (size_t j = 0; j < 9; j++)
-            tick.board[i][j].rect.setPosition({x + i * 75, y + j * 75});
-    }
+    for (int i = 0; i < 9; i++)
+        for (int j = 0; j < 9; j++)
+            tick.board[i][j].rect.setPosition({x + j * 75, y + i * 75});
     
     // vertical lines
     for (int i = 0; i < 2; i++)
@@ -119,7 +117,7 @@ void Game::update()
     update_squares();
 }
 
-void Game::render_squares()
+void Game::render_board()
 {
     for (auto &i : tick.board)
         for (auto &s : i)
@@ -134,7 +132,7 @@ void Game::render()
     window->clear(sf::Color::White); // clear old frame
 
     // Draw game objects
-    render_squares();
+    render_board();
 
     window->display(); // done drawing
 }

@@ -50,6 +50,6 @@ class Game
         void update_squares();
         void update_mouse_pos();
         void update();
-        void render_squares();
+        void render_board();
         void render();
 };
