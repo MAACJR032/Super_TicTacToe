@@ -77,7 +77,7 @@ void TicTacToe::check_grid_score(status player, int grid, int low_limit_i, int l
             board[i][low_limit_j + 2].stat == player)
         {
             grids[grid - 1].first = player;
-            next_grid = -1;
+            // next_grid = -1;
             return;
         }
     }
@@ -90,7 +90,7 @@ void TicTacToe::check_grid_score(status player, int grid, int low_limit_i, int l
             board[low_limit_i + 2][j].stat == player)
         {
             grids[grid - 1].first = player;
-            next_grid = -1;
+            // next_grid = -1;
             return;
         }
     }
@@ -101,14 +101,14 @@ void TicTacToe::check_grid_score(status player, int grid, int low_limit_i, int l
         board[low_limit_i + 2][low_limit_j + 2].stat == player)
     {
         grids[grid - 1].first = player;
-        next_grid = -1;
+        // next_grid = -1;
     }
     else if (board[low_limit_i][low_limit_j + 2].stat == player && 
         board[low_limit_i + 1][low_limit_j + 1].stat == player && 
         board[low_limit_i + 2][low_limit_j].stat == player)
     {
         grids[grid - 1].first = player;
-        next_grid = -1;
+        // next_grid = -1;
     }
 }
 
@@ -210,40 +210,60 @@ void TicTacToe::play(status player, std::unique_ptr<sf::RenderWindow> &window)
         for (auto &s : g)
         {
             // passou mouse em cima
-            if (next_grid == -1)
+            if (grids[s.grid - 1].first == EMPTY && next_grid == -1)
             {
                 // fica cinza
-                // se apertar marca
                 Player p;
                 if (button_click(button, s.rect, window, p) == true)
                 {
                     s.rect.setFillColor(sf::Color::Red);
-
                     s.stat = player;
-                    next_grid = s.subgrid;
 
                     grid_score(player, s.grid);
                     win(s.stat);
                     if (victory == EMPTY)
                         victory = check_tie(s.grid);
+
+                    if (grids[s.subgrid - 1].first == EMPTY)
+                        next_grid = s.subgrid;
+                    else
+                        next_grid = -1;
+
+                    std::cout << "next: " << next_grid << " " << s.grid << '\n';
+
+                    for (auto &s : grids)
+                    {
+                        std::cout << s.first << " ";
+                    }
+                    std::cout << '\n';
                 }
                  
             }
-            else if (next_grid == s.grid)
+            else if (grids[s.grid - 1].first == EMPTY && next_grid == s.grid)
             {
                 Player p;
                 if (button_click(button, s.rect, window, p) == true)
                 {
                     s.rect.setFillColor(sf::Color::Red);
-
                     s.stat = player;
-                    next_grid = s.subgrid;
-                    std::cout << next_grid << " " << s.grid << '\n';
-
+                    
                     grid_score(player, s.grid);
                     win(s.stat);
                     if (victory == EMPTY)
                         victory = check_tie(s.grid);
+
+                    if (grids[s.subgrid - 1].first == EMPTY)
+                        next_grid = s.subgrid;
+                    else
+                        next_grid = -1;
+
+                    std::cout << "next: " << next_grid << " " << s.grid << '\n';
+
+                    for (auto &s : grids)
+                    {
+                        std::cout << s.first << " ";
+                    }
+                    std::cout << '\n';
                 }
             }
         }   
