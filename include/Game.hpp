@@ -5,14 +5,15 @@
 #include <vector>
 #include "TicTacToe.hpp"
 
-using std::unique_ptr;
-using std::vector;
+enum game_state : uint8_t {
+    PLAYING, WAITING_INPUT, MENU, GAME_OVER
+};
 
 class Game
 {
     private:
         // Variables
-        unique_ptr<sf::RenderWindow> window;
+        std::unique_ptr<sf::RenderWindow> window;
         sf::VideoMode video_mode;
         sf::Event event;
 
@@ -21,11 +22,12 @@ class Game
         
         // Game logic
         TicTacToe tick;
+        game_state curr_state = WAITING_INPUT;
         
         // Game objects
         sf::RectangleShape vertical_line;
         sf::RectangleShape Horizontal_line;
-        vector<sf::RectangleShape> lines;
+        std::vector<sf::RectangleShape> lines;
 
         void init_variables();
         void init_window();
@@ -37,11 +39,11 @@ class Game
 
         // Accessors
         const bool running() const;
+        const game_state get_curr_state() const;
 
         // Functions
-        void spawn_board();
+        void set_board();
         void update_poll_events();
-        void start_game();
         void update_mouse_pos();
         void update();
         void render_board();

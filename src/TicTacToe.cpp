@@ -25,9 +25,6 @@ TicTacToe::TicTacToe()
     }
 
     grids.resize(9, {EMPTY, 0});
-    next_grid = -1;
-    curr_player = X;
-    printf("inicial: X %d\n", curr_player);
 }
 
 /* Checks if player scored in the grid he just played */
@@ -125,7 +122,7 @@ status TicTacToe::check_tie(int8_t grid)
 }
 
 /* Checks if the player won or if it's a tie, else the game hasn't finished and it will return EMPTY. */
-status TicTacToe::check_win(string player_name)
+status TicTacToe::check_win(std::string player_name)
 {
     // Checking the lines
     for (int i = 0; i < 7; i += 3)
@@ -214,22 +211,29 @@ void TicTacToe::play(std::unique_ptr<sf::RenderWindow> &window)
                     if (curr_player == X)
                     {
                         s.rect.setFillColor(sf::Color::Red);
-                        printf("vermelho\n");
+                        
+                        s.player = curr_player;
+                        grid_score(s.grid);
+                        win();
+                        
+                        if (victory == EMPTY)
+                            victory = check_tie(s.grid);
+                        
                         curr_player = O;
                     }
                     else
                     {
                         s.rect.setFillColor(sf::Color::Green);
-                        printf("verde\n");
+                        
+                        s.player = curr_player;
+                        grid_score(s.grid);
+                        win();
+                        
+                        if (victory == EMPTY)
+                            victory = check_tie(s.grid);
+
                         curr_player = X;
                     }
-
-                    s.player = curr_player;
-
-                    grid_score(s.grid);
-                    win();
-                    if (victory == EMPTY)
-                        victory = check_tie(s.grid);
 
                     for (int8_t i = 0; i < 9; i += 3)
                         printf("%d %d %d\n", grids[i].first, grids[i+1].first, grids[i+2].first);
@@ -250,23 +254,30 @@ void TicTacToe::play(std::unique_ptr<sf::RenderWindow> &window)
                     if (curr_player == X)
                     {
                         s.rect.setFillColor(sf::Color::Red);
-                        printf("vermelho\n");
+                
+                        s.player = curr_player;
+                        grid_score(s.grid);
+                        win();
+                        
+                        if (victory == EMPTY)
+                            victory = check_tie(s.grid);
+
                         curr_player = O;
                     }
                     else
                     {
                         s.rect.setFillColor(sf::Color::Green);
-                        printf("verde\n");
+                        
+                        s.player = curr_player;
+                        grid_score(s.grid);
+                        win();
+                        
+                        if (victory == EMPTY)
+                            victory = check_tie(s.grid);
+
                         curr_player = X;
                     }
-
-                    s.player = curr_player;
-                    
-                    grid_score(s.grid);
-                    win();
-                    if (victory == EMPTY)
-                        victory = check_tie(s.grid);
-                    
+        
                     for (int8_t i = 0; i < 9; i += 3)
                         printf("%d %d %d\n", grids[i].first, grids[i+1].first, grids[i+2].first);
 

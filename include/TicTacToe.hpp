@@ -5,10 +5,6 @@
 #include <string>
 #include "../include/squares.hpp"
 
-using std::vector;
-using std::string;
-using std::pair;
-
 enum status : uint8_t {
     EMPTY, X, O, TIE
 };
@@ -24,9 +20,9 @@ struct Square
 class TicTacToe
 {
     private:
-        vector<pair<status, int8_t>> grids; // first - Status, second - how many subgrids where played
-        int8_t next_grid; // Next grid to be played
-        status curr_player;
+        std::vector<std::pair<status, int8_t>> grids; // first - Status, second - how many subgrids where played
+        int8_t next_grid = -1; // Next grid to be played
+        status curr_player = X;
 
         void grid_score(int8_t grid);
         void update_grid_score(int8_t grid, int8_t low_limit_i, int8_t low_limit_j);
@@ -34,10 +30,10 @@ class TicTacToe
 
     public:
         TicTacToe();
-        vector<vector<Square>> board;
+        std::vector<std::vector<Square>> board;
         status victory;
 
         void win();
         void play(std::unique_ptr<sf::RenderWindow> &window);
-        status check_win(string player_name);
+        status check_win(std::string player_name);
 };

@@ -3,8 +3,6 @@
 #include <iostream>
 #include <ctime>
 
-using std::make_unique;
-
 // Private funtions
 void Game::init_variables()
 {
@@ -18,7 +16,7 @@ void Game::init_window()
     video_mode.width = 1680;
     // video_mode.getDesktopMode();
 
-    window = make_unique<sf::RenderWindow>(video_mode, "Super Tic Tac Toe", sf::Style::Close); 
+    window = std::make_unique<sf::RenderWindow>(video_mode, "Super Tic Tac Toe", sf::Style::Close); 
     window->setFramerateLimit(60);
 }
 
@@ -31,14 +29,13 @@ void Game::init_board()
     Horizontal_line.setFillColor(sf::Color::Black);
 }
 
-
 // Constructor / Destructor
 Game::Game()
 {
     init_variables(); // init game objects
     init_window();
     init_board();
-    spawn_board();
+    set_board();
 }
 
 Game::~Game()
@@ -54,7 +51,7 @@ const bool Game::running() const
 // Functions
 
 /* will set the position of all the 81 squares and insert them into the squares vector */
-void Game::spawn_board()
+void Game::set_board()
 {
     float x = 500.f, y = 100.f;
     for (int i = 0; i < 9; i++)
@@ -91,17 +88,19 @@ void Game::update_poll_events()
                 if (event.key.code == sf::Keyboard::Escape)
                     window->close();
                 break;
+            
+            case sf::Event::MouseButtonPressed:
+                if (event.mouseButton.button == sf::Mouse::Left && curr_state == WAITING_INPUT)
+                {
+                    curr_state = PLAYING;
+                    tick.play(window);
+                    curr_state = WAITING_INPUT;
+                }
 
             default:
                 break;
         }   
     }
-}
-
-/* update the squares if they were scored or selected */
-void Game::start_game()
-{
-    tick.play(window);
 }
 
 /* Updates the mouse position on the game window */
@@ -114,7 +113,6 @@ void Game::update()
 {
     update_poll_events();
     update_mouse_pos();
-    start_game();
 }
 
 void Game::render_board()
