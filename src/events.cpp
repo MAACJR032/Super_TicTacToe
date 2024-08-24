@@ -1,9 +1,8 @@
 #include "../include/events.hpp"
 
-bool button_click(sf::RectangleShape square, std::unique_ptr<sf::RenderWindow> &window)
+bool button_click(sf::RectangleShape &square, std::unique_ptr<sf::RenderWindow> &window)
 {
-    sf::Mouse::Button button;
-    if (sf::Mouse::isButtonPressed(button) && 
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && 
         square.getGlobalBounds().contains((sf::Vector2f) sf::Mouse::getPosition(*window)))
     {
         return true;
