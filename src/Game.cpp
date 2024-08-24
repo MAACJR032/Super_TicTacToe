@@ -99,9 +99,9 @@ void Game::update_poll_events()
 }
 
 /* update the squares if they were scored or selected */
-void Game::update_squares()
+void Game::start_game()
 {
-    tick.play(X, window);
+    tick.play(window);
 }
 
 /* Updates the mouse position on the game window */
@@ -114,7 +114,7 @@ void Game::update()
 {
     update_poll_events();
     update_mouse_pos();
-    update_squares();
+    start_game();
 }
 
 void Game::render_board()

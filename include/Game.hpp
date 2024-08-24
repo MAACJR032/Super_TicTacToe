@@ -3,8 +3,6 @@
 #include <SFML/graphics.hpp>
 #include <memory>
 #include <vector>
-#include "player.hpp"
-// #include "TicTacToe.hpp"
 #include "TicTacToe.hpp"
 
 using std::unique_ptr;
@@ -13,7 +11,6 @@ using std::vector;
 class Game
 {
     private:
-        friend class TicTacToe;
         // Variables
         unique_ptr<sf::RenderWindow> window;
         sf::VideoMode video_mode;
@@ -23,12 +20,9 @@ class Game
         sf::Vector2i mouse_pos;
         
         // Game logic
-        int max_squares;
         TicTacToe tick;
-        Player player;
         
         // Game objects
-        sf::RectangleShape square;
         sf::RectangleShape vertical_line;
         sf::RectangleShape Horizontal_line;
         vector<sf::RectangleShape> lines;
@@ -47,7 +41,7 @@ class Game
         // Functions
         void spawn_board();
         void update_poll_events();
-        void update_squares();
+        void start_game();
         void update_mouse_pos();
         void update();
         void render_board();

@@ -12,7 +12,7 @@ TicTacToe::TicTacToe()
 
     for (int i = 0; i < 9; i++)
     {
-        board[i].resize(9, Square {.grid = 0, .subgrid = 0, .stat = EMPTY, .rect = square});    
+        board[i].resize(9, Square {.grid = 0, .subgrid = 0, .player = EMPTY, .rect = square});    
 
         for (int j = 0; j < 9; j++)
         {
@@ -26,39 +26,41 @@ TicTacToe::TicTacToe()
 
     grids.resize(9, {EMPTY, 0});
     next_grid = -1;
+    curr_player = X;
+    printf("inicial: X %d\n", curr_player);
 }
 
 /* Checks if player scored in the grid he just played */
-void TicTacToe::grid_score(status player, int grid)
+void TicTacToe::grid_score(int8_t grid)
 {
     switch (grid)
     {
         case 1:
-            check_grid_score(player, grid, 0, 0);
+            update_grid_score(grid, 0, 0);
             break;
         case 2:
-            check_grid_score(player, grid, 0, 3);
+            update_grid_score(grid, 0, 3);
             break;
         case 3:
-            check_grid_score(player, grid, 0, 6);
+            update_grid_score(grid, 0, 6);
             break;
         case 4:
-            check_grid_score(player, grid, 3, 0);
+            update_grid_score(grid, 3, 0);
             break;
         case 5:
-            check_grid_score(player, grid, 3, 3);
+            update_grid_score(grid, 3, 3);
             break;
         case 6:
-            check_grid_score(player, grid, 3, 6);
+            update_grid_score(grid, 3, 6);
             break;
         case 7:
-            check_grid_score(player, grid, 6, 0);
+            update_grid_score(grid, 6, 0);
             break;
         case 8:
-            check_grid_score(player, grid, 6, 3);
+            update_grid_score(grid, 6, 3);
             break;
         case 9:
-            check_grid_score(player, grid, 6, 6);
+            update_grid_score(grid, 6, 6);
             break;
         default:
             break;
@@ -66,49 +68,49 @@ void TicTacToe::grid_score(status player, int grid)
 }
 
 /* Checks all the cases where the player may have scored in a grid. */
-void TicTacToe::check_grid_score(status player, int grid, int low_limit_i, int low_limit_j)
+void TicTacToe::update_grid_score(int8_t grid, int8_t low_limit_i, int8_t low_limit_j)
 {
     // Checking the lines
-    for (size_t i = low_limit_i; i < low_limit_i + 3; i++)
+    for (int i = low_limit_i; i < low_limit_i + 3; i++)
     {
-        if (board[i][low_limit_j].stat == player && 
-            board[i][low_limit_j + 1].stat == player && 
-            board[i][low_limit_j + 2].stat == player)
+        if (board[i][low_limit_j].player == curr_player && 
+            board[i][low_limit_j + 1].player == curr_player && 
+            board[i][low_limit_j + 2].player == curr_player)
         {
-            grids[grid - 1].first = player;
+            grids[grid - 1].first = curr_player;
             return;
         }
     }
 
     // Checking the columns
-    for (size_t j = low_limit_j; j < low_limit_j + 3; j++)
+    for (int j = low_limit_j; j < low_limit_j + 3; j++)
     {
-        if (board[low_limit_i][j].stat == player && 
-            board[low_limit_i + 1][j].stat == player && 
-            board[low_limit_i + 2][j].stat == player)
+        if (board[low_limit_i][j].player == curr_player && 
+            board[low_limit_i + 1][j].player == curr_player && 
+            board[low_limit_i + 2][j].player == curr_player)
         {
-            grids[grid - 1].first = player;
+            grids[grid - 1].first = curr_player;
             return;
         }
     }
     
     // Checking the Diagonals
-    if (board[low_limit_i][low_limit_j].stat == player && 
-        board[low_limit_i + 1][low_limit_j + 1].stat == player && 
-        board[low_limit_i + 2][low_limit_j + 2].stat == player)
+    if (board[low_limit_i][low_limit_j].player == curr_player && 
+        board[low_limit_i + 1][low_limit_j + 1].player == curr_player && 
+        board[low_limit_i + 2][low_limit_j + 2].player == curr_player)
     {
-        grids[grid - 1].first = player;
+        grids[grid - 1].first = curr_player;
     }
-    else if (board[low_limit_i][low_limit_j + 2].stat == player && 
-        board[low_limit_i + 1][low_limit_j + 1].stat == player && 
-        board[low_limit_i + 2][low_limit_j].stat == player)
+    else if (board[low_limit_i][low_limit_j + 2].player == curr_player && 
+        board[low_limit_i + 1][low_limit_j + 1].player == curr_player && 
+        board[low_limit_i + 2][low_limit_j].player == curr_player)
     {
-        grids[grid - 1].first = player;
+        grids[grid - 1].first = curr_player;
     }
 }
 
 /* Checks if the given grid is a tie */
-status TicTacToe::check_tie(int grid)
+status TicTacToe::check_tie(int8_t grid)
 {
     // Grid is tied if all the 9 sub squares where marked but no player could score
     if (grids[grid - 1].second == 9 && grids[grid - 1].first == EMPTY)
@@ -123,47 +125,47 @@ status TicTacToe::check_tie(int grid)
 }
 
 /* Checks if the player won or if it's a tie, else the game hasn't finished and it will return EMPTY. */
-status TicTacToe::check_win(status player, string player_name)
+status TicTacToe::check_win(string player_name)
 {
     // Checking the lines
-    for (size_t i = 0; i < 7; i += 3)
+    for (int i = 0; i < 7; i += 3)
     {
-        if (grids[i].first == player && 
-            grids[i+1].first == player && 
-            grids[i+2].first == player)
+        if (grids[i].first == curr_player && 
+            grids[i+1].first == curr_player && 
+            grids[i+2].first == curr_player)
         {
-            return player;
+            return curr_player;
         }
     }
 
     // Checking the columns
-    for (size_t i = 0; i < 3; i++)
+    for (int i = 0; i < 3; i++)
     {
-        if (grids[i].first == player && 
-            grids[i+3].first == player && 
-            grids[i+6].first == player)
+        if (grids[i].first == curr_player && 
+            grids[i+3].first == curr_player && 
+            grids[i+6].first == curr_player)
         {
-            return player;
+            return curr_player;
         }
     }
     
     // Diagonals
-    if (grids[0].first == player && 
-        grids[4].first == player && 
-        grids[8].first == player)
+    if (grids[0].first == curr_player && 
+        grids[4].first == curr_player && 
+        grids[8].first == curr_player)
     {
-        return player;
+        return curr_player;
     }
-    else if (grids[2].first == player && 
-        grids[4].first == player && 
-        grids[6].first == player)
+    else if (grids[2].first == curr_player && 
+        grids[4].first == curr_player && 
+        grids[6].first == curr_player)
     {
-        return player;
+        return curr_player;
     }
 
     // If neither of the players won and all the grids where marked, then it is a tie
     uint8_t complete_grids = 0;
-    for (size_t i = 0; i < 9; i++)
+    for (int i = 0; i < 9; i++)
         if (grids[i].first != EMPTY)
             complete_grids++;
         
@@ -174,17 +176,17 @@ status TicTacToe::check_win(status player, string player_name)
     return EMPTY;
 }
 
-void TicTacToe::win(status player)
+void TicTacToe::win()
 {
-    switch (check_win(player, ""))
+    switch (check_win(""))
     {
         case X:
-            if (player == X)
+            if (curr_player == X)
                 victory = X;
             break;
         
         case O:
-            if (player == O)
+            if (curr_player == O)
                 victory = O;
             break;
 
@@ -198,59 +200,83 @@ void TicTacToe::win(status player)
 }
 
 /* Checks if the choosen grid is valid and calls play_subgrid to play on the board. */
-void TicTacToe::play(status player, std::unique_ptr<sf::RenderWindow> &window)
+void TicTacToe::play(std::unique_ptr<sf::RenderWindow> &window)
 {
-    sf::Mouse::Button button;
-
     for (auto &g : board)
     {
         for (auto &s : g)
         {
-            // passou mouse em cima
+            // passou mouse em cima fica cinza
             if (grids[s.grid - 1].first == EMPTY && next_grid == -1)
             {
-                // fica cinza
-                Player p;
-                if (button_click(button, s.rect, window, p) == true)
+                if (button_click(s.rect, window) == true)
                 {
-                    s.rect.setFillColor(sf::Color::Red);
-                    s.stat = player;
+                    if (curr_player == X)
+                    {
+                        s.rect.setFillColor(sf::Color::Red);
+                        printf("vermelho\n");
+                        curr_player = O;
+                    }
+                    else
+                    {
+                        s.rect.setFillColor(sf::Color::Green);
+                        printf("verde\n");
+                        curr_player = X;
+                    }
 
-                    grid_score(player, s.grid);
-                    win(s.stat);
+                    s.player = curr_player;
+
+                    grid_score(s.grid);
+                    win();
                     if (victory == EMPTY)
                         victory = check_tie(s.grid);
 
+                    for (int8_t i = 0; i < 9; i += 3)
+                        printf("%d %d %d\n", grids[i].first, grids[i+1].first, grids[i+2].first);
+
                     if (victory == X || victory == O)
-                        std::cout << "Player " << s.stat << " Wins!\n";
+                        std::cout << "Player " << s.player << " Wins!\n";
 
                     if (grids[s.subgrid - 1].first == EMPTY)
                         next_grid = s.subgrid;
                     else
                         next_grid = -1;
                 }
-                 
             }
             else if (grids[s.grid - 1].first == EMPTY && next_grid == s.grid)
             {
-                Player p;
-                if (button_click(button, s.rect, window, p) == true)
+                if (button_click(s.rect, window) == true)
                 {
-                    s.rect.setFillColor(sf::Color::Red);
-                    s.stat = player;
+                    if (curr_player == X)
+                    {
+                        s.rect.setFillColor(sf::Color::Red);
+                        printf("vermelho\n");
+                        curr_player = O;
+                    }
+                    else
+                    {
+                        s.rect.setFillColor(sf::Color::Green);
+                        printf("verde\n");
+                        curr_player = X;
+                    }
+
+                    s.player = curr_player;
                     
-                    grid_score(player, s.grid);
-                    win(s.stat);
+                    grid_score(s.grid);
+                    win();
                     if (victory == EMPTY)
                         victory = check_tie(s.grid);
                     
+                    for (int8_t i = 0; i < 9; i += 3)
+                        printf("%d %d %d\n", grids[i].first, grids[i+1].first, grids[i+2].first);
+
                     if (victory == X || victory == O)
-                        std::cout << "Player " << s.stat << " Wins!\n";
+                        std::cout << "Player " << s.player << " Wins!\n";
                     
                     if (grids[s.subgrid - 1].first == EMPTY)
                         next_grid = s.subgrid;
                     else
-                        next_grid = -1;
+                        next_grid = -1;     
                 }
             }
         }   

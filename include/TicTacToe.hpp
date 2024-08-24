@@ -17,25 +17,27 @@ struct Square
 {
     int8_t grid;
     int8_t subgrid;
-    status stat;
+    status player;
     sf::RectangleShape rect;
 };
 
 class TicTacToe
 {
     private:
-        vector<pair<status, int>> grids; // first - Status, second - how many subgrids where played
+        vector<pair<status, int8_t>> grids; // first - Status, second - how many subgrids where played
         int8_t next_grid; // Next grid to be played
+        status curr_player;
 
-        void grid_score(status player, int grid);
-        void check_grid_score(status player, int grid, int low_limit_i, int low_limit_j);
-        status check_tie(int grid);
+        void grid_score(int8_t grid);
+        void update_grid_score(int8_t grid, int8_t low_limit_i, int8_t low_limit_j);
+        status check_tie(int8_t grid);
 
     public:
         TicTacToe();
         vector<vector<Square>> board;
         status victory;
-        void win(status player);
-        void play(status player, std::unique_ptr<sf::RenderWindow> &window);
-        status check_win(status player, string player_name);
+
+        void win();
+        void play(std::unique_ptr<sf::RenderWindow> &window);
+        status check_win(string player_name);
 };
