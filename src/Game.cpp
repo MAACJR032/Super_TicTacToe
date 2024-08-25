@@ -56,7 +56,7 @@ void Game::set_board()
     float x = 500.f, y = 100.f;
     for (int i = 0; i < 9; i++)
         for (int j = 0; j < 9; j++)
-            tick.board[i][j].rect.setPosition({x + j * 75, y + i * 75});
+            tick.get_board_at(i, j).rect.setPosition({x + j * 75, y + i * 75});
     
     // vertical lines
     for (int i = 0; i < 2; i++)
@@ -117,7 +117,7 @@ void Game::update()
 
 void Game::render_board()
 {
-    for (auto &i : tick.board)
+    for (auto &i : tick.get_board())
         for (auto &s : i)
             window->draw(s.rect);
     
