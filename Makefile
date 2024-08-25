@@ -12,20 +12,18 @@ BIN = bin
 
 # files
 MAIN = main.cpp
-EXE = main
+EXE = SuperTicTacToe
 
 # Find all .cpp files in SRC_DIR and create corresponding .o files in BIN
 SRC_FILES = $(wildcard $(SRC_DIR)/*.cpp)
-OBJS = $(patsubst $(SRC_DIR)/%.cpp,$(BIN)/%.o,$(SRC_FILES)) $(BIN)/main.o
+OBJS = $(patsubst $(SRC_DIR)/%.cpp,$(BIN)/%.o,$(SRC_FILES)) $(BIN)/SuperTicTacToe.o
 
 all: compile link
-# $(RM) *.o
 
 compile: $(OBJS)
-# $(CC) -c $(MAIN) $(SRC_DIR)/*.cpp -I$(SFML_INCLUDE) -o $(BIN)/
 
 # Compile main.cpp separately
-$(BIN)/main.o: $(MAIN)
+$(BIN)/SuperTicTacToe.o: $(MAIN)
 	$(CC) -c $< -I$(SFML_INCLUDE) -o $@
 
 # Compile all other .cpp files
