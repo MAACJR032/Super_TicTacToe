@@ -3,7 +3,8 @@
 #include <iostream>
 #include <ctime>
 
-// Private funtions
+// Private funtions:
+
 void Game::init_variables()
 {
     window = nullptr;
@@ -29,30 +30,10 @@ void Game::init_board()
     Horizontal_line.setFillColor(sf::Color::Black);
 }
 
-// Constructor / Destructor
-Game::Game()
-{
-    init_variables(); // init game objects
-    init_window();
-    init_board();
-    set_board();
-}
-
-Game::~Game()
-{
-}
-
-// Accessors
-const bool Game::running() const
-{
-    return window->isOpen();
-}
-
-// Functions
-
-/* will set the position of all the 81 squares and insert them into the squares vector */
+/* will set the position of all the 9x9 board. */
 void Game::set_board()
 {
+    // seting the board's position
     float x = 500.f, y = 100.f;
     for (int i = 0; i < 9; i++)
         for (int j = 0; j < 9; j++)
@@ -89,6 +70,7 @@ void Game::update_poll_events()
                     window->close();
                 break;
             
+            // Click on available squares to play
             case sf::Event::MouseButtonPressed:
                 if (event.mouseButton.button == sf::Mouse::Left && curr_state == WAITING_INPUT)
                 {
@@ -109,12 +91,7 @@ void Game::update_mouse_pos()
     mouse_pos = sf::Mouse::getPosition(*window);
 }
 
-void Game::update()
-{
-    update_poll_events();
-    update_mouse_pos();
-}
-
+/* Renders all the squares and lines of the board. */
 void Game::render_board()
 {
     for (auto &i : tick.get_board())
@@ -125,6 +102,35 @@ void Game::render_board()
         window->draw(l);
 }
 
+// Constructor / Destructor
+Game::Game()
+{
+    init_variables(); // init game objects
+    init_window();
+    init_board();
+    set_board();
+}
+
+Game::~Game()
+{
+}
+
+// Accessors
+const bool Game::running() const
+{
+    return window->isOpen();
+}
+
+// Public Functions:
+
+void Game::update()
+{
+    update_poll_events();
+    update_mouse_pos();
+    mouse_valid_square(window, tick);
+}
+
+/* Will render and display the objects in the screen. */
 void Game::render()
 {
     window->clear(sf::Color::White); // clear old frame

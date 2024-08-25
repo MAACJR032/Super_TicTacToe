@@ -17,7 +17,7 @@ class Game
         sf::VideoMode video_mode;
         sf::Event event;
 
-        // Mouse position
+        // Mouse
         sf::Vector2i mouse_pos;
         
         // Game logic
@@ -29,23 +29,25 @@ class Game
         sf::RectangleShape Horizontal_line;
         std::vector<sf::RectangleShape> lines;
 
+        // Initialization functions
         void init_variables();
         void init_window();
         void init_board();
+        void set_board();
 
+        // Update and render functions
+        void update_poll_events();
+        void update_mouse_pos();
+        void render_board();
+    
     public:
         Game();
         ~Game();
 
-        // Accessors
+        // Getters
         const bool running() const;
         const game_state get_curr_state() const;
 
-        // Functions
-        void set_board();
-        void update_poll_events();
-        void update_mouse_pos();
         void update();
-        void render_board();
         void render();
 };

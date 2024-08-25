@@ -2,7 +2,7 @@
 #include "../include/events.hpp"
 #include <iostream>
 
-/* Initializes an empty 9x9 matrix (board). */
+/* Initializes an empty 9x9 board. */
 TicTacToe::TicTacToe()
 {
     sf::RectangleShape square;
@@ -26,6 +26,9 @@ TicTacToe::TicTacToe()
 
     grids.resize(9, {EMPTY, 0});
 }
+
+
+// Private Functions:
 
 /* Checks if player scored in the grid he just played */
 void TicTacToe::grid_score(int8_t grid)
@@ -106,7 +109,7 @@ void TicTacToe::update_grid_score(int8_t grid, int8_t low_limit_i, int8_t low_li
     }
 }
 
-/* Checks if the given grid is a tie */
+/* Checks if the given grid is tied */
 status TicTacToe::check_tie(int8_t grid)
 {
     // Grid is tied if all the 9 sub squares where marked but no player could score
@@ -169,53 +172,10 @@ status TicTacToe::check_win(std::string player_name)
     if (complete_grids == 9)
         return TIE;
     
-    // Game is not over
     return EMPTY;
 }
 
-void TicTacToe::iterate_board(void (TicTacToe::*func) (Square&, unique_ptr<sf::RenderWindow> &window), unique_ptr<sf::RenderWindow> &window)
-{
-    for (auto &g : board)
-        for (auto &s : g)
-            (this->*func)(s, window);
-}
-
-int8_t TicTacToe::get_next_grid()
-{
-    return next_grid;
-}
-
-status TicTacToe::get_grid_i_status(uint8_t index)
-{
-    if (index >= 9)
-        throw std::out_of_range("index of grid is out of range\n");
-    
-    return grids[index].first;
-}
-
-void TicTacToe::win()
-{
-    switch (check_win(""))
-    {
-        case X:
-            if (curr_player == X)
-                victory = X;
-            break;
-        
-        case O:
-            if (curr_player == O)
-                victory = O;
-            break;
-
-        case TIE:
-            victory = TIE;
-            break;
-        
-        case EMPTY:
-            break;
-    }
-}
-
+/* Will check if the clicked square can be played and will mark it. */
 void TicTacToe::update_square(Square &s, unique_ptr<sf::RenderWindow> &window)
 {
     if (grids[s.grid - 1].first == EMPTY && button_click(s.rect, window) == true && 
@@ -246,17 +206,83 @@ void TicTacToe::update_square(Square &s, unique_ptr<sf::RenderWindow> &window)
     }
 }
 
+
+// Getters:
+
+/* Returns the next grid that must be played.
+ * If it returns -1, then any EMPTY grid can be played.
+ */
+int8_t TicTacToe::get_next_grid()
+{
+    return next_grid;
+}
+
+/* Returns the grid status at the specified index. */
+status TicTacToe::get_grid_status(uint8_t index)
+{
+    if (index >= 9)
+        throw std::out_of_range("index of grid is out of range\n");
+    
+    return grids[index].first;
+}
+
+/* Returns a refference to the board. */
 std::vector<std::vector<Square>>& TicTacToe::get_board()
 {
     return board;
 }
 
+/* Returns a refference to a square of the board. */
 Square& TicTacToe::get_board_at(int i, int j)
 {
     return board[i][j];
 }
 
-/* Checks if the choosen grid is valid and calls play_subgrid to play on the board. */
+
+// Public Functions:
+
+/* Updates victory if any of the players won or if it's a Tie. */
+void TicTacToe::win()
+{
+    switch (check_win(""))
+    {
+        case X:
+            if (curr_player == X)
+                victory = X;
+            break;
+        
+        case O:
+            if (curr_player == O)
+                victory = O;
+            break;
+
+        case TIE:
+            victory = TIE;
+            break;
+        
+        case EMPTY:
+            break;
+    }
+}
+
+/* will iterate the board anc call func for each square. */
+void TicTacToe::iterate_board(void (TicTacToe::*func) (Square&, unique_ptr<sf::RenderWindow> &window), unique_ptr<sf::RenderWindow> &window)
+{
+    // Update squares that were played 
+    for (auto &g : board)
+        for (auto &s : g)
+            (this->*func)(s, window);
+}
+
+void TicTacToe::iterate_board(void (*func) (Square &s, TicTacToe &t, unique_ptr<sf::RenderWindow> &window), unique_ptr<sf::RenderWindow> &window)
+{
+    // Changes color of valid squares that can be played 
+    for (auto &g : board)
+        for (auto &s : g)
+            func(s, *this, window);
+}
+
+/* Will iterate through the board and call update_square to handle the player's play. */
 void TicTacToe::play(unique_ptr<sf::RenderWindow> &window)
 {
     iterate_board(update_square, window);
