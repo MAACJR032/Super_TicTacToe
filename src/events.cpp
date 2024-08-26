@@ -1,4 +1,5 @@
 #include "../include/events.hpp"
+#include "../Utils/colors.hpp"
 
 /* Returns true if the square was clicked by the mouse. */
 bool button_click(sf::RectangleShape &square, std::unique_ptr<sf::RenderWindow> &window)
@@ -20,11 +21,11 @@ void mouse_update_valid_square(Square &s, TicTacToe &t, std::unique_ptr<sf::Rend
         if (s.rect.getGlobalBounds().contains((sf::Vector2f) sf::Mouse::getPosition(*window)) && 
             s.player == EMPTY)
         {
-            s.rect.setFillColor(sf::Color::Magenta);
+            s.rect.setFillColor(GREY);
         }
-        else if (s.rect.getFillColor() == sf::Color::Magenta)
+        else if (s.rect.getFillColor() == GREY)
         {
-            s.rect.setFillColor(sf::Color::Blue);
+            s.rect.setFillColor(BLUE);
         }
     }
 }

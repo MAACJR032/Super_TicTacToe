@@ -1,5 +1,6 @@
 #include "../include/TicTacToe.hpp"
 #include "../include/events.hpp"
+#include "../Utils/colors.hpp"
 #include <iostream>
 
 /* Initializes an empty 9x9 board. */
@@ -183,7 +184,7 @@ void TicTacToe::update_square(Square &s, unique_ptr<sf::RenderWindow> &window)
        (next_grid == -1 || next_grid == s.grid) && 
        s.player == EMPTY)
     {
-        s.rect.setFillColor((curr_player == X) ? sf::Color::Red : sf::Color::Green);
+        s.rect.setFillColor((curr_player == X) ? RED : GREEN);
         
         s.player = curr_player;
         grid_score(s.grid);
@@ -192,6 +193,9 @@ void TicTacToe::update_square(Square &s, unique_ptr<sf::RenderWindow> &window)
         if (victory == EMPTY)
             victory = check_tie(s.grid);
 
+        if (victory == TIE)
+            printf("TIE\n");
+        
         curr_player = (curr_player == X) ? O : X;
 
         for (int8_t i = 0; i < 9; i += 3)

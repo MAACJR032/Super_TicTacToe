@@ -1,9 +1,11 @@
 #include "../include/squares.hpp"
+#include "../Utils/colors.hpp"
 
 /* Sets the configuration that is used for all the squares in the board. */
 void set_square(sf::RectangleShape &square)
 {
-    square.setSize(sf::Vector2f(75.f, 75.f));
-    square.setFillColor(sf::Color::Blue);
+    square.setSize(sf::Vector2f(71.f, 71.f));
+    square.setFillColor(BLUE);
+    square.setOutlineColor(DARK_GREY);
     square.setOutlineThickness(2.f);
 }

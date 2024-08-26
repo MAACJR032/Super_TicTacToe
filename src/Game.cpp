@@ -1,9 +1,6 @@
 #include "../include/Game.hpp"
 #include "../include/events.hpp"
-#include <iostream>
-#include <ctime>
-
-// Private funtions:
+#include "../Utils/colors.hpp"
 
 void Game::init_variables()
 {
@@ -24,10 +21,10 @@ void Game::init_window()
 void Game::init_board()
 {
     vertical_line.setSize(sf::Vector2f(10.f, 790.f));
-    vertical_line.setFillColor(sf::Color::Black);
+    vertical_line.setFillColor(BLACK);
 
     Horizontal_line.setSize(sf::Vector2f(790.f, 10.f));
-    Horizontal_line.setFillColor(sf::Color::Black);
+    Horizontal_line.setFillColor(BLACK);
 }
 
 /* will set the position of all the 9x9 board. */
@@ -72,13 +69,14 @@ void Game::update_poll_events()
             
             // Click on available squares to play
             case sf::Event::MouseButtonPressed:
+                // play_mutex.lock();
                 if (event.mouseButton.button == sf::Mouse::Left && curr_state == WAITING_INPUT)
                 {
                     curr_state = PLAYING;
                     tick.play(window);
                     curr_state = WAITING_INPUT;
                 }
-
+                // play_mutex.unlock();
             default:
                 break;
         }   
@@ -133,7 +131,7 @@ void Game::update()
 /* Will render and display the objects in the screen. */
 void Game::render()
 {
-    window->clear(sf::Color::White); // clear old frame
+    window->clear(WHITE); // clear old frame
 
     // Draw game objects
     render_board();
