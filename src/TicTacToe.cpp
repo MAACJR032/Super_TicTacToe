@@ -178,8 +178,10 @@ status TicTacToe::check_win(std::string player_name)
 /* Will check if the clicked square can be played and will mark it. */
 void TicTacToe::update_square(Square &s, unique_ptr<sf::RenderWindow> &window)
 {
-    if (grids[s.grid - 1].first == EMPTY && button_click(s.rect, window) == true && 
-       (next_grid == -1 || next_grid == s.grid))
+    if (grids[s.grid - 1].first == EMPTY && 
+        button_click(s.rect, window) == true && 
+       (next_grid == -1 || next_grid == s.grid) && 
+       s.player == EMPTY)
     {
         s.rect.setFillColor((curr_player == X) ? sf::Color::Red : sf::Color::Green);
         
