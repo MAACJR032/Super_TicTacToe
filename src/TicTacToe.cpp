@@ -31,43 +31,6 @@ TicTacToe::TicTacToe()
 
 // Private Functions:
 
-/* Checks if player scored in the grid he just played */
-void TicTacToe::grid_score(int8_t grid)
-{
-    switch (grid)
-    {
-        case 1:
-            update_grid_score(grid, 0, 0);
-            break;
-        case 2:
-            update_grid_score(grid, 0, 3);
-            break;
-        case 3:
-            update_grid_score(grid, 0, 6);
-            break;
-        case 4:
-            update_grid_score(grid, 3, 0);
-            break;
-        case 5:
-            update_grid_score(grid, 3, 3);
-            break;
-        case 6:
-            update_grid_score(grid, 3, 6);
-            break;
-        case 7:
-            update_grid_score(grid, 6, 0);
-            break;
-        case 8:
-            update_grid_score(grid, 6, 3);
-            break;
-        case 9:
-            update_grid_score(grid, 6, 6);
-            break;
-        default:
-            break;
-    }
-}
-
 /* Checks all the cases where the player may have scored in a grid. */
 void TicTacToe::update_grid_score(int8_t grid, int8_t low_limit_i, int8_t low_limit_j)
 {
@@ -110,8 +73,45 @@ void TicTacToe::update_grid_score(int8_t grid, int8_t low_limit_i, int8_t low_li
     }
 }
 
+/* Checks if player scored in the grid he just played */
+void TicTacToe::grid_score(int8_t grid)
+{
+    switch (grid)
+    {
+        case 1:
+            update_grid_score(grid, 0, 0);
+            break;
+        case 2:
+            update_grid_score(grid, 0, 3);
+            break;
+        case 3:
+            update_grid_score(grid, 0, 6);
+            break;
+        case 4:
+            update_grid_score(grid, 3, 0);
+            break;
+        case 5:
+            update_grid_score(grid, 3, 3);
+            break;
+        case 6:
+            update_grid_score(grid, 3, 6);
+            break;
+        case 7:
+            update_grid_score(grid, 6, 0);
+            break;
+        case 8:
+            update_grid_score(grid, 6, 3);
+            break;
+        case 9:
+            update_grid_score(grid, 6, 6);
+            break;
+        default:
+            break;
+    }
+}
+
 /* Checks if the given grid is tied */
-status TicTacToe::check_tie(int8_t grid)
+status TicTacToe::update_grid_tie(int8_t grid)
 {
     // Grid is tied if all the 9 sub squares where marked but no player could score
     if (grids[grid - 1].second == 9 && grids[grid - 1].first == EMPTY)
@@ -125,57 +125,6 @@ status TicTacToe::check_tie(int8_t grid)
     return grids[grid - 1].first;
 }
 
-/* Checks if the player won or if it's a tie, else the game hasn't finished and it will return EMPTY. */
-status TicTacToe::check_win(std::string player_name)
-{
-    // Checking the lines
-    for (int i = 0; i < 7; i += 3)
-    {
-        if (grids[i].first == curr_player && 
-            grids[i+1].first == curr_player && 
-            grids[i+2].first == curr_player)
-        {
-            return curr_player;
-        }
-    }
-
-    // Checking the columns
-    for (int i = 0; i < 3; i++)
-    {
-        if (grids[i].first == curr_player && 
-            grids[i+3].first == curr_player && 
-            grids[i+6].first == curr_player)
-        {
-            return curr_player;
-        }
-    }
-    
-    // Diagonals
-    if (grids[0].first == curr_player && 
-        grids[4].first == curr_player && 
-        grids[8].first == curr_player)
-    {
-        return curr_player;
-    }
-    else if (grids[2].first == curr_player && 
-        grids[4].first == curr_player && 
-        grids[6].first == curr_player)
-    {
-        return curr_player;
-    }
-
-    // If neither of the players won and all the grids where marked, then it is a tie
-    uint8_t complete_grids = 0;
-    for (int i = 0; i < 9; i++)
-        if (grids[i].first != EMPTY)
-            complete_grids++;
-        
-    if (complete_grids == 9)
-        return TIE;
-    
-    return EMPTY;
-}
-
 /* Will check if the clicked square can be played and will mark it. */
 void TicTacToe::update_square(Square &s, unique_ptr<sf::RenderWindow> &window)
 {
@@ -187,11 +136,10 @@ void TicTacToe::update_square(Square &s, unique_ptr<sf::RenderWindow> &window)
         s.rect.setFillColor((curr_player == X) ? RED : GREEN);
         
         s.player = curr_player;
+        grids[s.grid - 1].second++;
         grid_score(s.grid);
-        win();
-        
-        if (victory == EMPTY)
-            victory = check_tie(s.grid);
+        update_grid_tie(s.grid);
+        check_win();
 
         if (victory == TIE)
             printf("TIE\n");
@@ -212,6 +160,63 @@ void TicTacToe::update_square(Square &s, unique_ptr<sf::RenderWindow> &window)
     }
 }
 
+/* Updates victory if the player won or if it's a tie, else the game hasn't finished. */
+void TicTacToe::check_win()
+{
+    // Checking the lines
+    for (int i = 0; i < 7; i += 3)
+    {
+        if (grids[i].first == curr_player && 
+            grids[i+1].first == curr_player && 
+            grids[i+2].first == curr_player)
+        {
+            victory = curr_player;
+        }
+    }
+
+    // Checking the columns
+    for (int i = 0; i < 3; i++)
+    {
+        if (grids[i].first == curr_player && 
+            grids[i+3].first == curr_player && 
+            grids[i+6].first == curr_player)
+        {
+            victory = curr_player;
+        }
+    }
+    
+    // Diagonals
+    if (grids[0].first == curr_player && 
+        grids[4].first == curr_player && 
+        grids[8].first == curr_player)
+    {
+        victory = curr_player;
+    }
+    else if (grids[2].first == curr_player && 
+        grids[4].first == curr_player && 
+        grids[6].first == curr_player)
+    {
+        victory = curr_player;
+    }
+
+    // If neither of the players won and all the grids where marked, then it is a tie
+    uint8_t complete_grids = 0;
+    for (int i = 0; i < 9; i++)
+        if (grids[i].first != EMPTY)
+            complete_grids++;
+        
+    if (complete_grids == 9)
+        victory = TIE;
+}
+
+/* will iterate the board and call func for each square. */
+void TicTacToe::iterate_board(void (TicTacToe::*func) (Square&, unique_ptr<sf::RenderWindow> &window), unique_ptr<sf::RenderWindow> &window)
+{
+    // Update squares that were played 
+    for (auto &g : board)
+        for (auto &s : g)
+            (this->*func)(s, window);
+}
 
 // Getters:
 
@@ -247,39 +252,7 @@ Square& TicTacToe::get_board_at(int i, int j)
 
 // Public Functions:
 
-/* Updates victory if any of the players won or if it's a Tie. */
-void TicTacToe::win()
-{
-    switch (check_win(""))
-    {
-        case X:
-            if (curr_player == X)
-                victory = X;
-            break;
-        
-        case O:
-            if (curr_player == O)
-                victory = O;
-            break;
-
-        case TIE:
-            victory = TIE;
-            break;
-        
-        case EMPTY:
-            break;
-    }
-}
-
-/* will iterate the board anc call func for each square. */
-void TicTacToe::iterate_board(void (TicTacToe::*func) (Square&, unique_ptr<sf::RenderWindow> &window), unique_ptr<sf::RenderWindow> &window)
-{
-    // Update squares that were played 
-    for (auto &g : board)
-        for (auto &s : g)
-            (this->*func)(s, window);
-}
-
+/* will iterate the board and call func for each square. */
 void TicTacToe::iterate_board(void (*func) (Square &s, TicTacToe &t, unique_ptr<sf::RenderWindow> &window), unique_ptr<sf::RenderWindow> &window)
 {
     // Changes color of valid squares that can be played 

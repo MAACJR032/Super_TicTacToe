@@ -29,29 +29,22 @@ class TicTacToe
         status curr_player = X;
         status victory;
 
-        // score functions
-        void grid_score(int8_t grid);
         void update_grid_score(int8_t grid, int8_t low_limit_i, int8_t low_limit_j);
-        status check_tie(int8_t grid);
-        status check_win(std::string player_name);
+        void grid_score(int8_t grid);
+        status update_grid_tie(int8_t grid);
+        void check_win();
 
-        // square function
         void update_square(Square &s, std::unique_ptr<sf::RenderWindow> &window);
-
+        void iterate_board(void (TicTacToe::*func) (Square&, unique_ptr<sf::RenderWindow> &window), unique_ptr<sf::RenderWindow> &window);
+        
     public:
         TicTacToe();
 
-        // getters
         int8_t get_next_grid();
         status get_grid_status(uint8_t index);
         std::vector<std::vector<Square>>& get_board();
         Square& get_board_at(int i, int j);
 
-        // victory functions
-        void win();
-        
-        // play functions
-        void iterate_board(void (TicTacToe::*func) (Square&, unique_ptr<sf::RenderWindow> &window), unique_ptr<sf::RenderWindow> &window);
         void iterate_board(void (*func) (Square &s, TicTacToe &t, unique_ptr<sf::RenderWindow> &window), unique_ptr<sf::RenderWindow> &window);
         void play(unique_ptr<sf::RenderWindow> &window);
 };
