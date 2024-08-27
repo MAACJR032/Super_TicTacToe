@@ -25,10 +25,19 @@ void mouse_update_valid_square(Square &s, TicTacToe &t, std::unique_ptr<sf::Rend
         }
         else if (s.rect.getFillColor() == GREY)
         {
+            printf("saiu\n\n");
             s.rect.setFillColor(BLUE);
         }
     }
+
+    // make sure that every square affected by the hoever effect get back to it's original color
+    if (!s.rect.getGlobalBounds().contains((sf::Vector2f) sf::Mouse::getPosition(*window)) && 
+        s.rect.getFillColor() == GREY)
+    {
+        s.rect.setFillColor(BLUE);
+    }
 }
+
 
 /* Iterates through the board and Changes color of valid squares to play on. */
 void mouse_valid_square(std::unique_ptr<sf::RenderWindow> &window, TicTacToe &t)

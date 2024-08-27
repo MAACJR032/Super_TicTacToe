@@ -69,24 +69,29 @@ void Game::update_poll_events()
             
             // Click on available squares to play
             case sf::Event::MouseButtonPressed:
-                // play_mutex.lock();
                 if (event.mouseButton.button == sf::Mouse::Left && curr_state == WAITING_INPUT)
                 {
                     curr_state = PLAYING;
                     tick.play(window);
                     curr_state = WAITING_INPUT;
+
+                    status result = tick.get_victory();
+                    
+                    if (result == X || result == O)
+                    {
+                        curr_state = GAME_OVER;
+                        printf("Player %d wins!!\n", result);
+                    }
+                    else if (result == TIE)
+                    {
+                        curr_state = GAME_OVER;
+                        printf("It's a TIE\n");
+                    }
                 }
-                // play_mutex.unlock();
             default:
                 break;
         }   
     }
-}
-
-/* Updates the mouse position on the game window */
-void Game::update_mouse_pos()
-{
-    mouse_pos = sf::Mouse::getPosition(*window);
 }
 
 /* Renders all the squares and lines of the board. */
@@ -124,8 +129,9 @@ const bool Game::running() const
 void Game::update()
 {
     update_poll_events();
-    update_mouse_pos();
-    mouse_valid_square(window, tick);
+
+    if (curr_state == WAITING_INPUT)
+        mouse_valid_square(window, tick);
 }
 
 /* Will render and display the objects in the screen. */

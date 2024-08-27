@@ -17,9 +17,6 @@ class Game
         sf::VideoMode video_mode;
         sf::Event event;
 
-        // Mouse
-        sf::Vector2i mouse_pos;
-        
         // Game logic
         TicTacToe tick;
         game_state curr_state = WAITING_INPUT;
@@ -37,7 +34,6 @@ class Game
 
         // Update and render functions
         void update_poll_events();
-        void update_mouse_pos();
         void render_board();
     
     public:

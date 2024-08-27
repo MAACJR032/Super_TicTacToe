@@ -44,6 +44,7 @@ class TicTacToe
         status get_grid_status(uint8_t index);
         std::vector<std::vector<Square>>& get_board();
         Square& get_board_at(int i, int j);
+        status get_victory();
 
         void iterate_board(void (*func) (Square &s, TicTacToe &t, unique_ptr<sf::RenderWindow> &window), unique_ptr<sf::RenderWindow> &window);
         void play(unique_ptr<sf::RenderWindow> &window);

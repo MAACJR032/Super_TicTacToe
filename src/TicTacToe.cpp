@@ -140,18 +140,8 @@ void TicTacToe::update_square(Square &s, unique_ptr<sf::RenderWindow> &window)
         grid_score(s.grid);
         update_grid_tie(s.grid);
         check_win();
-
-        if (victory == TIE)
-            printf("TIE\n");
         
         curr_player = (curr_player == X) ? O : X;
-
-        for (int8_t i = 0; i < 9; i += 3)
-            printf("%d %d %d\n", grids[i].first, grids[i+1].first, grids[i+2].first);
-        std::cout << '\n';
-
-        if (victory == X || victory == O)
-            std::cout << "Player " << s.player << " Wins!\n";
 
         if (grids[s.subgrid - 1].first == EMPTY)
             next_grid = s.subgrid;
@@ -247,6 +237,11 @@ std::vector<std::vector<Square>>& TicTacToe::get_board()
 Square& TicTacToe::get_board_at(int i, int j)
 {
     return board[i][j];
+}
+
+status TicTacToe::get_victory()
+{
+    return victory;
 }
 
 
