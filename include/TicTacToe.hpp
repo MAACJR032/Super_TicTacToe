@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include "../include/squares.hpp"
+#include "../Utils/text.hpp"
 
 using std::unique_ptr;
 
@@ -39,6 +40,8 @@ class TicTacToe
         
     public:
         TicTacToe();
+
+        turn_text text;
 
         int8_t get_next_grid();
         status get_grid_status(uint8_t index);

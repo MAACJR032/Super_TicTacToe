@@ -25,7 +25,6 @@ void mouse_update_valid_square(Square &s, TicTacToe &t, std::unique_ptr<sf::Rend
         }
         else if (s.rect.getFillColor() == GREY)
         {
-            printf("saiu\n\n");
             s.rect.setFillColor(BLUE);
         }
     }

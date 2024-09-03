@@ -130,6 +130,7 @@ void Game::update()
 {
     update_poll_events();
 
+    // hoever effect
     if (curr_state == WAITING_INPUT)
         mouse_valid_square(window, tick);
 }
@@ -141,6 +142,7 @@ void Game::render()
 
     // Draw game objects
     render_board();
+    window->draw(tick.text.get_text());
 
     window->display(); // done drawing
 }

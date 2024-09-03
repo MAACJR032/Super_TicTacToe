@@ -4,7 +4,7 @@
 #include <iostream>
 
 /* Initializes an empty 9x9 board. */
-TicTacToe::TicTacToe()
+TicTacToe::TicTacToe() : text("Player 1", "Player 2")
 {
     sf::RectangleShape square;
     set_square(square);
@@ -141,8 +141,13 @@ void TicTacToe::update_square(Square &s, unique_ptr<sf::RenderWindow> &window)
         update_grid_tie(s.grid);
         check_win();
         
-        curr_player = (curr_player == X) ? O : X;
+        if (curr_player == X)
+            text.change_curr_player(O);
+        else
+            text.change_curr_player(X);
 
+        curr_player = (curr_player == X) ? O : X;
+        
         if (grids[s.subgrid - 1].first == EMPTY)
             next_grid = s.subgrid;
         else
@@ -259,5 +264,5 @@ void TicTacToe::iterate_board(void (*func) (Square &s, TicTacToe &t, unique_ptr<
 /* Will iterate through the board and call update_square to handle the player's play. */
 void TicTacToe::play(unique_ptr<sf::RenderWindow> &window)
 {
-    iterate_board(update_square, window);
+    iterate_board(update_square, window);    
 }
