@@ -8,6 +8,7 @@ RM = del -f
 SRC_DIR = src
 SFML_INCLUDE = SFML_src/include
 SFML_LIB = SFML_src/lib
+UTILS_DIR = Utils
 BIN = bin
 
 # files
@@ -16,7 +17,10 @@ EXE = SuperTicTacToe
 
 # Find all .cpp files in SRC_DIR and create corresponding .o files in BIN
 SRC_FILES = $(wildcard $(SRC_DIR)/*.cpp)
-OBJS = $(patsubst $(SRC_DIR)/%.cpp,$(BIN)/%.o,$(SRC_FILES)) $(BIN)/SuperTicTacToe.o
+UTILS_FILES = $(wildcard $(UTILS_DIR)/*.cpp)
+OBJS = $(patsubst $(SRC_DIR)/%.cpp,$(BIN)/%.o,$(SRC_FILES)) \
+	   $(patsubst $(UTILS_DIR)/%.cpp,$(BIN)/%.o,$(UTILS_FILES)) \
+	   $(BIN)/SuperTicTacToe.o
 
 all: compile link
 
@@ -26,8 +30,12 @@ compile: $(OBJS)
 $(BIN)/SuperTicTacToe.o: $(MAIN)
 	$(CC) -c $< -I$(SFML_INCLUDE) -o $@
 
-# Compile all other .cpp files
+# Compile .cpp in SRC_DIR
 $(BIN)/%.o: $(SRC_DIR)/%.cpp
+	$(CC) -c $< -I$(SFML_INCLUDE) -o $@
+
+# Compile .cpp files in UTILS_DIR
+$(BIN)/%.o: $(UTILS_DIR)/%.cpp
 	$(CC) -c $< -I$(SFML_INCLUDE) -o $@
 
 link:
