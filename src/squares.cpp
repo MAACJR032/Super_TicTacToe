@@ -1,5 +1,4 @@
 #include "../include/squares.hpp"
-#include "../Utils/colors.hpp"
 
 /* Sets the configuration that is used for all the squares in the board. */
 void set_square(sf::RectangleShape &square)
