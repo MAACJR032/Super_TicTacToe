@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <string>
+#include "../include/events.hpp"
 #include "../include/squares.hpp"
 #include "../Utils/text.hpp"
 

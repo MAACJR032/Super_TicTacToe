@@ -1,6 +1,4 @@
 #include "../include/Game.hpp"
-#include "../include/events.hpp"
-#include "../Utils/colors.hpp"
 
 void Game::init_variables()
 {
@@ -69,26 +67,9 @@ void Game::update_poll_events()
             
             // Click on available squares to play
             case sf::Event::MouseButtonPressed:
-                if (event.mouseButton.button == sf::Mouse::Left && curr_state == WAITING_INPUT)
-                {
-                    curr_state = PLAYING;
-                    tick.play(window);
-                    curr_state = WAITING_INPUT;
-
-                    status result = tick.get_victory();
-                    
-                    if (result == X || result == O)
-                    {
-                        curr_state = GAME_OVER;
-                        printf("Player %d wins!!\n", result);
-                    }
-                    else if (result == TIE)
-                    {
-                        curr_state = GAME_OVER;
-                        printf("It's a TIE\n");
-                    }
-                }
-
+                handle_square_play(event, window, curr_state, tick);
+                handle_text_box_sel(players_name_text_box, *window);
+                
             case sf::Event::TextEntered:
                 players_name_text_box.typed(event);
 
@@ -145,8 +126,14 @@ void Game::render()
     window->clear(WHITE); // clear old frame
 
     // Draw game objects
-    render_board();
-    window->draw(tick.text.get_text());
+
+    if (curr_state != MENU)
+    {
+        render_board();
+        window->draw(tick.text.get_text());
+    }
+    else if (curr_state == MENU)
+        players_name_text_box.draw(*window);
 
     window->display(); // done drawing
 }

@@ -4,6 +4,8 @@
 #include <memory>
 #include <vector>
 #include "TicTacToe.hpp"
+#include "events.hpp"
+#include "../Utils/text.hpp"
 
 enum game_state : uint8_t {
     PLAYING, WAITING_INPUT, MENU, GAME_OVER
@@ -19,7 +21,7 @@ class Game
 
         // Game logic
         TicTacToe tick;
-        game_state curr_state = WAITING_INPUT;
+        game_state curr_state = MENU;
         text_box players_name_text_box;
         
         // Game objects

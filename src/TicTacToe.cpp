@@ -1,7 +1,4 @@
 #include "../include/TicTacToe.hpp"
-#include "../include/events.hpp"
-#include "../Utils/colors.hpp"
-#include <iostream>
 
 /* Initializes an empty 9x9 board. */
 TicTacToe::TicTacToe() : text("Player 1", "Player 2")
