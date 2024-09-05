@@ -34,8 +34,8 @@ $(BIN)/SuperTicTacToe.o: $(MAIN)
 $(BIN)/%.o: $(SRC_DIR)/%.cpp
 	$(CC) -c $< -I$(SFML_INCLUDE) -o $@
 
-# Compile .cpp files in UTILS_DIR
-$(BIN)/%.o: $(UTILS_DIR)/%.cpp
+# Compile .cpp files in UTILS_DIR (dependency on colors.hpp)
+$(BIN)/%.o: $(UTILS_DIR)/%.cpp $(UTILS_DIR)/colors.hpp
 	$(CC) -c $< -I$(SFML_INCLUDE) -o $@
 
 link:
