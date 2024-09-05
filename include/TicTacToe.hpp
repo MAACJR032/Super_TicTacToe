@@ -41,7 +41,7 @@ class TicTacToe
     public:
         TicTacToe();
 
-        turn_text text;
+        player_turn_text text;
 
         int8_t get_next_grid();
         status get_grid_status(uint8_t index);

@@ -1,6 +1,10 @@
 #include <SFML/Graphics.hpp>
 #include <string>
+#include <sstream>
+#include <memory>
+
 #include "colors.hpp"
+#include "keys_unicode.hpp"
 
 class game_text
 {
@@ -15,12 +19,35 @@ class game_text
         sf::Text get_text();
 };
 
-class turn_text : public game_text
+class player_turn_text : public game_text
 {
     private:
         std::string player1, player2;
         
     public:
-        turn_text(std::string player1, std::string player2);
+        player_turn_text(std::string player1, std::string player2);
         void change_curr_player(int8_t player);
+};
+
+class text_box : public game_text
+{
+    private:
+        sf::RectangleShape box;
+        std::ostringstream text_string;
+        int char_size = 10;
+        int limit = 15;
+        bool selected = true;
+
+        void delete_last_char();
+        void set_selected(bool sel);
+        void input_handler(int typed_char);
+
+    public:
+        text_box();
+
+        std::string get_text_string();
+        
+        bool check_mouse_click_button(std::unique_ptr<sf::Window> &window);
+        void typed(sf::Event input);
+        void draw(sf::RenderWindow &window);
 };

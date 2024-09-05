@@ -88,6 +88,10 @@ void Game::update_poll_events()
                         printf("It's a TIE\n");
                     }
                 }
+
+            case sf::Event::TextEntered:
+                players_name_text_box.typed(event);
+
             default:
                 break;
         }   

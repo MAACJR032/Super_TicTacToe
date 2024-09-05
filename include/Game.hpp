@@ -20,6 +20,7 @@ class Game
         // Game logic
         TicTacToe tick;
         game_state curr_state = WAITING_INPUT;
+        text_box players_name_text_box;
         
         // Game objects
         sf::RectangleShape vertical_line;
