@@ -1,3 +1,5 @@
+#pragma once
+
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <sstream>
@@ -36,10 +38,10 @@ class text_box : public game_text
         std::ostringstream text_string;
         int char_size = 10;
         int limit = 15;
-        bool selected = true;
+        bool selected = false;
 
+        bool check_mouse_click_button(sf::Window &window);
         void delete_last_char();
-        void set_selected(bool sel);
         void input_handler(int typed_char);
 
     public:
@@ -47,7 +49,8 @@ class text_box : public game_text
 
         std::string get_text_string();
         
-        bool check_mouse_click_button(std::unique_ptr<sf::Window> &window);
+        bool is_selected();
+        void set_selected(sf::RenderWindow &window);
         void typed(sf::Event input);
         void draw(sf::RenderWindow &window);
 };
