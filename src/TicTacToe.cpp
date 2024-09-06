@@ -1,7 +1,7 @@
 #include "../include/TicTacToe.hpp"
 
 /* Initializes an empty 9x9 board. */
-TicTacToe::TicTacToe() : text("Player 1", "Player 2")
+TicTacToe::TicTacToe()
 {
     sf::RectangleShape square;
     set_square(square);
@@ -139,9 +139,9 @@ void TicTacToe::update_square(Square &s, unique_ptr<sf::RenderWindow> &window)
         check_win();
         
         if (curr_player == X)
-            text.change_curr_player(O);
+            text->change_curr_player(O);
         else
-            text.change_curr_player(X);
+            text->change_curr_player(X);
 
         curr_player = (curr_player == X) ? O : X;
         
@@ -208,6 +208,11 @@ void TicTacToe::iterate_board(void (TicTacToe::*func) (Square&, unique_ptr<sf::R
     for (auto &g : board)
         for (auto &s : g)
             (this->*func)(s, window);
+}
+
+void TicTacToe::set_players_name(std::pair<std::string, std::string> &players)
+{
+    text.emplace(players.first, players.second);
 }
 
 // Getters:

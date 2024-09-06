@@ -18,6 +18,7 @@ class Game
         std::unique_ptr<sf::RenderWindow> window;
         sf::VideoMode video_mode;
         sf::Event event;
+        std::pair<std::string, std::string> players;
 
         // Game logic
         TicTacToe tick;
@@ -44,8 +45,8 @@ class Game
         ~Game();
 
         // Getters
-        const bool running() const;
-        const game_state get_curr_state() const;
+        bool running() const;
+        game_state get_curr_state() const;
 
         void update();
         void render();

@@ -69,9 +69,15 @@ void Game::update_poll_events()
             case sf::Event::MouseButtonPressed:
                 handle_square_play(event, window, curr_state, tick);
                 handle_text_box_sel(players_name_text_box, *window);
+                break;
                 
             case sf::Event::TextEntered:
                 players_name_text_box.typed(event);
+                get_player_name(players_name_text_box, event, players, curr_state);
+                
+                if (!players.second.empty())
+                    tick.set_players_name(players);
+                break;
 
             default:
                 break;
@@ -104,7 +110,7 @@ Game::~Game()
 }
 
 // Accessors
-const bool Game::running() const
+bool Game::running() const
 {
     return window->isOpen();
 }
@@ -126,11 +132,10 @@ void Game::render()
     window->clear(WHITE); // clear old frame
 
     // Draw game objects
-
     if (curr_state != MENU)
     {
         render_board();
-        window->draw(tick.text.get_text());
+        window->draw(tick.text->get_text());
     }
     else if (curr_state == MENU)
         players_name_text_box.draw(*window);

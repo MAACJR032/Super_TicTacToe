@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <string>
+#include <optional>
 #include "../include/events.hpp"
 #include "../include/squares.hpp"
 #include "../Utils/text.hpp"
@@ -42,7 +43,9 @@ class TicTacToe
     public:
         TicTacToe();
 
-        player_turn_text text;
+        std::optional<player_turn_text> text;
+
+        void set_players_name(std::pair<std::string, std::string> &players);
 
         int8_t get_next_grid();
         status get_grid_status(uint8_t index);
