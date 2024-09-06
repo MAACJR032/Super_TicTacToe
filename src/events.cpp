@@ -56,15 +56,9 @@ void handle_square_play(sf::Event &event, std::unique_ptr<sf::RenderWindow> &win
         status result = t.get_victory();
         
         if (result == X || result == O)
-        {
             curr_state = GAME_OVER;
-            printf("Player %d wins!!\n", result);
-        }
         else if (result == TIE)
-        {
             curr_state = GAME_OVER;
-            printf("It's a TIE\n");
-        }
     }
 }
 
