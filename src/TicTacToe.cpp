@@ -139,9 +139,9 @@ void TicTacToe::update_square(Square &s, unique_ptr<sf::RenderWindow> &window)
         check_win();
         
         if (curr_player == X)
-            text->change_curr_player(O);
+            text.change_curr_player(O);
         else
-            text->change_curr_player(X);
+            text.change_curr_player(X);
 
         curr_player = (curr_player == X) ? O : X;
         
@@ -212,10 +212,15 @@ void TicTacToe::iterate_board(void (TicTacToe::*func) (Square&, unique_ptr<sf::R
 
 void TicTacToe::set_players_name(std::pair<std::string, std::string> &players)
 {
-    text.emplace(players.first, players.second);
+    text.set_names(players.first, players.second);
 }
 
 // Getters:
+
+player_turn_text TicTacToe::get_text()
+{
+    return text;
+}
 
 /* Returns the next grid that must be played.
  * If it returns -1, then any EMPTY grid can be played.

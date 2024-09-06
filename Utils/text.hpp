@@ -31,7 +31,8 @@ class player_turn_text : public game_text
         std::string player1, player2;
         
     public:
-        player_turn_text(std::string player1, std::string player2);
+        player_turn_text();
+        void set_names(std::string player1, std::string player2);
         void change_curr_player(int8_t player);
 };
 

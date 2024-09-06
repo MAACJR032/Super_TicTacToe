@@ -44,10 +44,9 @@ void game_text::draw(sf::RenderWindow &window)
 
 
 // player_turn_text
-player_turn_text::player_turn_text(std::string player1, std::string player2) : game_text(), player1(player1), player2(player2)
+player_turn_text::player_turn_text() : game_text()
 {
     text.setPosition(15.f, 15.f);
-    text.setString(player1 + " Turn");
 }
 
 /* Changes the name of the player after each play*/
@@ -59,7 +58,12 @@ void player_turn_text::change_curr_player(int8_t player)
         text.setString(player2 + " Turn");
 }
 
-
+/* set the name of both players */
+void player_turn_text::set_names(std::string player1, std::string player2)
+{
+    this->player1 = player1;
+    this->player2 = player2;
+}
 
 // text_box:
 text_box::text_box() : game_text()
