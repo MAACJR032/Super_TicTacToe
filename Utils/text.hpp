@@ -53,4 +53,5 @@ class text_box : public game_text
         void set_selected(sf::RenderWindow &window);
         void typed(sf::Event input);
         void draw(sf::RenderWindow &window);
+        void clear();
 };

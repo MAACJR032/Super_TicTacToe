@@ -1,5 +1,6 @@
 #include "../include/events.hpp"
 #include "../include/TicTacToe.hpp"
+#include "../include/Game.hpp"
 
 /* Returns true if the square was clicked by the mouse. */
 bool button_click(sf::RectangleShape &square, std::unique_ptr<sf::RenderWindow> &window)
@@ -44,10 +45,6 @@ void mouse_valid_square(std::unique_ptr<sf::RenderWindow> &window, TicTacToe &t)
     t.iterate_board(mouse_update_valid_square, window);
 }
 
-enum game_state : uint8_t {
-    PLAYING, WAITING_INPUT, MENU, GAME_OVER
-};
-
 void handle_square_play(sf::Event &event, std::unique_ptr<sf::RenderWindow> &window, game_state &curr_state, TicTacToe &t)
 {
     if (event.mouseButton.button == sf::Mouse::Left && curr_state == WAITING_INPUT)
@@ -74,4 +71,20 @@ void handle_square_play(sf::Event &event, std::unique_ptr<sf::RenderWindow> &win
 void handle_text_box_sel(text_box &t, sf::RenderWindow &window)
 {
     t.set_selected(window);
+}
+
+void get_player_name(text_box &t, sf::Event &event, std::pair<std::string, std::string> &players, game_state &curr_state)
+{
+    if (event.text.unicode == ENTER && t.get_text_string().length() > 0)
+    {
+        if (players.first.empty())
+            players.first = t.get_text_string();
+        else
+        {
+            players.second = t.get_text_string();
+            curr_state = WAITING_INPUT;
+        }
+
+        t.clear();
+    }
 }

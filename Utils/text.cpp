@@ -123,7 +123,7 @@ void text_box::typed(sf::Event input)
 
         if (typed_char > 0 && typed_char < 128)
         {
-            if (text_string.str().length() <= limit || typed_char == BACKSPACE)
+            if (static_cast<int> (text_string.str().length()) <= limit || typed_char == BACKSPACE)
                 input_handler(typed_char);
         }
     }
@@ -133,4 +133,10 @@ void text_box::draw(sf::RenderWindow &window)
 {
     window.draw(box);
     window.draw(text);
+}
+
+void text_box::clear()
+{
+    text.setString("_");
+    text_string.str("_");
 }
