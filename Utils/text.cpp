@@ -63,6 +63,8 @@ void player_turn_text::set_names(std::string player1, std::string player2)
 {
     this->player1 = player1;
     this->player2 = player2;
+
+    text.setString(player1 + " Turn");
 }
 
 // text_box:

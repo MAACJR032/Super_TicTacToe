@@ -1,4 +1,5 @@
 #include "../include/Game.hpp"
+#include <iostream>
 
 void Game::init_variables()
 {
@@ -96,8 +97,52 @@ void Game::render_board()
         window->draw(l);
 }
 
+void Game::state_handler()
+{
+    switch (curr_state)
+    {
+        case MENU:
+            b.set_button_position({670.f, 200.f}, {770.f, 209.f});
+            b.draw(*window);
+
+            if (b.button_clicked(*window))
+                curr_state = NAME_INPUT;
+            break;
+        
+        case NAME_INPUT:
+            players_name_text_box.draw(*window);
+            break;
+        
+        case WAITING_INPUT: case PLAYING:
+            render_board();
+            tick.get_text().draw(*window);
+            break;
+
+        case GAME_OVER:
+            if (tick.get_victory() == 1)
+            {
+                game_over_text.set_text(players.first + " Win!!!");
+                game_over_text.draw(*window);
+            }            
+            else if (tick.get_victory() == 2)
+            {
+                game_over_text.set_text(players.second + " Win!!!");
+                game_over_text.draw(*window);
+            }
+            else if (tick.get_victory() == 3)
+            {
+                game_over_text.set_text("It's a Tie!!!");
+                game_over_text.draw(*window);
+            }
+            break;
+
+        default:
+            break;
+    }
+}
+
 // Constructor / Destructor
-Game::Game()
+Game::Game() : b("Start")
 {
     init_variables(); // init game objects
     init_window();
@@ -132,13 +177,7 @@ void Game::render()
     window->clear(WHITE); // clear old frame
 
     // Draw game objects
-    if (curr_state != MENU)
-    {
-        render_board();
-        window->draw(tick.text->get_text());
-    }
-    else if (curr_state == MENU)
-        players_name_text_box.draw(*window);
-
+    state_handler();
+    
     window->display(); // done drawing
 }

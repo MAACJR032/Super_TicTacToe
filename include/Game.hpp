@@ -6,9 +6,10 @@
 #include "TicTacToe.hpp"
 #include "events.hpp"
 #include "../Utils/text.hpp"
+#include "buttons.hpp"
 
 enum game_state : uint8_t {
-    PLAYING, WAITING_INPUT, MENU, GAME_OVER
+    MENU, NAME_INPUT, PLAYING, WAITING_INPUT, GAME_OVER
 };
 
 class Game
@@ -18,17 +19,21 @@ class Game
         std::unique_ptr<sf::RenderWindow> window;
         sf::VideoMode video_mode;
         sf::Event event;
-        std::pair<std::string, std::string> players;
 
         // Game logic
         TicTacToe tick;
         game_state curr_state = MENU;
-        text_box players_name_text_box;
         
         // Game objects
         sf::RectangleShape vertical_line;
         sf::RectangleShape Horizontal_line;
         std::vector<sf::RectangleShape> lines;
+
+        // Texts and buttons]
+        std::pair<std::string, std::string> players;
+        text_box players_name_text_box;
+        game_text game_over_text;
+        button b;
 
         // Initialization functions
         void init_variables();
@@ -39,6 +44,7 @@ class Game
         // Update and render functions
         void update_poll_events();
         void render_board();
+        void state_handler();
     
     public:
         Game();
