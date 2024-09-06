@@ -18,7 +18,11 @@ class game_text
 
     public:
         game_text();
+        game_text(std::string s);
+
+        void set_text(std::string s);
         sf::Text get_text();
+        virtual void draw(sf::RenderWindow &window);
 };
 
 class player_turn_text : public game_text
@@ -49,9 +53,9 @@ class text_box : public game_text
 
         std::string get_text_string();
         
-        bool is_selected();
         void set_selected(sf::RenderWindow &window);
+        bool is_selected();
         void typed(sf::Event input);
-        void draw(sf::RenderWindow &window);
+        void draw(sf::RenderWindow &window) override;
         void clear();
 };

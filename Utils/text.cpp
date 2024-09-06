@@ -1,11 +1,6 @@
 #include "text.hpp"
 #include <iostream>
 
-void game_text::load_font()
-{
-    open_sans.loadFromFile("Utils/Open_Sans/OpenSans.ttf");
-}
-
 game_text::game_text()
 {   
     load_font();
@@ -14,12 +9,41 @@ game_text::game_text()
     text.setFillColor(BLACK);
 }
 
+game_text::game_text(std::string s)
+{   
+    load_font();
+    
+    text.setFont(open_sans);
+    text.setFillColor(BLACK);
+    text.setString(s);
+}
+
+// private function
+void game_text::load_font()
+{
+    open_sans.loadFromFile("Utils/Open_Sans/OpenSans.ttf");
+}
+
+// setters / getters
+void game_text::set_text(const std::string s)
+{
+    text.setString(s);
+}
+
 sf::Text game_text::get_text()
 {
     return text;
 }
 
+// public
+void game_text::draw(sf::RenderWindow &window)
+{
+    window.draw(text);
+}
 
+
+
+// player_turn_text
 player_turn_text::player_turn_text(std::string player1, std::string player2) : game_text(), player1(player1), player2(player2)
 {
     text.setPosition(15.f, 15.f);
@@ -36,6 +60,8 @@ void player_turn_text::change_curr_player(int8_t player)
 }
 
 
+
+// text_box:
 text_box::text_box() : game_text()
 {
     text.setPosition(10.f, 10.f);
@@ -44,6 +70,20 @@ text_box::text_box() : game_text()
     box.setOutlineColor(BLACK);
     box.setSize({200.f, 35.f});
     box.setPosition(10.f, 10.f);
+}
+
+// private functions:
+
+/* Returns true If the box was clicked */
+bool text_box::check_mouse_click_button(sf::Window &window) 
+{
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && 
+        box.getGlobalBounds().contains((sf::Vector2f) sf::Mouse::getPosition(window)))
+    {
+        return true;
+    }
+    
+    return false;
 }
 
 /* Used for the backwards key */
@@ -58,17 +98,23 @@ void text_box::delete_last_char()
     text.setString(text_string.str());
 }
 
-/* Returns true If the box was clicked */
-bool text_box::check_mouse_click_button(sf::Window &window) 
+/* Will add or remove text from the screen */
+void text_box::input_handler(int typed_char)
 {
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && 
-        box.getGlobalBounds().contains((sf::Vector2f) sf::Mouse::getPosition(window)))
+    if (typed_char != BACKSPACE && typed_char != ENTER && typed_char != ESC)
     {
-        return true;
+        text_string << static_cast<char> (typed_char);
+    }
+    else if (typed_char == BACKSPACE)
+    {
+        if (!text_string.str().empty())
+            delete_last_char();        
     }
     
-    return false;
+    text.setString(text_string.str() + "_");
 }
+
+// public functions:
 
 /* If the box was clicked then it is selected to write on*/
 void text_box::set_selected(sf::RenderWindow &window)
@@ -86,22 +132,6 @@ void text_box::set_selected(sf::RenderWindow &window)
         std::string t = text_string.str();
         text.setString(t);
     }
-}
-
-/* Will add or remove text from the screen */
-void text_box::input_handler(int typed_char)
-{
-    if (typed_char != BACKSPACE && typed_char != ENTER && typed_char != ESC)
-    {
-        text_string << static_cast<char> (typed_char);
-    }
-    else if (typed_char == BACKSPACE)
-    {
-        if (!text_string.str().empty())
-            delete_last_char();        
-    }
-    
-    text.setString(text_string.str() + "_");
 }
 
 bool text_box::is_selected()
