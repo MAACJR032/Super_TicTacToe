@@ -2,7 +2,7 @@
 CC = g++
 
 # Compiler flags
-CXXFLAGS = -std=c++17 -Wall -Wextra -Werror
+CXXFLAGS = -std=c++17 -Wall -Wextra -Werror -I$(SFML_INCLUDE) -I$(UTILS_DIR) -I$(INCLUDE_DIR)
 
 # Delete
 RM = del /f
@@ -11,6 +11,7 @@ RM = del /f
 SRC_DIR = src
 SFML_INCLUDE = SFML_src/include
 SFML_LIB = SFML_src/lib
+INCLUDE_DIR = include
 UTILS_DIR = Utils
 BIN = bin
 
