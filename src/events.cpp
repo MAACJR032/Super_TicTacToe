@@ -1,6 +1,6 @@
-#include "../include/events.hpp"
-#include "../include/TicTacToe.hpp"
-#include "../include/Game.hpp"
+#include "events.hpp"
+#include "TicTacToe.hpp"
+#include "Game.hpp"
 
 /* Returns true if the square was clicked by the mouse. */
 bool button_click(sf::RectangleShape &square, std::unique_ptr<sf::RenderWindow> &window)

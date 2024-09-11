@@ -1,4 +1,4 @@
-#include "../include/TicTacToe.hpp"
+#include "TicTacToe.hpp"
 
 /* Initializes an empty 9x9 board. */
 TicTacToe::TicTacToe()

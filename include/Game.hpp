@@ -5,8 +5,9 @@
 #include <vector>
 #include "TicTacToe.hpp"
 #include "events.hpp"
-#include "../Utils/text.hpp"
+#include "text.hpp"
 #include "buttons.hpp"
+#include "menu.hpp"
 
 enum game_state : uint8_t {
     MENU, NAME_INPUT, PLAYING, WAITING_INPUT, GAME_OVER
@@ -29,11 +30,11 @@ class Game
         sf::RectangleShape Horizontal_line;
         std::vector<sf::RectangleShape> lines;
 
-        // Texts and buttons]
+        // Texts and buttons
         std::pair<std::string, std::string> players;
         text_box players_name_text_box;
         game_text game_over_text;
-        button b;
+        std::unique_ptr<menu> game_menu;
 
         // Initialization functions
         void init_variables();

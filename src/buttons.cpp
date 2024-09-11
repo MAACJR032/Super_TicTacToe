@@ -1,12 +1,13 @@
-#include "../include/buttons.hpp"
+#include "buttons.hpp"
 
 button::button() : game_text()
 {
     button_shape.setFillColor(DARK_GREY);
     button_shape.setOutlineColor(BLACK);
-    button_shape.setSize({300.f, 200.f});
+    button_shape.setSize({300.f, 70.f});
     button_shape.setPosition({300.f, 200.f});
 
+    text.setCharacterSize(40);
     text.setPosition({300.f, 200.f});
 }
 
@@ -29,8 +30,9 @@ bool button::button_clicked(sf::RenderWindow &window)
     return false;
 }
 
-void button::set_button_position(const sf::Vector2f &button_position, const sf::Vector2f &text_position)
+void button::set_button_position(const sf::Vector2f &button_origin, const sf::Vector2f &button_position, const sf::Vector2f &text_position)
 {
+    button_shape.setOrigin(button_origin);
     button_shape.setPosition(button_position);
     text.setPosition(text_position);
 }

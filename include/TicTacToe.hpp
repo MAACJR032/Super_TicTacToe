@@ -3,9 +3,9 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <string>
-#include "../include/events.hpp"
-#include "../include/squares.hpp"
-#include "../Utils/text.hpp"
+#include "events.hpp"
+#include "squares.hpp"
+#include "text.hpp"
 
 using std::unique_ptr;
 

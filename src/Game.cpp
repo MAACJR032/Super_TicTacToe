@@ -1,4 +1,4 @@
-#include "../include/Game.hpp"
+#include "Game.hpp"
 #include <iostream>
 
 void Game::init_variables()
@@ -13,7 +13,7 @@ void Game::init_window()
     video_mode.width = 1680;
     // video_mode.getDesktopMode();
 
-    window = std::make_unique<sf::RenderWindow>(video_mode, "Super Tic Tac Toe", sf::Style::Close); 
+    window = std::make_unique<sf::RenderWindow>(video_mode, "Super Tic Tac Toe", sf::Style::Close);
     window->setFramerateLimit(60);
 }
 
@@ -102,10 +102,9 @@ void Game::state_handler()
     switch (curr_state)
     {
         case MENU:
-            b.set_button_position({670.f, 200.f}, {770.f, 209.f});
-            b.draw(*window);
+            game_menu->draw(*window);
 
-            if (b.button_clicked(*window))
+            if (game_menu->start_button_clicked(*window))
                 curr_state = NAME_INPUT;
             break;
         
@@ -142,12 +141,14 @@ void Game::state_handler()
 }
 
 // Constructor / Destructor
-Game::Game() : b("Start")
+Game::Game()
 {
     init_variables(); // init game objects
     init_window();
     init_board();
     set_board();
+
+    game_menu = std::make_unique<menu>(*window);
 }
 
 Game::~Game()

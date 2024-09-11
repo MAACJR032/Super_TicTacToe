@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <memory>
-#include "../Utils/text.hpp"
+#include "text.hpp"
 
 class TicTacToe;
 enum game_state : uint8_t;
