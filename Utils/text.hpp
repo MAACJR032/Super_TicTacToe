@@ -21,6 +21,7 @@ class game_text
         game_text(std::string s);
 
         void set_text(std::string s);
+        void set_position(const sf::Vector2f origin, const sf::Vector2f position);
         sf::Text get_text();
         virtual void draw(sf::RenderWindow &window);
 };

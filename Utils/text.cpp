@@ -30,6 +30,13 @@ void game_text::set_text(const std::string s)
     text.setString(s);
 }
 
+void game_text::set_position(const sf::Vector2f origin, const sf::Vector2f position)
+{
+    text.setCharacterSize(40);
+    text.setOrigin(origin);
+    text.setPosition(position);
+}
+
 sf::Text game_text::get_text()
 {
     return text;
@@ -70,12 +77,17 @@ void player_turn_text::set_names(std::string player1, std::string player2)
 // text_box:
 text_box::text_box() : game_text()
 {
+    sf::RenderWindow window({900, 1680}, "");
     text.setPosition(10.f, 10.f);
     
     box.setFillColor(TRANSPARENT_BLACK);
     box.setOutlineColor(BLACK);
-    box.setSize({200.f, 35.f});
-    box.setPosition(10.f, 10.f);
+    box.setSize({465.f, 45.f});
+
+    sf::FloatRect bounds = box.getLocalBounds();
+    box.setOrigin(bounds.left + bounds.width / 2.0f, bounds.top + bounds.height / 2.0f);
+    box.setPosition(675.f + 150.f, 420.f);
+    text.setPosition(605.f, 400.f);
 }
 
 // private functions:
