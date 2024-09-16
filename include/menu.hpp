@@ -6,7 +6,7 @@ class menu
 {
     private:
         game_text title;
-        button start, exit;
+        button start, exit, credits;
 
     public:
         menu(sf::RenderWindow &window);
@@ -14,4 +14,5 @@ class menu
         void draw(sf::RenderWindow &window);
         bool start_button_clicked(sf::RenderWindow &window);
         bool exit_button_clicked(sf::RenderWindow &window);
+        bool credits_button_clicked(sf::RenderWindow &window);
 };

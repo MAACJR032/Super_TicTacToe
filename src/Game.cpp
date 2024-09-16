@@ -106,6 +106,12 @@ void Game::state_handler()
 
             if (game_menu->start_button_clicked(*window))
                 curr_state = NAME_INPUT;
+            else if (game_menu->exit_button_clicked(*window))
+                window->close();
+            else if (game_menu->credits_button_clicked(*window))
+            {
+                // open file with credits
+            }
             break;
         
         case NAME_INPUT:
