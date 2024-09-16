@@ -120,17 +120,17 @@ void Game::state_handler()
         case GAME_OVER:
             if (tick.get_victory() == 1)
             {
-                game_over_text.set_text(players.first + " Win!!!");
+                game_over_text.set_text(players.first + " Win!!!", 40);
                 game_over_text.draw(*window);
             }            
             else if (tick.get_victory() == 2)
             {
-                game_over_text.set_text(players.second + " Win!!!");
+                game_over_text.set_text(players.second + " Win!!!", 40);
                 game_over_text.draw(*window);
             }
             else if (tick.get_victory() == 3)
             {
-                game_over_text.set_text("It's a Tie!!!");
+                game_over_text.set_text("It's a Tie!!!", 40);
                 game_over_text.draw(*window);
             }
             break;

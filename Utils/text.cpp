@@ -25,15 +25,14 @@ void game_text::load_font()
 }
 
 // setters / getters
-void game_text::set_text(const std::string s)
+void game_text::set_text(const std::string s, uint32_t char_size)
 {
     text.setString(s);
+    text.setCharacterSize(char_size);
 }
 
-void game_text::set_position(const sf::Vector2f origin, const sf::Vector2f position)
+void game_text::set_position(const sf::Vector2f position)
 {
-    text.setCharacterSize(40);
-    text.setOrigin(origin);
     text.setPosition(position);
 }
 
