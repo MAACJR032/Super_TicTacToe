@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 
-menu::menu(sf::RenderWindow &window)
+main_menu::main_menu(sf::RenderWindow &window)
 {
     title.set_text("SUPER TIC TAC TOE", 50);
 
@@ -26,6 +26,13 @@ menu::menu(sf::RenderWindow &window)
         {half_x - bounds.width / 2.f, half_y / 1.175f + 10.f}
     );
 
+    exit.set_text("EXIT", 40);
+    bounds = exit.get_text().getLocalBounds();
+    exit.set_button_position(
+        {half_x - 150.f, 1.2f * half_y}, 
+        {half_x - bounds.width / 2.f, 1.2f * half_y + 10.f}
+    );
+
     /*
     sf::Text a;
     std::ifstream b;
@@ -37,17 +44,10 @@ menu::menu(sf::RenderWindow &window)
     std::getline(b, s);
 
     std::cout << s << '\n';
-
-    exit.set_text("EXIT", 40);
-    bounds = exit.get_text().getLocalBounds();
-    exit.set_button_position(
-        {half_x - 150.f, 1.2f * half_y}, 
-        {half_x - bounds.width / 2.f, 1.2f * half_y + 10.f}
-    );
     */
 }
 
-void menu::draw(sf::RenderWindow &window)
+void main_menu::draw(sf::RenderWindow &window)
 {
     title.draw(window);
     start.draw(window);
@@ -55,17 +55,51 @@ void menu::draw(sf::RenderWindow &window)
     credits.draw(window);
 }
 
-bool menu::start_button_clicked(sf::RenderWindow &window)
+bool main_menu::start_button_clicked(sf::RenderWindow &window)
 {
     return start.button_clicked(window);
 }
 
-bool menu::exit_button_clicked(sf::RenderWindow &window)
+bool main_menu::exit_button_clicked(sf::RenderWindow &window)
 {
     return exit.button_clicked(window);
 }
 
-bool menu::credits_button_clicked(sf::RenderWindow &window)
+bool main_menu::credits_button_clicked(sf::RenderWindow &window)
 {
     return credits.button_clicked(window);
+}
+
+
+name_input_menu::name_input_menu(sf::RenderWindow &window)
+{
+    float half_x = window.getSize().x / 2.f;
+    float half_y = window.getSize().y / 2.f;
+
+    player_name_box.set_text(
+        "", 30, 
+        {half_x - player_name_box.get_box_sizes().first / 2.1f, half_y / 1.24f}
+    );
+
+    player_name_box.set_box_position({half_x, half_y / 1.175f});
+
+    // Create function to change X to O
+    type_message.set_text("X's Name:", 40);
+    type_message.set_position({half_x - player_name_box.get_box_sizes().first / 1.1f, half_y / 1.275f});
+}
+
+void name_input_menu::change_box_text(const std::string s)
+{
+    player_name_box.set_text(s, 30);
+}
+
+text_box& name_input_menu::get_text_box()
+{
+    return player_name_box;
+}
+
+void name_input_menu::draw(sf::RenderWindow &window)
+{
+    window.draw(type_message.get_text());
+    player_name_box.draw(window);
 }

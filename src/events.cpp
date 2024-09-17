@@ -47,18 +47,16 @@ void mouse_valid_square(std::unique_ptr<sf::RenderWindow> &window, TicTacToe &t)
 
 void handle_square_play(sf::Event &event, std::unique_ptr<sf::RenderWindow> &window, game_state &curr_state, TicTacToe &t)
 {
-    if (event.mouseButton.button == sf::Mouse::Left && curr_state == WAITING_INPUT)
+    if (event.mouseButton.button == sf::Mouse::Left && curr_state == game_state::WAITING_INPUT)
     {
-        curr_state = PLAYING;
+        curr_state = game_state::PLAYING;
         t.play(window);
-        curr_state = WAITING_INPUT;
+        curr_state = game_state::WAITING_INPUT;
 
         status result = t.get_victory();
         
-        if (result == X || result == O)
-            curr_state = GAME_OVER;
-        else if (result == TIE)
-            curr_state = GAME_OVER;
+        if (result == X || result == O || result == TIE)
+            curr_state = game_state::END_SCREEN;
     }
 }
 
@@ -76,7 +74,7 @@ void get_player_name(text_box &t, sf::Event &event, std::pair<std::string, std::
         else
         {
             players.second = t.get_text_string();
-            curr_state = WAITING_INPUT;
+            curr_state = game_state::WAITING_INPUT;
         }
 
         t.clear();

@@ -69,12 +69,15 @@ void Game::update_poll_events()
             // Click on available squares to play
             case sf::Event::MouseButtonPressed:
                 handle_square_play(event, window, curr_state, tick);
-                handle_text_box_sel(players_name_text_box, *window);
+                // handle_text_box_sel(players_name_text_box, *window);
+                handle_text_box_sel(name_input->get_text_box(), *window);
                 break;
                 
             case sf::Event::TextEntered:
-                players_name_text_box.typed(event);
-                get_player_name(players_name_text_box, event, players, curr_state);
+                // players_name_text_box.typed(event);
+                // get_player_name(players_name_text_box, event, players, curr_state);
+                name_input->get_text_box().typed(event);
+                get_player_name(name_input->get_text_box(), event, players, curr_state);
                 
                 if (!players.second.empty())
                     tick.set_players_name(players);
@@ -97,15 +100,15 @@ void Game::render_board()
         window->draw(l);
 }
 
-void Game::state_handler()
+void Game::state_manager()
 {
     switch (curr_state)
     {
-        case MENU:
+        case game_state::MENU:
             game_menu->draw(*window);
 
             if (game_menu->start_button_clicked(*window))
-                curr_state = NAME_INPUT;
+                curr_state = game_state::NAME_INPUT;
             else if (game_menu->exit_button_clicked(*window))
                 window->close();
             else if (game_menu->credits_button_clicked(*window))
@@ -114,16 +117,19 @@ void Game::state_handler()
             }
             break;
         
-        case NAME_INPUT:
-            players_name_text_box.draw(*window);
+        case game_state::NAME_INPUT:
+            // name_input->get_text_box().draw(*window);
+            name_input->draw(*window);
+            
+            // players_name_text_box.draw(*window);
             break;
         
-        case WAITING_INPUT: case PLAYING:
+        case game_state::WAITING_INPUT: case game_state::PLAYING:
             render_board();
             tick.get_text().draw(*window);
             break;
 
-        case GAME_OVER:
+        case game_state::END_SCREEN:
             if (tick.get_victory() == 1)
             {
                 game_over_text.set_text(players.first + " Win!!!", 40);
@@ -154,7 +160,8 @@ Game::Game()
     init_board();
     set_board();
 
-    game_menu = std::make_unique<menu>(*window);
+    game_menu = std::make_unique<main_menu>(*window);
+    name_input = std::make_unique<name_input_menu>(*window);
 }
 
 Game::~Game()
@@ -174,7 +181,7 @@ void Game::update()
     update_poll_events();
 
     // hoever effect
-    if (curr_state == WAITING_INPUT)
+    if (curr_state == game_state::WAITING_INPUT)
         mouse_valid_square(window, tick);
 }
 
@@ -184,7 +191,7 @@ void Game::render()
     window->clear(WHITE); // clear old frame
 
     // Draw game objects
-    state_handler();
+    state_manager();
     
     window->display(); // done drawing
 }

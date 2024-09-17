@@ -31,6 +31,13 @@ void game_text::set_text(const std::string s, uint32_t char_size)
     text.setCharacterSize(char_size);
 }
 
+void game_text::set_text(const std::string s, uint32_t char_size, const sf::Vector2f position)
+{
+    text.setString(s);
+    text.setCharacterSize(char_size);
+    text.setPosition(position);
+}
+
 void game_text::set_position(const sf::Vector2f position)
 {
     text.setPosition(position);
@@ -73,6 +80,7 @@ void player_turn_text::set_names(std::string player1, std::string player2)
     text.setString(player1 + " Turn");
 }
 
+
 // text_box:
 text_box::text_box() : game_text()
 {
@@ -85,8 +93,8 @@ text_box::text_box() : game_text()
 
     sf::FloatRect bounds = box.getLocalBounds();
     box.setOrigin(bounds.left + bounds.width / 2.0f, bounds.top + bounds.height / 2.0f);
-    box.setPosition(675.f + 150.f, 420.f);
-    text.setPosition(605.f, 400.f);
+    // box.setPosition(675.f + 150.f, 420.f);
+    // text.setPosition(605.f, 400.f);
 }
 
 // private functions:
@@ -125,13 +133,23 @@ void text_box::input_handler(int typed_char)
     else if (typed_char == BACKSPACE)
     {
         if (!text_string.str().empty())
-            delete_last_char();        
+            delete_last_char();
     }
     
     text.setString(text_string.str() + "_");
 }
 
 // public functions:
+
+std::pair<float, float> text_box::get_box_sizes()
+{
+    return {box.getGlobalBounds().width, box.getGlobalBounds().height};
+}
+
+void text_box::set_box_position(const sf::Vector2f position)
+{
+    box.setPosition(position);
+}
 
 /* If the box was clicked then it is selected to write on*/
 void text_box::set_selected(sf::RenderWindow &window)

@@ -9,8 +9,8 @@
 #include "buttons.hpp"
 #include "menu.hpp"
 
-enum game_state : uint8_t {
-    MENU, NAME_INPUT, PLAYING, WAITING_INPUT, GAME_OVER
+enum class game_state : uint8_t {
+    MENU, NAME_INPUT, PLAYING, WAITING_INPUT, END_SCREEN
 };
 
 class Game
@@ -23,7 +23,7 @@ class Game
 
         // Game logic
         TicTacToe tick;
-        game_state curr_state = MENU;
+        game_state curr_state = game_state::MENU;
         
         // Game objects
         sf::RectangleShape vertical_line;
@@ -32,9 +32,10 @@ class Game
 
         // Texts and buttons
         std::pair<std::string, std::string> players;
-        text_box players_name_text_box;
+        // text_box players_name_text_box;
         game_text game_over_text;
-        std::unique_ptr<menu> game_menu;
+        std::unique_ptr<main_menu> game_menu;
+        std::unique_ptr<name_input_menu> name_input;
 
         // Initialization functions
         void init_variables();
@@ -45,7 +46,7 @@ class Game
         // Update and render functions
         void update_poll_events();
         void render_board();
-        void state_handler();
+        void state_manager();
     
     public:
         Game();

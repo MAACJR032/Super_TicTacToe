@@ -21,6 +21,7 @@ class game_text
         game_text(std::string s);
 
         void set_text(std::string s, uint32_t char_size);
+        void set_text(const std::string s, uint32_t char_size, const sf::Vector2f position);
         void set_position(const sf::Vector2f position);
         sf::Text get_text();
         virtual void draw(sf::RenderWindow &window);
@@ -54,7 +55,9 @@ class text_box : public game_text
         text_box();
 
         std::string get_text_string();
-        
+
+        std::pair<float, float> get_box_sizes();
+        void set_box_position(const sf::Vector2f position);
         void set_selected(sf::RenderWindow &window);
         bool is_selected();
         void typed(sf::Event input);

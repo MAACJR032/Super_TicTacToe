@@ -5,7 +5,7 @@
 #include "text.hpp"
 
 class TicTacToe;
-enum game_state : uint8_t;
+enum class game_state : uint8_t;
 
 bool button_click(sf::RectangleShape &square, std::unique_ptr<sf::RenderWindow> &window);
 void mouse_valid_square(std::unique_ptr<sf::RenderWindow> &window, TicTacToe &t);
