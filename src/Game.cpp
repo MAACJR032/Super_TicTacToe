@@ -69,18 +69,17 @@ void Game::update_poll_events()
             // Click on available squares to play
             case sf::Event::MouseButtonPressed:
                 handle_square_play(event, window, curr_state, tick);
-                // handle_text_box_sel(players_name_text_box, *window);
                 handle_text_box_sel(name_input->get_text_box(), *window);
                 break;
                 
             case sf::Event::TextEntered:
-                // players_name_text_box.typed(event);
-                // get_player_name(players_name_text_box, event, players, curr_state);
                 name_input->get_text_box().typed(event);
                 get_player_name(name_input->get_text_box(), event, players, curr_state);
                 
                 if (!players.second.empty())
                     tick.set_players_name(players);
+                else if (!players.first.empty())
+                    name_input->change_type_message();                
                 break;
 
             default:
@@ -132,18 +131,18 @@ void Game::state_manager()
         case game_state::END_SCREEN:
             if (tick.get_victory() == 1)
             {
-                game_over_text.set_text(players.first + " Win!!!", 40);
-                game_over_text.draw(*window);
+                end_screen->set_result(players.first + " Win!!!");
+                end_screen->draw(*window);
             }            
             else if (tick.get_victory() == 2)
             {
-                game_over_text.set_text(players.second + " Win!!!", 40);
-                game_over_text.draw(*window);
+                end_screen->set_result(players.second + " Win!!!");
+                end_screen->draw(*window);
             }
             else if (tick.get_victory() == 3)
             {
-                game_over_text.set_text("It's a Tie!!!", 40);
-                game_over_text.draw(*window);
+                end_screen->set_result("It's a Tie!!!");
+                end_screen->draw(*window);
             }
             break;
 
@@ -162,6 +161,7 @@ Game::Game()
 
     game_menu = std::make_unique<main_menu>(*window);
     name_input = std::make_unique<name_input_menu>(*window);
+    end_screen = std::make_unique<end_screen_menu>(*window);
 }
 
 Game::~Game()

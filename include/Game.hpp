@@ -20,6 +20,7 @@ class Game
         std::unique_ptr<sf::RenderWindow> window;
         sf::VideoMode video_mode;
         sf::Event event;
+        std::pair<std::string, std::string> players;
 
         // Game logic
         TicTacToe tick;
@@ -30,12 +31,10 @@ class Game
         sf::RectangleShape Horizontal_line;
         std::vector<sf::RectangleShape> lines;
 
-        // Texts and buttons
-        std::pair<std::string, std::string> players;
-        // text_box players_name_text_box;
-        game_text game_over_text;
+        // Menus
         std::unique_ptr<main_menu> game_menu;
         std::unique_ptr<name_input_menu> name_input;
+        std::unique_ptr<end_screen_menu> end_screen;
 
         // Initialization functions
         void init_variables();

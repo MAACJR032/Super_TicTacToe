@@ -93,6 +93,11 @@ void name_input_menu::change_box_text(const std::string s)
     player_name_box.set_text(s, 30);
 }
 
+void name_input_menu::change_type_message()
+{
+    type_message.set_text("O's Name:", 40);
+}
+
 text_box& name_input_menu::get_text_box()
 {
     return player_name_box;
@@ -102,4 +107,25 @@ void name_input_menu::draw(sf::RenderWindow &window)
 {
     window.draw(type_message.get_text());
     player_name_box.draw(window);
+}
+
+
+end_screen_menu::end_screen_menu(sf::RenderWindow &window)
+{
+    float half_x = window.getSize().x;
+    float half_y = window.getSize().y;
+
+    result_text.set_position({half_x, half_y / 1.175f});
+}
+
+void end_screen_menu::set_result(const std::string result_message)
+{
+    result_text.set_text(result_message, 40);
+}
+
+void end_screen_menu::draw(sf::RenderWindow &window)
+{
+    window.draw(result_text.get_text());
+    // menu_button.draw(window);
+    // play_again.draw(window);
 }

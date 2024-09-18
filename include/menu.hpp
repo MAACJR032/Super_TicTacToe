@@ -28,6 +28,7 @@ class name_input_menu
         name_input_menu(sf::RenderWindow &window);
 
         text_box& get_text_box();
+        void change_type_message();
         void change_box_text(const std::string s);
         void draw(sf::RenderWindow &window);
 };
@@ -36,8 +37,10 @@ class end_screen_menu
 {
     private:
         game_text result_text;
-        button play_again, menu;
+        button play_again, menu_button;
 
     public:
-        end_screen_menu();
+        end_screen_menu(sf::RenderWindow &window);
+        void set_result(const std::string result_message);
+        void draw(sf::RenderWindow &window);
 };
