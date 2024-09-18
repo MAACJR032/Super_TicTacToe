@@ -117,8 +117,6 @@ status TicTacToe::update_grid_tie(int8_t grid)
         return TIE;
     }
 
-    // pode ser redundante por causa de check_win
-    // considerar retornar empty
     return grids[grid - 1].first;
 }
 
@@ -272,4 +270,24 @@ void TicTacToe::iterate_board(void (*func) (Square &s, TicTacToe &t, unique_ptr<
 void TicTacToe::play(unique_ptr<sf::RenderWindow> &window)
 {
     iterate_board(update_square, window);    
+}
+
+void TicTacToe::reset()
+{
+    sf::RectangleShape square;
+    set_square(square);
+
+    for (int i = 0; i < 9; i++)
+    {
+        for (int j = 0; j < 9; j++)
+        {
+            board[i][j].player = EMPTY;
+            board[i][j].rect.setFillColor(BLUE);
+        }
+    }
+
+    grids.assign(grids.size(), {EMPTY, 0});
+    victory = EMPTY;
+    curr_player = X;
+    next_grid = -1;
 }

@@ -63,4 +63,5 @@ class text_box : public game_text
         void typed(sf::Event input);
         void draw(sf::RenderWindow &window) override;
         void clear();
+        void clear_deselect();
 };

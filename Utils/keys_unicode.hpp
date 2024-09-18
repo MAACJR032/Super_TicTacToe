@@ -5,5 +5,3 @@
 #define TAB 9
 #define ENTER 13
 #define ESC 27
-
-// Invalid characters

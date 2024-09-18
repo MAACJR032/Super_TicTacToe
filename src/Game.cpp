@@ -79,7 +79,7 @@ void Game::update_poll_events()
                 if (!players.second.empty())
                     tick.set_players_name(players);
                 else if (!players.first.empty())
-                    name_input->change_type_message();                
+                    name_input->change_type_message("O's Name:");                
                 break;
 
             default:
@@ -117,10 +117,7 @@ void Game::state_manager()
             break;
         
         case game_state::NAME_INPUT:
-            // name_input->get_text_box().draw(*window);
             name_input->draw(*window);
-            
-            // players_name_text_box.draw(*window);
             break;
         
         case game_state::WAITING_INPUT: case game_state::PLAYING:
@@ -131,18 +128,32 @@ void Game::state_manager()
         case game_state::END_SCREEN:
             if (tick.get_victory() == 1)
             {
-                end_screen->set_result(players.first + " Win!!!");
+                end_screen->set_result(players.first + " Win!!!", *window);
                 end_screen->draw(*window);
             }            
             else if (tick.get_victory() == 2)
             {
-                end_screen->set_result(players.second + " Win!!!");
+                end_screen->set_result(players.second + " Win!!!", *window);
                 end_screen->draw(*window);
             }
             else if (tick.get_victory() == 3)
             {
-                end_screen->set_result("It's a Tie!!!");
+                end_screen->set_result("It's a Tie!!!", *window);
                 end_screen->draw(*window);
+            }
+
+            if (end_screen->menu_button_clicked(*window))
+            {
+                players.first.clear();
+                players.second.clear();
+                name_input->change_type_message("X's Name:");
+                name_input->get_text_box().clear_deselect();
+                tick.reset();
+
+                timer.restart();
+                while (timer.getElapsedTime().asMilliseconds() < 200) {};
+
+                curr_state = game_state::MENU;
             }
             break;
 

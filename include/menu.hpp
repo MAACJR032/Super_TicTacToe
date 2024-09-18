@@ -6,7 +6,7 @@ class main_menu
 {
     private:
         game_text title;
-        button start, exit, credits;
+        button start_button, exit_button, credits_button;
 
     public:
         main_menu(sf::RenderWindow &window);
@@ -28,7 +28,7 @@ class name_input_menu
         name_input_menu(sf::RenderWindow &window);
 
         text_box& get_text_box();
-        void change_type_message();
+        void change_type_message(const std::string s);
         void change_box_text(const std::string s);
         void draw(sf::RenderWindow &window);
 };
@@ -37,10 +37,12 @@ class end_screen_menu
 {
     private:
         game_text result_text;
-        button play_again, menu_button;
+        button rematch_button, menu_button;
 
     public:
         end_screen_menu(sf::RenderWindow &window);
-        void set_result(const std::string result_message);
+        void set_result(const std::string result_message, sf::RenderWindow &window);
         void draw(sf::RenderWindow &window);
+        bool menu_button_clicked(sf::RenderWindow &window);
+        bool rematch_button_clicked(sf::RenderWindow &window);
 };

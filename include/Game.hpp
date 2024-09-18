@@ -20,12 +20,13 @@ class Game
         std::unique_ptr<sf::RenderWindow> window;
         sf::VideoMode video_mode;
         sf::Event event;
-        std::pair<std::string, std::string> players;
 
         // Game logic
         TicTacToe tick;
         game_state curr_state = game_state::MENU;
-        
+        std::pair<std::string, std::string> players;
+        sf::Clock timer;
+
         // Game objects
         sf::RectangleShape vertical_line;
         sf::RectangleShape Horizontal_line;

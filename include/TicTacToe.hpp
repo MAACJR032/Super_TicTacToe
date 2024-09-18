@@ -54,4 +54,5 @@ class TicTacToe
 
         void iterate_board(void (*func) (Square &s, TicTacToe &t, unique_ptr<sf::RenderWindow> &window), unique_ptr<sf::RenderWindow> &window);
         void play(unique_ptr<sf::RenderWindow> &window);
+        void reset();
 };

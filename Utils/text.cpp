@@ -207,3 +207,10 @@ void text_box::clear()
     text.setString("_");
     text_string.str("_");
 }
+
+void text_box::clear_deselect()
+{
+    text.setString("");
+    text_string.str("");
+    selected = false;
+}
