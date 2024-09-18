@@ -112,10 +112,10 @@ void name_input_menu::draw(sf::RenderWindow &window)
 
 end_screen_menu::end_screen_menu(sf::RenderWindow &window)
 {
-    float half_x = window.getSize().x;
-    float half_y = window.getSize().y;
+    float half_x = window.getSize().x / 2.f;
+    float half_y = window.getSize().y / 2.f;
 
-    result_text.set_position({half_x, half_y / 1.175f});
+    result_text.set_position({half_x / 3.f, half_y / 10.f});
 }
 
 void end_screen_menu::set_result(const std::string result_message)

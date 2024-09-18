@@ -93,8 +93,6 @@ text_box::text_box() : game_text()
 
     sf::FloatRect bounds = box.getLocalBounds();
     box.setOrigin(bounds.left + bounds.width / 2.0f, bounds.top + bounds.height / 2.0f);
-    // box.setPosition(675.f + 150.f, 420.f);
-    // text.setPosition(605.f, 400.f);
 }
 
 // private functions:
@@ -126,14 +124,18 @@ void text_box::delete_last_char()
 /* Will add or remove text from the screen */
 void text_box::input_handler(int typed_char)
 {
-    if (typed_char != BACKSPACE && typed_char != ENTER && typed_char != ESC)
-    {
-        text_string << static_cast<char> (typed_char);
-    }
-    else if (typed_char == BACKSPACE)
+    if (typed_char == BACKSPACE)
     {
         if (!text_string.str().empty())
             delete_last_char();
+    }
+    else if (typed_char == TAB)
+    {
+        text_string << "    ";
+    }
+    else
+    {
+        text_string << static_cast<char> (typed_char);
     }
     
     text.setString(text_string.str() + "_");
@@ -186,7 +188,7 @@ void text_box::typed(sf::Event input)
     {
         int typed_char = input.text.unicode;
 
-        if (typed_char > 0 && typed_char < 128)
+        if ((typed_char > 31 && typed_char < 128) || (typed_char == ESC) || (typed_char == TAB) || (typed_char == ENTER) || (typed_char == BACKSPACE))
         {
             if (static_cast<int> (text_string.str().length()) <= limit || typed_char == BACKSPACE)
                 input_handler(typed_char);
