@@ -155,6 +155,15 @@ void Game::state_manager()
 
                 curr_state = game_state::MENU;
             }
+            else if (end_screen->rematch_button_clicked(*window))
+            {
+                tick.reset();
+
+                timer.restart();
+                while (timer.getElapsedTime().asMilliseconds() < 200) {};
+
+                curr_state = game_state::WAITING_INPUT;
+            }
             break;
 
         default:

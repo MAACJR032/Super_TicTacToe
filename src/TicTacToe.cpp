@@ -287,6 +287,7 @@ void TicTacToe::reset()
     }
 
     grids.assign(grids.size(), {EMPTY, 0});
+    text.change_curr_player(X);
     victory = EMPTY;
     curr_player = X;
     next_grid = -1;
