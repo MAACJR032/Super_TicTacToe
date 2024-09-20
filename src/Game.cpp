@@ -111,9 +111,12 @@ void Game::state_manager()
             else if (game_menu->exit_button_clicked(*window))
                 window->close();
             else if (game_menu->credits_button_clicked(*window))
-            {
-                // open file with credits
-            }
+                curr_state = game_state::CREDITS;
+            break;
+        
+        case game_state::CREDITS:
+            credits->draw_text(*window);
+            // printf("chegou aqui\n");
             break;
         
         case game_state::NAME_INPUT:
@@ -146,10 +149,11 @@ void Game::state_manager()
             {
                 players.first.clear();
                 players.second.clear();
+
                 name_input->change_type_message("X's Name:");
                 name_input->get_text_box().clear_deselect();
+                
                 tick.reset();
-
                 timer.restart();
                 while (timer.getElapsedTime().asMilliseconds() < 200) {};
 
@@ -158,7 +162,6 @@ void Game::state_manager()
             else if (end_screen->rematch_button_clicked(*window))
             {
                 tick.reset();
-
                 timer.restart();
                 while (timer.getElapsedTime().asMilliseconds() < 200) {};
 
@@ -182,6 +185,7 @@ Game::Game()
     game_menu = std::make_unique<main_menu>(*window);
     name_input = std::make_unique<name_input_menu>(*window);
     end_screen = std::make_unique<end_screen_menu>(*window);
+    credits = std::make_unique<credits_menu>();
 }
 
 Game::~Game()

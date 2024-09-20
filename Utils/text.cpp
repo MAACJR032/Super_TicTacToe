@@ -1,19 +1,21 @@
 #include "text.hpp"
 #include <iostream>
+#include <locale>
+#include <codecvt>
 
-game_text::game_text()
+game_text::game_text() : open_sans(std::make_shared<sf::Font>())
 {   
     load_font();
     
-    text.setFont(open_sans);
+    text.setFont(*open_sans);
     text.setFillColor(BLACK);
 }
 
-game_text::game_text(std::string s)
+game_text::game_text(std::string s) : open_sans(std::make_shared<sf::Font>())
 {   
     load_font();
     
-    text.setFont(open_sans);
+    text.setFont(*open_sans);
     text.setFillColor(BLACK);
     text.setString(s);
 }
@@ -21,7 +23,8 @@ game_text::game_text(std::string s)
 // private function
 void game_text::load_font()
 {
-    open_sans.loadFromFile("Utils/Open_Sans/OpenSans.ttf");
+    if (!open_sans->loadFromFile("Utils/Open_Sans/OpenSans.ttf"))
+        std::cerr << "Could Not Load Font\n";
 }
 
 // setters / getters
@@ -34,6 +37,15 @@ void game_text::set_text(const std::string s, uint32_t char_size)
 void game_text::set_text(const std::string s, uint32_t char_size, const sf::Vector2f position)
 {
     text.setString(s);
+    text.setCharacterSize(char_size);
+    text.setPosition(position);
+}
+
+void game_text::set_text_utf_8(const std::string s, uint32_t char_size, const sf::Vector2f position)
+{
+    // sf::String sfString = sf::String::fromUtf8(s.begin(), s.end());
+
+    text.setString(sf::String::fromUtf8(s.begin(), s.end()));
     text.setCharacterSize(char_size);
     text.setPosition(position);
 }
@@ -53,7 +65,6 @@ void game_text::draw(sf::RenderWindow &window)
 {
     window.draw(text);
 }
-
 
 
 // player_turn_text

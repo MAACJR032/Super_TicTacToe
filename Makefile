@@ -2,7 +2,7 @@
 CC = g++
 
 # Compiler flags
-CXXFLAGS = -std=c++17 -Wall -Wextra -Werror -I$(SFML_INCLUDE) -I$(UTILS_DIR) -I$(INCLUDE_DIR)
+CXXFLAGS = -std=c++17 -Wall -Wextra -Wno-error=implicit-fallthrough -I$(SFML_INCLUDE) -I$(UTILS_DIR) -I$(INCLUDE_DIR)
 
 # Delete
 RM = del /f

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "buttons.hpp"
+#include <vector>
+#include <fstream>
 
 class main_menu
 {
@@ -15,6 +17,19 @@ class main_menu
         bool start_button_clicked(sf::RenderWindow &window);
         bool exit_button_clicked(sf::RenderWindow &window);
         bool credits_button_clicked(sf::RenderWindow &window);
+};
+
+class credits_menu
+{
+    private:
+        button back_button;
+        std::ifstream credits_file;
+        std::vector<game_text> credits_file_text;
+
+    public:
+        credits_menu();
+        void draw_text(sf::RenderWindow &window);
+        bool back_button_clicked(sf::RenderWindow &window);
 };
 
 class name_input_menu

@@ -3,6 +3,7 @@
 #include <SFML/graphics.hpp>
 #include <memory>
 #include <vector>
+#include <fstream>
 #include "TicTacToe.hpp"
 #include "events.hpp"
 #include "text.hpp"
@@ -10,7 +11,7 @@
 #include "menu.hpp"
 
 enum class game_state : uint8_t {
-    MENU, NAME_INPUT, PLAYING, WAITING_INPUT, END_SCREEN
+    MENU, CREDITS, NAME_INPUT, PLAYING, WAITING_INPUT, END_SCREEN
 };
 
 class Game
@@ -34,6 +35,7 @@ class Game
 
         // Menus
         std::unique_ptr<main_menu> game_menu;
+        std::unique_ptr<credits_menu> credits;
         std::unique_ptr<name_input_menu> name_input;
         std::unique_ptr<end_screen_menu> end_screen;
 

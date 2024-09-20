@@ -1,6 +1,7 @@
 #include "menu.hpp"
 #include <iostream>
-#include <fstream>
+#include <locale>
+#include <codecvt>
 
 main_menu::main_menu(sf::RenderWindow &window)
 {
@@ -32,19 +33,6 @@ main_menu::main_menu(sf::RenderWindow &window)
         {half_x - 150.f, 1.2f * half_y}, 
         {half_x - bounds.width / 2.f, 1.2f * half_y + 10.f}
     );
-
-    /*
-    sf::Text a;
-    std::ifstream b;
-    b.open("instructions.txt");
-    if (b.fail())
-        printf("deu erro\n");
-
-    std::string s;
-    std::getline(b, s);
-
-    std::cout << s << '\n';
-    */
 }
 
 void main_menu::draw(sf::RenderWindow &window)
@@ -70,6 +58,40 @@ bool main_menu::credits_button_clicked(sf::RenderWindow &window)
     return credits_button.button_clicked(window);
 }
 
+
+credits_menu::credits_menu()
+{
+    credits_file.open("instructions.txt");
+    
+    if (credits_file.fail())
+        return;
+
+    std::string s;
+    game_text temp;
+
+    float x = 30.f, y = 0.f;
+    credits_file_text.reserve(10);
+    
+    for (int i = 0; std::getline(credits_file, s); i++)
+    {
+        temp.set_text_utf_8(s, 20, {x, y});
+        credits_file_text.push_back(temp);
+        y +=  30.f;
+    }
+    
+    credits_file.close();
+}
+
+void credits_menu::draw_text(sf::RenderWindow &window)
+{
+    for (auto &t : credits_file_text)
+        t.draw(window);
+}
+
+bool credits_menu::back_button_clicked(sf::RenderWindow &window)
+{
+    return back_button.button_clicked(window);
+}
 
 name_input_menu::name_input_menu(sf::RenderWindow &window)
 {

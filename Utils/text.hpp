@@ -12,7 +12,7 @@ class game_text
 {
     protected:
         sf::Text text;
-        sf::Font open_sans;
+        std::shared_ptr<sf::Font> open_sans;
 
         void load_font();
 
@@ -20,8 +20,9 @@ class game_text
         game_text();
         game_text(std::string s);
 
-        void set_text(std::string s, uint32_t char_size);
+        void set_text(const std::string s, uint32_t char_size);
         void set_text(const std::string s, uint32_t char_size, const sf::Vector2f position);
+        void set_text_utf_8(const std::string s, uint32_t char_size, const sf::Vector2f position);
         void set_position(const sf::Vector2f position);
         sf::Text get_text();
         virtual void draw(sf::RenderWindow &window);
