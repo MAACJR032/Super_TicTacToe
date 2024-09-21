@@ -22,12 +22,12 @@ class main_menu
 class credits_menu
 {
     private:
-        button back_button;
+        button return_button;
         std::ifstream credits_file;
         std::vector<game_text> credits_file_text;
 
     public:
-        credits_menu();
+        credits_menu(sf::RenderWindow &window);
         void draw_text(sf::RenderWindow &window);
         bool back_button_clicked(sf::RenderWindow &window);
 };

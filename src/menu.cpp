@@ -59,7 +59,7 @@ bool main_menu::credits_button_clicked(sf::RenderWindow &window)
 }
 
 
-credits_menu::credits_menu()
+credits_menu::credits_menu(sf::RenderWindow &window)
 {
     credits_file.open("instructions.txt");
     
@@ -80,17 +80,32 @@ credits_menu::credits_menu()
     }
     
     credits_file.close();
+
+    float half_x = window.getSize().x / 2.f;
+    float half_y = window.getSize().y / 2.f;
+
+    return_button.set_text("RETURN", 40);
+
+    sf::FloatRect bounds = return_button.get_text().getLocalBounds();
+    bounds = return_button.get_text().getLocalBounds();
+    
+    return_button.set_button_position(
+        {half_x - 150.f, 1.2f * half_y}, 
+        {half_x - bounds.width / 2.f, 1.2f * half_y + 10.f}
+    );
 }
 
 void credits_menu::draw_text(sf::RenderWindow &window)
 {
     for (auto &t : credits_file_text)
         t.draw(window);
+
+    return_button.draw(window);
 }
 
 bool credits_menu::back_button_clicked(sf::RenderWindow &window)
 {
-    return back_button.button_clicked(window);
+    return return_button.button_clicked(window);
 }
 
 name_input_menu::name_input_menu(sf::RenderWindow &window)

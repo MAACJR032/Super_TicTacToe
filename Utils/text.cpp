@@ -43,8 +43,6 @@ void game_text::set_text(const std::string s, uint32_t char_size, const sf::Vect
 
 void game_text::set_text_utf_8(const std::string s, uint32_t char_size, const sf::Vector2f position)
 {
-    // sf::String sfString = sf::String::fromUtf8(s.begin(), s.end());
-
     text.setString(sf::String::fromUtf8(s.begin(), s.end()));
     text.setCharacterSize(char_size);
     text.setPosition(position);

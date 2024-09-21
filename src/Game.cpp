@@ -116,7 +116,14 @@ void Game::state_manager()
         
         case game_state::CREDITS:
             credits->draw_text(*window);
-            // printf("chegou aqui\n");
+            
+            if (credits->back_button_clicked(*window))
+            {
+                timer.restart();
+                while (timer.getElapsedTime().asMilliseconds() < 250) {};
+
+                curr_state = game_state::MENU;
+            }
             break;
         
         case game_state::NAME_INPUT:
@@ -185,7 +192,7 @@ Game::Game()
     game_menu = std::make_unique<main_menu>(*window);
     name_input = std::make_unique<name_input_menu>(*window);
     end_screen = std::make_unique<end_screen_menu>(*window);
-    credits = std::make_unique<credits_menu>();
+    credits = std::make_unique<credits_menu>(*window);
 }
 
 Game::~Game()
