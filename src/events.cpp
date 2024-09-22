@@ -26,7 +26,7 @@ void mouse_update_valid_square(Square &s, TicTacToe &t, std::unique_ptr<sf::Rend
         }
         else if (s.rect.getFillColor() == GREY)
         {
-            s.rect.setFillColor(BLUE);
+            s.rect.setFillColor(WHITE);
         }
     }
 
@@ -34,7 +34,7 @@ void mouse_update_valid_square(Square &s, TicTacToe &t, std::unique_ptr<sf::Rend
     if (!s.rect.getGlobalBounds().contains((sf::Vector2f) sf::Mouse::getPosition(*window)) && 
         s.rect.getFillColor() == GREY)
     {
-        s.rect.setFillColor(BLUE);
+        s.rect.setFillColor(WHITE);
     }
 }
 

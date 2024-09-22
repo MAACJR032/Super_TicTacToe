@@ -4,7 +4,7 @@
 void set_square(sf::RectangleShape &square)
 {
     square.setSize(sf::Vector2f(71.f, 71.f));
-    square.setFillColor(BLUE);
+    square.setFillColor(WHITE);
     square.setOutlineColor(DARK_GREY);
     square.setOutlineThickness(2.f);
 }

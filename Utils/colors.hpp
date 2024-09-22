@@ -10,3 +10,4 @@
 #define RED sf::Color::Red
 #define BLUE sf::Color::Blue
 #define GREEN sf::Color::Green
+#define TRANSPARENT sf::Color::Transparent

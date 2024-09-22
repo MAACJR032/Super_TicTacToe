@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <iostream>
 #include <vector>
 #include <string>
 #include "events.hpp"
@@ -32,6 +33,9 @@ class TicTacToe
         status victory;
         player_turn_text text;
 
+        sf::Texture X_texture;
+        sf::Texture O_texture;
+
         void update_grid_score(int8_t grid, int8_t low_limit_i, int8_t low_limit_j);
         void grid_score(int8_t grid);
         status update_grid_tie(int8_t grid);
@@ -49,7 +53,7 @@ class TicTacToe
         int8_t get_next_grid();
         status get_grid_status(uint8_t index);
         std::vector<std::vector<Square>>& get_board();
-        Square& get_board_at(int i, int j);
+        Square& get_board_at(uint8_t i, uint8_t j);
         status get_victory();
 
         void iterate_board(void (*func) (Square &s, TicTacToe &t, unique_ptr<sf::RenderWindow> &window), unique_ptr<sf::RenderWindow> &window);

@@ -3,8 +3,16 @@
 /* Initializes an empty 9x9 board. */
 TicTacToe::TicTacToe()
 {
+    // sf::RectangleShape square({71.f, 71.f});
     sf::RectangleShape square;
     set_square(square);
+
+    if (!X_texture.loadFromFile("Assets/X_sprite.png") || 
+        !O_texture.loadFromFile("Assets/O_sprite.png"))
+    {
+        std::cerr << "Error loading texture\n";
+        return;
+    }
     
     board.resize(9);
 
@@ -128,7 +136,7 @@ void TicTacToe::update_square(Square &s, unique_ptr<sf::RenderWindow> &window)
        (next_grid == -1 || next_grid == s.grid) && 
        s.player == EMPTY)
     {
-        s.rect.setFillColor((curr_player == X) ? RED : GREEN);
+        s.rect.setTexture((curr_player == X) ? &X_texture : &O_texture);
         
         s.player = curr_player;
         grids[s.grid - 1].second++;
@@ -244,8 +252,11 @@ std::vector<std::vector<Square>>& TicTacToe::get_board()
 }
 
 /* Returns a refference to a square of the board. */
-Square& TicTacToe::get_board_at(int i, int j)
+Square& TicTacToe::get_board_at(uint8_t i, uint8_t j)
 {
+    if (i >= 9 || j >= 9)
+        throw std::out_of_range("index of grid is out of range\n");
+    
     return board[i][j];
 }
 
@@ -282,7 +293,7 @@ void TicTacToe::reset()
         for (int j = 0; j < 9; j++)
         {
             board[i][j].player = EMPTY;
-            board[i][j].rect.setFillColor(BLUE);
+            board[i][j].rect.setFillColor(WHITE);
         }
     }
 
