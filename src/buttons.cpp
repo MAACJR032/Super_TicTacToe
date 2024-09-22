@@ -2,25 +2,29 @@
 
 button::button() : game_text()
 {
-    button_shape.setFillColor(DARK_GREY);
-    button_shape.setOutlineColor(BLACK);
-    button_shape.setSize({300.f, 70.f});
-
-    text.setPosition({300.f, 200.f});
+    m_button_rect.setFillColor(DARK_GREY);
+    m_button_rect.setOutlineColor(BLACK);
+    m_button_rect.setSize({300.f, 70.f});
 }
 
 button::button(std::string s) : game_text(s)
 {
-    button_shape.setFillColor(DARK_GREY);
-    button_shape.setOutlineColor(BLACK);
-    button_shape.setSize({300.f, 70.f});
-    text.setCharacterSize(40);
+    m_button_rect.setFillColor(DARK_GREY);
+    m_button_rect.setOutlineColor(BLACK);
+    m_button_rect.setSize({300.f, 70.f});
+    m_text.setCharacterSize(40);
+}
+
+void button::set_button_position(const sf::Vector2f &button_position, const sf::Vector2f &text_position)
+{
+    m_button_rect.setPosition(button_position);
+    m_text.setPosition(text_position);
 }
 
 bool button::button_clicked(sf::RenderWindow &window)
 {
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && 
-        button_shape.getGlobalBounds().contains((sf::Vector2f) sf::Mouse::getPosition(window)))
+        m_button_rect.getGlobalBounds().contains((sf::Vector2f) sf::Mouse::getPosition(window)))
     {
         return true;
     }
@@ -28,14 +32,8 @@ bool button::button_clicked(sf::RenderWindow &window)
     return false;
 }
 
-void button::set_button_position(const sf::Vector2f &button_position, const sf::Vector2f &text_position)
-{
-    button_shape.setPosition(button_position);
-    text.setPosition(text_position);
-}
-
 void button::draw(sf::RenderWindow &window)
 {
-    window.draw(button_shape);
-    window.draw(text);
+    window.draw(m_button_rect);
+    window.draw(m_text);
 }

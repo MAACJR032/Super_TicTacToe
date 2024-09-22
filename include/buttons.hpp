@@ -1,11 +1,11 @@
-# pragma once
+#pragma once
 
 #include "text.hpp"
 
 class button : public game_text
 {
     private:
-        sf::RectangleShape button_shape;
+        sf::RectangleShape m_button_rect;
         
     public:
         button();

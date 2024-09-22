@@ -2,14 +2,14 @@
 
 #include <SFML/Graphics.hpp>
 #include <memory>
-#include "text.hpp"
+#include "TicTacToe.hpp"
+#include "game_state.hpp"
 
-class TicTacToe;
-enum class game_state : uint8_t;
+sf::Vector2f get_mouse_position(sf::RenderWindow &window);
 
-bool button_click(sf::RectangleShape &square, std::unique_ptr<sf::RenderWindow> &window);
-void mouse_valid_square(std::unique_ptr<sf::RenderWindow> &window, TicTacToe &t);
+void apply_hoever_effect(Square &s, TicTacToe &t, sf::RenderWindow &window);
+void hoever_effect(sf::RenderWindow &window, TicTacToe &t);
 
-void handle_square_play(sf::Event &event, std::unique_ptr<sf::RenderWindow> &window, game_state &curr_state, TicTacToe &t);
+void handle_player_move(sf::Event &event, sf::RenderWindow &window, GameState &curr_state, TicTacToe &t);
 void handle_text_box_sel(text_box &t, sf::RenderWindow &window);
-void get_player_name(text_box &t, sf::Event &event, std::pair<std::string, std::string> &players, game_state &curr_state);
+void get_player_name(text_box &t, sf::Event &event, std::pair<std::string, std::string> &players, GameState &curr_state);

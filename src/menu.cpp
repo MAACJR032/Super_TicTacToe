@@ -5,144 +5,146 @@
 
 main_menu::main_menu(sf::RenderWindow &window)
 {
-    title.set_text("SUPER TIC TAC TOE", 50);
+    m_title.set_text("SUPER TIC TAC TOE", 50);
 
     float half_x = window.getSize().x / 2.f;
     float half_y = window.getSize().y / 2.f;
 
-    sf::FloatRect bounds = title.get_text().getLocalBounds();
-    title.set_position({half_x - bounds.width / 2.f, 2 * bounds.height});
+    sf::FloatRect bounds = m_title.get_text().getLocalBounds();
+    m_title.set_position({half_x - bounds.width / 2.f, 2 * bounds.height});
 
-    start_button.set_text("START", 40);
-    bounds = start_button.get_text().getLocalBounds();
-    start_button.set_button_position(
+    m_start_button.set_text("START", 40);
+    bounds = m_start_button.get_text().getLocalBounds();
+    m_start_button.set_button_position(
         {half_x - 150.f, half_y / 2.f}, 
         {half_x - bounds.width / 2.f, half_y / 2.f + 10.f}
     );
 
-    credits_button.set_text("CREDITS", 40);
-    bounds = credits_button.get_text().getLocalBounds();
-    credits_button.set_button_position(
+    m_credits_button.set_text("CREDITS", 40);
+    bounds = m_credits_button.get_text().getLocalBounds();
+    m_credits_button.set_button_position(
         {half_x - 150.f, half_y / 1.175f}, 
         {half_x - bounds.width / 2.f, half_y / 1.175f + 10.f}
     );
 
-    exit_button.set_text("EXIT", 40);
-    bounds = exit_button.get_text().getLocalBounds();
-    exit_button.set_button_position(
+    m_exit_button.set_text("EXIT", 40);
+    bounds = m_exit_button.get_text().getLocalBounds();
+    m_exit_button.set_button_position(
         {half_x - 150.f, 1.2f * half_y}, 
         {half_x - bounds.width / 2.f, 1.2f * half_y + 10.f}
     );
 }
 
-void main_menu::draw(sf::RenderWindow &window)
-{
-    title.draw(window);
-    start_button.draw(window);
-    exit_button.draw(window);
-    credits_button.draw(window);
-}
-
 bool main_menu::start_button_clicked(sf::RenderWindow &window)
 {
-    return start_button.button_clicked(window);
+    return m_start_button.button_clicked(window);
 }
 
 bool main_menu::exit_button_clicked(sf::RenderWindow &window)
 {
-    return exit_button.button_clicked(window);
+    return m_exit_button.button_clicked(window);
 }
 
 bool main_menu::credits_button_clicked(sf::RenderWindow &window)
 {
-    return credits_button.button_clicked(window);
+    return m_credits_button.button_clicked(window);
+}
+
+void main_menu::draw(sf::RenderWindow &window)
+{
+    m_title.draw(window);
+    m_start_button.draw(window);
+    m_exit_button.draw(window);
+    m_credits_button.draw(window);
 }
 
 
 credits_menu::credits_menu(sf::RenderWindow &window)
 {
-    credits_file.open("instructions.txt");
+    m_credits_file.open("credits.txt");
     
-    if (credits_file.fail())
+    if (m_credits_file.fail())
         return;
 
     std::string s;
     game_text temp;
 
     float x = 30.f, y = 0.f;
-    credits_file_text.reserve(10);
+    m_credits_text.reserve(10);
     
-    for (int i = 0; std::getline(credits_file, s); i++)
+    for (int i = 0; std::getline(m_credits_file, s); i++)
     {
         temp.set_text_utf_8(s, 20, {x, y});
-        credits_file_text.push_back(temp);
+        m_credits_text.push_back(temp);
         y +=  30.f;
     }
     
-    credits_file.close();
+    m_credits_file.close();
 
     float half_x = window.getSize().x / 2.f;
     float half_y = window.getSize().y / 2.f;
 
-    return_button.set_text("RETURN", 40);
+    m_return_button.set_text("RETURN", 40);
 
-    sf::FloatRect bounds = return_button.get_text().getLocalBounds();
-    bounds = return_button.get_text().getLocalBounds();
+    sf::FloatRect bounds = m_return_button.get_text().getLocalBounds();
+    bounds = m_return_button.get_text().getLocalBounds();
     
-    return_button.set_button_position(
+    m_return_button.set_button_position(
         {half_x - 150.f, 1.2f * half_y}, 
         {half_x - bounds.width / 2.f, 1.2f * half_y + 10.f}
     );
 }
 
-void credits_menu::draw_text(sf::RenderWindow &window)
-{
-    for (auto &t : credits_file_text)
-        t.draw(window);
-
-    return_button.draw(window);
-}
 
 bool credits_menu::back_button_clicked(sf::RenderWindow &window)
 {
-    return return_button.button_clicked(window);
+    return m_return_button.button_clicked(window);
 }
+
+void credits_menu::draw(sf::RenderWindow &window)
+{
+    for (auto &t : m_credits_text)
+        t.draw(window);
+
+    m_return_button.draw(window);
+}
+
 
 name_input_menu::name_input_menu(sf::RenderWindow &window)
 {
     float half_x = window.getSize().x / 2.f;
     float half_y = window.getSize().y / 2.f;
 
-    player_name_box.set_text(
+    m_player_name_box.set_text(
         "", 30, 
-        {half_x - player_name_box.get_box_sizes().first / 2.1f, half_y / 1.24f}
+        {half_x - m_player_name_box.get_box_sizes().first / 2.1f, half_y / 1.24f}
     );
 
-    player_name_box.set_box_position({half_x, half_y / 1.175f});
+    m_player_name_box.set_box_position({half_x, half_y / 1.175f});
 
-    type_message.set_text("X's Name:", 40);
-    type_message.set_position({half_x - player_name_box.get_box_sizes().first / 1.1f, half_y / 1.275f});
-}
-
-void name_input_menu::change_box_text(const std::string s)
-{
-    player_name_box.set_text(s, 30);
-}
-
-void name_input_menu::change_type_message(const std::string s)
-{
-    type_message.set_text(s, 40);
+    m_type_message.set_text("X's Name:", 40);
+    m_type_message.set_position({half_x - m_player_name_box.get_box_sizes().first / 1.1f, half_y / 1.275f});
 }
 
 text_box& name_input_menu::get_text_box()
 {
-    return player_name_box;
+    return m_player_name_box;
+}
+
+void name_input_menu::set_box_text(const std::string &s)
+{
+    m_player_name_box.set_text(s, 30);
+}
+
+void name_input_menu::set_type_message(const std::string &s)
+{
+    m_type_message.set_text(s, 40);
 }
 
 void name_input_menu::draw(sf::RenderWindow &window)
 {
-    window.draw(type_message.get_text());
-    player_name_box.draw(window);
+    window.draw(m_type_message.get_text());
+    m_player_name_box.draw(window);
 }
 
 
@@ -151,45 +153,45 @@ end_screen_menu::end_screen_menu(sf::RenderWindow &window)
     float half_x = window.getSize().x / 2.f;
     float half_y = window.getSize().y / 2.f;
 
-    menu_button.set_text("MENU", 40);
-    sf::FloatRect bounds = menu_button.get_text().getLocalBounds();
-    menu_button.set_button_position(
+    m_menu_button.set_text("MENU", 40);
+    sf::FloatRect bounds = m_menu_button.get_text().getLocalBounds();
+    m_menu_button.set_button_position(
         {half_x - 150.f, half_y / 2.f}, 
         {half_x - bounds.width / 2.f, half_y / 2.f + 10.f}
     );
 
-    rematch_button.set_text("REMATCH", 40);
-    bounds = rematch_button.get_text().getLocalBounds();
-    rematch_button.set_button_position(
+    m_rematch_button.set_text("REMATCH", 40);
+    bounds = m_rematch_button.get_text().getLocalBounds();
+    m_rematch_button.set_button_position(
         {half_x - 150.f, half_y / 1.175f}, 
         {half_x - bounds.width / 2.f, half_y / 1.175f + 10.f}
     );
 }
 
-void end_screen_menu::set_result(const std::string result_message, sf::RenderWindow &window)
+void end_screen_menu::set_result(const std::string &result_message, sf::RenderWindow &window)
 {
     float half_x = window.getSize().x / 2.f;
 
-    sf::FloatRect bounds = result_text.get_text().getLocalBounds();
-    result_text.set_text(
+    sf::FloatRect bounds = m_result_text.get_text().getLocalBounds();
+    m_result_text.set_text(
         result_message, 40, 
         {half_x - bounds.width / 2.f, 2 * bounds.height}
     );
 }
 
-void end_screen_menu::draw(sf::RenderWindow &window)
-{
-    window.draw(result_text.get_text());
-    menu_button.draw(window);
-    rematch_button.draw(window);
-}
-
 bool end_screen_menu::menu_button_clicked(sf::RenderWindow &window)
 {
-    return menu_button.button_clicked(window);
+    return m_menu_button.button_clicked(window);
 }
 
 bool end_screen_menu::rematch_button_clicked(sf::RenderWindow &window)
 {
-    return rematch_button.button_clicked(window);
+    return m_rematch_button.button_clicked(window);
+}
+
+void end_screen_menu::draw(sf::RenderWindow &window)
+{
+    window.draw(m_result_text.get_text());
+    m_menu_button.draw(window);
+    m_rematch_button.draw(window);
 }

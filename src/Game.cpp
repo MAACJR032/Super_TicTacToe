@@ -1,85 +1,86 @@
 #include "Game.hpp"
-#include <iostream>
 
 void Game::init_variables()
 {
-    window = nullptr;
-    lines.reserve(4);
+    m_window = nullptr;
+    m_lines.reserve(4);
+    init_board();
+    init_window();
 }
 
 void Game::init_window()
 {
-    video_mode.height = 900;
-    video_mode.width = 1680;
+    m_video_mode.height = 900;
+    m_video_mode.width = 1680;
     // video_mode.getDesktopMode();
 
-    window = std::make_unique<sf::RenderWindow>(video_mode, "Super Tic Tac Toe", sf::Style::Close);
-    window->setFramerateLimit(60);
+    m_window = std::make_unique<sf::RenderWindow>(m_video_mode, "Super Tic Tac Toe", sf::Style::Close);
+    m_window->setFramerateLimit(60);
 }
 
 void Game::init_board()
 {
-    vertical_line.setSize(sf::Vector2f(10.f, 790.f));
-    vertical_line.setFillColor(BLACK);
+    m_vertical_line.setSize(sf::Vector2f(10.f, 790.f));
+    m_vertical_line.setFillColor(BLACK);
 
-    Horizontal_line.setSize(sf::Vector2f(790.f, 10.f));
-    Horizontal_line.setFillColor(BLACK);
+    m_horizontal_line.setSize(sf::Vector2f(790.f, 10.f));
+    m_horizontal_line.setFillColor(BLACK);
 }
 
 /* will set the position of all the 9x9 board. */
-void Game::set_board()
+void Game::set_board_position()
 {
     // seting the board's position
     float x = 500.f, y = 100.f;
     for (int i = 0; i < 9; i++)
         for (int j = 0; j < 9; j++)
-            tick.get_board_at(i, j).rect.setPosition({x + j * 75, y + i * 75});
+            m_tic_tac_toe.get_board_at(i, j).rect.setPosition({x + j * 75, y + i * 75});
     
     // vertical lines
     for (int i = 0; i < 2; i++)
     {
-        vertical_line.setPosition({720 + static_cast<float>(225 * i), y-60});
-        lines.push_back(vertical_line);
+        m_vertical_line.setPosition({720 + static_cast<float>(225 * i), y-60});
+        m_lines.push_back(m_vertical_line);
     }
     
     // horizontal lines
     for (int i = 0; i < 2; i++)
     {
-        Horizontal_line.setPosition({x-55, y + 220 + static_cast<float>(225 * i)});
-        lines.push_back(Horizontal_line);
+        m_horizontal_line.setPosition({x-55, y + 220 + static_cast<float>(225 * i)});
+        m_lines.push_back(m_horizontal_line);
     }
 }
 
 void Game::update_poll_events()
 {
-    while (window->pollEvent(event))
+    while (m_window->pollEvent(m_event))
     {
-        switch (event.type)
+        switch (m_event.type)
         {
             case sf::Event::Closed:
-                window->close();
+                m_window->close();
                 break;
             
             // pressing Esc to close
             case sf::Event::KeyPressed:
-                if (event.key.code == sf::Keyboard::Escape)
-                    window->close();
+                if (m_event.key.code == sf::Keyboard::Escape)
+                    m_window->close();
                 break;
             
             // Click on available squares to play
             case sf::Event::MouseButtonPressed:
-                handle_square_play(event, window, curr_state, tick);
-                handle_text_box_sel(name_input->get_text_box(), *window);
+                handle_player_move(m_event, *m_window, m_current_state, m_tic_tac_toe);
+                handle_text_box_sel(m_name_input_menu->get_text_box(), *m_window);
                 break;
                 
             case sf::Event::TextEntered:
-                name_input->get_text_box().typed(event);
-                get_player_name(name_input->get_text_box(), event, players, curr_state);
+                m_name_input_menu->get_text_box().typed(m_event);
+                get_player_name(m_name_input_menu->get_text_box(), m_event, m_players_name, m_current_state);
                 
-                if (!players.second.empty())
-                    tick.set_players_name(players);
-                else if (!players.first.empty())
-                    name_input->change_type_message("O's Name:");                
+                if (!m_players_name.second.empty())
+                    m_tic_tac_toe.set_players_name(m_players_name);
+                else if (!m_players_name.first.empty())
+                    m_name_input_menu->set_type_message("O's Name:");                
                 break;
 
             default:
@@ -89,90 +90,89 @@ void Game::update_poll_events()
 }
 
 /* Renders all the squares and lines of the board. */
-void Game::render_board()
+void Game::draw_board()
 {
-    for (auto &i : tick.get_board())
-        for (auto &s : i)
-            window->draw(s.rect);
+    for (const auto &i : m_tic_tac_toe.get_board())
+        for (const auto &s : i)
+            m_window->draw(s.rect);
     
-    for (auto &l : lines)
-        window->draw(l);
+    for (const auto &l : m_lines)
+        m_window->draw(l);
 }
 
 void Game::state_manager()
 {
-    switch (curr_state)
+    switch (m_current_state)
     {
-        case game_state::MENU:
-            game_menu->draw(*window);
+        case GameState::MENU:
+            m_game_menu->draw(*m_window);
 
-            if (game_menu->start_button_clicked(*window))
-                curr_state = game_state::NAME_INPUT;
-            else if (game_menu->exit_button_clicked(*window))
-                window->close();
-            else if (game_menu->credits_button_clicked(*window))
-                curr_state = game_state::CREDITS;
+            if (m_game_menu->start_button_clicked(*m_window))
+                m_current_state = GameState::NAME_INPUT;
+            else if (m_game_menu->exit_button_clicked(*m_window))
+                m_window->close();
+            else if (m_game_menu->credits_button_clicked(*m_window))
+                m_current_state = GameState::CREDITS;
             break;
         
-        case game_state::CREDITS:
-            credits->draw_text(*window);
+        case GameState::CREDITS:
+            m_credits_menu->draw(*m_window);
             
-            if (credits->back_button_clicked(*window))
+            if (m_credits_menu->back_button_clicked(*m_window))
             {
-                timer.restart();
-                while (timer.getElapsedTime().asMilliseconds() < 250) {};
+                m_timer.restart();
+                while (m_timer.getElapsedTime().asMilliseconds() < 300) {};
 
-                curr_state = game_state::MENU;
+                m_current_state = GameState::MENU;
             }
             break;
         
-        case game_state::NAME_INPUT:
-            name_input->draw(*window);
+        case GameState::NAME_INPUT:
+            m_name_input_menu->draw(*m_window);
             break;
         
-        case game_state::WAITING_INPUT: case game_state::PLAYING:
-            render_board();
-            tick.get_text().draw(*window);
+        case GameState::WAITING_INPUT: case GameState::PLAYING:
+            draw_board();
+            m_tic_tac_toe.get_text().draw(*m_window);
             break;
 
-        case game_state::END_SCREEN:
-            if (tick.get_victory() == 1)
+        case GameState::END_SCREEN:
+            if (m_tic_tac_toe.get_victory() == Status::X)
             {
-                end_screen->set_result(players.first + " Win!!!", *window);
-                end_screen->draw(*window);
+                m_end_screen_menu->set_result(m_players_name.first + " Win!!!", *m_window);
+                m_end_screen_menu->draw(*m_window);
             }            
-            else if (tick.get_victory() == 2)
+            else if (m_tic_tac_toe.get_victory() == Status::X)
             {
-                end_screen->set_result(players.second + " Win!!!", *window);
-                end_screen->draw(*window);
+                m_end_screen_menu->set_result(m_players_name.second + " Win!!!", *m_window);
+                m_end_screen_menu->draw(*m_window);
             }
-            else if (tick.get_victory() == 3)
+            else if (m_tic_tac_toe.get_victory() == Status::X)
             {
-                end_screen->set_result("It's a Tie!!!", *window);
-                end_screen->draw(*window);
+                m_end_screen_menu->set_result("It's a Tie!!!", *m_window);
+                m_end_screen_menu->draw(*m_window);
             }
 
-            if (end_screen->menu_button_clicked(*window))
+            if (m_end_screen_menu->menu_button_clicked(*m_window))
             {
-                players.first.clear();
-                players.second.clear();
+                m_players_name = {"", ""};
 
-                name_input->change_type_message("X's Name:");
-                name_input->get_text_box().clear_deselect();
+                m_name_input_menu->set_type_message("X's Name:");
+                m_name_input_menu->get_text_box().clear_deselect();
                 
-                tick.reset();
-                timer.restart();
-                while (timer.getElapsedTime().asMilliseconds() < 200) {};
+                m_tic_tac_toe.reset();
+                m_timer.restart();
+                while (m_timer.getElapsedTime().asMilliseconds() < 300) {};
 
-                curr_state = game_state::MENU;
+                m_current_state = GameState::MENU;
             }
-            else if (end_screen->rematch_button_clicked(*window))
+            else if (m_end_screen_menu->rematch_button_clicked(*m_window))
             {
-                tick.reset();
-                timer.restart();
-                while (timer.getElapsedTime().asMilliseconds() < 200) {};
+                m_tic_tac_toe.reset();
+                m_timer.restart();
+                while (m_timer.getElapsedTime().asMilliseconds() < 300) {};
 
-                curr_state = game_state::WAITING_INPUT;
+                m_current_state = GameState::WAITING_INPUT;
             }
             break;
 
@@ -185,24 +185,18 @@ void Game::state_manager()
 Game::Game()
 {
     init_variables(); // init game objects
-    init_window();
-    init_board();
-    set_board();
+    set_board_position();
 
-    game_menu = std::make_unique<main_menu>(*window);
-    name_input = std::make_unique<name_input_menu>(*window);
-    end_screen = std::make_unique<end_screen_menu>(*window);
-    credits = std::make_unique<credits_menu>(*window);
-}
-
-Game::~Game()
-{
+    m_game_menu = std::make_unique<main_menu>(*m_window);
+    m_name_input_menu = std::make_unique<name_input_menu>(*m_window);
+    m_end_screen_menu = std::make_unique<end_screen_menu>(*m_window);
+    m_credits_menu = std::make_unique<credits_menu>(*m_window);
 }
 
 // Accessors
 bool Game::running() const
 {
-    return window->isOpen();
+    return m_window->isOpen();
 }
 
 // Public Functions:
@@ -212,17 +206,17 @@ void Game::update()
     update_poll_events();
 
     // hoever effect
-    if (curr_state == game_state::WAITING_INPUT)
-        mouse_valid_square(window, tick);
+    if (m_current_state == GameState::WAITING_INPUT)
+        hoever_effect(*m_window, m_tic_tac_toe);
 }
 
 /* Will render and display the objects in the screen. */
 void Game::render()
 {
-    window->clear(WHITE); // clear old frame
+    m_window->clear(WHITE); // clear old frame
 
     // Draw game objects
     state_manager();
     
-    window->display(); // done drawing
+    m_window->display(); // done drawing
 }
