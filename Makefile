@@ -2,7 +2,7 @@
 CC = g++
 
 # Compiler flags
-CXXFLAGS = -std=c++17 -Wall -Wextra -Wno-error=implicit-fallthrough -I$(SFML_INCLUDE) -I$(UTILS_DIR) -I$(INCLUDE_DIR)
+CXXFLAGS = -std=c++17 -Wall -Wextra -Wno-error=implicit-fallthrough -I$(SFML_INCLUDE) -I$(UTILS_DIR) -I$(INCLUDE_DIR) -I$(TYPES_DIR)
 
 # Delete
 RM = del /f
@@ -13,6 +13,7 @@ SFML_INCLUDE = SFML_src/include
 SFML_LIB = SFML_src/lib
 INCLUDE_DIR = include
 UTILS_DIR = Utils
+TYPES_DIR = types
 BIN = bin
 
 # Files
