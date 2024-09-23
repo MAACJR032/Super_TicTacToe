@@ -61,6 +61,19 @@ void main_menu::draw(sf::RenderWindow &window)
 
 credits_menu::credits_menu(sf::RenderWindow &window)
 {
+    float half_x = window.getSize().x / 2.f;
+    float half_y = window.getSize().y / 2.f;
+
+    m_return_button.set_text("RETURN", 40);
+
+    sf::FloatRect bounds = m_return_button.get_text().getLocalBounds();
+    bounds = m_return_button.get_text().getLocalBounds();
+    
+    m_return_button.set_button_position(
+        {half_x - 150.f, 1.2f * half_y}, 
+        {half_x - bounds.width / 2.f, 1.2f * half_y + 10.f}
+    );
+
     m_credits_file.open("credits.txt");
     
     if (m_credits_file.fail())
@@ -80,19 +93,6 @@ credits_menu::credits_menu(sf::RenderWindow &window)
     }
     
     m_credits_file.close();
-
-    float half_x = window.getSize().x / 2.f;
-    float half_y = window.getSize().y / 2.f;
-
-    m_return_button.set_text("RETURN", 40);
-
-    sf::FloatRect bounds = m_return_button.get_text().getLocalBounds();
-    bounds = m_return_button.get_text().getLocalBounds();
-    
-    m_return_button.set_button_position(
-        {half_x - 150.f, 1.2f * half_y}, 
-        {half_x - bounds.width / 2.f, 1.2f * half_y + 10.f}
-    );
 }
 
 
