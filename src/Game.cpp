@@ -74,14 +74,17 @@ void Game::update_poll_events()
                 break;
                 
             case sf::Event::TextEntered:
-                m_name_input_menu->get_text_box().typed(m_event);
-                get_player_name(m_name_input_menu->get_text_box(), m_event, m_players_name, m_current_state);
-                
-                if (!m_players_name.second.empty())
-                    m_tic_tac_toe.set_players_name(m_players_name);
-                else if (!m_players_name.first.empty())
-                    m_name_input_menu->set_type_message("O's Name:");                
-                break;
+                if (m_current_state == GameState::NAME_INPUT)
+                {
+                    m_name_input_menu->get_text_box().typed(m_event);
+                    get_player_name(m_name_input_menu->get_text_box(), m_event, m_players_name, m_current_state, *m_window);
+                    
+                    if (!m_players_name.second.empty())
+                        m_tic_tac_toe.set_players_name(m_players_name);
+                    else if (!m_players_name.first.empty())
+                        m_name_input_menu->set_type_message("O's Name:");
+                    break;
+                }
 
             default:
                 break;

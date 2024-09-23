@@ -56,16 +56,38 @@ void handle_text_box_sel(text_box &t, sf::RenderWindow &window)
 }
 
 /* Stores the the player when ENTER is pressed. */
-void get_player_name(text_box &t, sf::Event &event, std::pair<std::string, std::string> &players, GameState &curr_state)
+void get_player_name(text_box &t, sf::Event &event, std::pair<std::string, std::string> &players, GameState &curr_state, sf::RenderWindow &window)
 {
-    if (event.text.unicode == ENTER && t.get_text_string().length() > 0)
-    {
-        if (players.first.empty())
+    if(event.text.unicode != ENTER) return;
+
+    std::string str = t.get_text_string();
+    str.erase(std::remove_if(str.begin(), str.end(), [](unsigned char ch) { return std::isspace(ch); }), str.end());
+    
+    if (str.length() > 0)
+    {   
+        if (players.first.empty() && !t.get_text_string().empty())
             players.first = t.get_text_string();
-        else
+        else if (t.get_text_string() != players.first)
         {
             players.second = t.get_text_string();
             curr_state = GameState::WAITING_INPUT;
+        }
+        else
+        {
+            // TODO:
+            game_text error_message;
+            
+            float half_x = window.getSize().x / 2.f;
+            float half_y = window.getSize().y / 2.f;
+
+            if (t.get_text_string().empty())
+            {
+                error_message.set_text("EMPTY NAME", 40);
+                sf::FloatRect bounds = error_message.get_text().getLocalBounds();
+                
+                error_message.set_position({half_x - bounds.width, half_y / 1.5f});
+                error_message.draw(window);
+            }
         }
 
         t.clear();
