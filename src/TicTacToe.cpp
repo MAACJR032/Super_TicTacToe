@@ -145,9 +145,9 @@ void TicTacToe::update_square(Square &s, sf::RenderWindow &window)
         check_win();
         
         if (m_current_player == Status::X)
-            m_current_player_text.change_curr_player(Status::O);
+            m_current_player_text.set_text(m_players_name.second, 40);
         else
-            m_current_player_text.change_curr_player(Status::X);
+            m_current_player_text.set_text(m_players_name.first, 40);
 
         m_current_player = (m_current_player == Status::X) ? Status::O : Status::X;
         
@@ -216,16 +216,19 @@ void TicTacToe::iterate_board(void (TicTacToe::*func) (Square&, sf::RenderWindow
             (this->*func)(s, window);
 }
 
-void TicTacToe::set_players_name(const std::pair<std::string, std::string> &players)
+void TicTacToe::set_players_name(std::string player1, std::string player2)
 {
-    m_current_player_text.set_names(players.first, players.second);
+    m_players_name.first = player1;
+    m_players_name.second = player2;
+
+    m_current_player_text.set_text(player1, 40);
 }
 
 // Getters:
 
-player_turn_text TicTacToe::get_text() const
+std::pair<std::string, std::string>& TicTacToe::get_players_name()
 {
-    return m_current_player_text;
+    return m_players_name;
 }
 
 /* Returns the next grid that must be played.
@@ -265,6 +268,10 @@ Status TicTacToe::get_victory() const
     return m_victory;
 }
 
+Status TicTacToe::get_current_player()
+{
+    return m_current_player;
+}
 
 // Public Functions:
 
@@ -283,6 +290,11 @@ void TicTacToe::play(sf::RenderWindow &window)
     iterate_board(update_square, window);    
 }
 
+void TicTacToe::draw_current_player_text(sf::RenderWindow &window)
+{
+    m_current_player_text.draw(window);
+}
+
 void TicTacToe::reset()
 {
     sf::RectangleShape square;
@@ -299,7 +311,7 @@ void TicTacToe::reset()
     }
 
     m_grids.assign(m_grids.size(), {Status::EMPTY, 0});
-    m_current_player_text.change_curr_player(Status::X);
+    m_current_player_text.set_text(m_players_name.first, 40);
     m_victory = Status::EMPTY;
     m_current_player = Status::X;
     m_next_grid = -1;

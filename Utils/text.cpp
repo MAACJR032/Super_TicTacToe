@@ -25,14 +25,23 @@ void game_text::load_font()
 }
 
 // setters / getters
+
+void game_text::set_text(const std::string &text)
+{
+    str = text;
+    m_text.setString(text);
+}
+
 void game_text::set_text(const std::string &text, uint32_t char_size)
 {
+    str = text;
     m_text.setString(text);
     m_text.setCharacterSize(char_size);
 }
 
 void game_text::set_text(const std::string &text, uint32_t char_size, const sf::Vector2f position)
 {
+    str = text;
     m_text.setString(text);
     m_text.setCharacterSize(char_size);
     m_text.setPosition(position);
@@ -40,6 +49,7 @@ void game_text::set_text(const std::string &text, uint32_t char_size, const sf::
 
 void game_text::set_text_utf_8(const std::string &text, uint32_t char_size, const sf::Vector2f position)
 {
+    str = text;
     m_text.setString(sf::String::fromUtf8(text.begin(), text.end()));
     m_text.setCharacterSize(char_size);
     m_text.setPosition(position);
@@ -55,35 +65,20 @@ sf::Text game_text::get_text() const
     return m_text;
 }
 
+std::string game_text::get_string() const
+{
+    return str;
+}
+
+std::string& game_text::get_string()
+{
+    return str;
+}
+
 // public
 void game_text::draw(sf::RenderWindow &window)
 {
     window.draw(m_text);
-}
-
-
-// player_turn_text
-player_turn_text::player_turn_text() : game_text()
-{
-    m_text.setPosition(15.f, 15.f);
-}
-
-/* set the name of both players */
-void player_turn_text::set_names(std::string player1, std::string player2)
-{
-    m_player1 = player1;
-    m_player2 = player2;
-
-    m_text.setString(player1 + " Turn");
-}
-
-/* Changes the name of the player after each play*/
-void player_turn_text::change_curr_player(Status player)
-{
-    if (player == Status::X)
-        m_text.setString(m_player1 + " Turn");
-    else
-        m_text.setString(m_player2 + " Turn");
 }
 
 
@@ -125,7 +120,7 @@ void text_box::delete_last_char()
 }
 
 /* Will add or remove text from the screen */
-void text_box::input_handler(int typed_char)
+void text_box::input_handler(uint32_t typed_char)
 {
     if (typed_char == BACKSPACE)
     {
@@ -171,16 +166,14 @@ void text_box::set_selected(sf::RenderWindow &window)
 }
 
 /* If the key was typed it will handle the input */
-void text_box::typed(sf::Event &input)
+void text_box::typed(uint32_t unicode)
 {
     if (m_selected)
     {
-        int typed_char = input.text.unicode;
-
-        if ((typed_char > 31 && typed_char < 128) || (typed_char == ESC) || (typed_char == TAB) || (typed_char == ENTER) || (typed_char == BACKSPACE))
+        if ((unicode > 31 && unicode < 128) || (unicode == TAB) || (unicode == BACKSPACE))
         {
-            if (static_cast<int> (m_text_string.str().length()) <= m_limit || typed_char == BACKSPACE)
-                input_handler(typed_char);
+            if (static_cast<int> (m_text_string.str().length()) < m_limit || unicode == BACKSPACE)
+                input_handler(unicode);
         }
     }
 }
@@ -209,7 +202,7 @@ void text_box::draw(sf::RenderWindow &window)
 void text_box::clear()
 {
     m_text.setString("_");
-    m_text_string.str("_");
+    m_text_string.str("");
 }
 
 void text_box::clear_deselect()

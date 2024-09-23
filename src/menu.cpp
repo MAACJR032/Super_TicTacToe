@@ -3,12 +3,12 @@
 #include <locale>
 #include <codecvt>
 
-main_menu::main_menu(sf::RenderWindow &window)
+main_menu::main_menu(sf::Vector2u window_size)
 {
     m_title.set_text("SUPER TIC TAC TOE", 50);
 
-    float half_x = window.getSize().x / 2.f;
-    float half_y = window.getSize().y / 2.f;
+    float half_x = window_size.x / 2.f;
+    float half_y = window_size.y / 2.f;
 
     sf::FloatRect bounds = m_title.get_text().getLocalBounds();
     m_title.set_position({half_x - bounds.width / 2.f, 2 * bounds.height});
@@ -59,10 +59,10 @@ void main_menu::draw(sf::RenderWindow &window)
 }
 
 
-credits_menu::credits_menu(sf::RenderWindow &window)
+credits_menu::credits_menu(sf::Vector2u window_size)
 {
-    float half_x = window.getSize().x / 2.f;
-    float half_y = window.getSize().y / 2.f;
+    float half_x = window_size.x / 2.f;
+    float half_y = window_size.y / 2.f;
 
     m_return_button.set_text("RETURN", 40);
 
@@ -110,10 +110,10 @@ void credits_menu::draw(sf::RenderWindow &window)
 }
 
 
-name_input_menu::name_input_menu(sf::RenderWindow &window)
+name_input_menu::name_input_menu(sf::Vector2u window_size)
 {
-    float half_x = window.getSize().x / 2.f;
-    float half_y = window.getSize().y / 2.f;
+    float half_x = window_size.x / 2.f;
+    float half_y = window_size.y / 2.f;
 
     m_player_name_box.set_text(
         "", 30, 
@@ -129,6 +129,16 @@ name_input_menu::name_input_menu(sf::RenderWindow &window)
 text_box& name_input_menu::get_text_box()
 {
     return m_player_name_box;
+}
+
+bool name_input_menu::is_player1_turn() const
+{
+    return player1_turn;
+}
+
+void name_input_menu::set_player2_turn()
+{
+    player1_turn = false;
 }
 
 void name_input_menu::set_box_text(const std::string &s)
@@ -148,10 +158,10 @@ void name_input_menu::draw(sf::RenderWindow &window)
 }
 
 
-end_screen_menu::end_screen_menu(sf::RenderWindow &window)
+end_screen_menu::end_screen_menu(sf::Vector2u window_size)
 {
-    float half_x = window.getSize().x / 2.f;
-    float half_y = window.getSize().y / 2.f;
+    float half_x = window_size.x / 2.f;
+    float half_y = window_size.y / 2.f;
 
     m_menu_button.set_text("MENU", 40);
     sf::FloatRect bounds = m_menu_button.get_text().getLocalBounds();
@@ -168,9 +178,9 @@ end_screen_menu::end_screen_menu(sf::RenderWindow &window)
     );
 }
 
-void end_screen_menu::set_result(const std::string &result_message, sf::RenderWindow &window)
+void end_screen_menu::set_result(const std::string &result_message, sf::Vector2u window_size)
 {
-    float half_x = window.getSize().x / 2.f;
+    float half_x = window_size.x / 2.f;
 
     sf::FloatRect bounds = m_result_text.get_text().getLocalBounds();
     m_result_text.set_text(

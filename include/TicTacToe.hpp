@@ -18,7 +18,8 @@ class TicTacToe
         int8_t m_next_grid = -1;
         Status m_current_player = Status::X;
         Status m_victory;
-        player_turn_text m_current_player_text;
+        std::pair<std::string, std::string> m_players_name;
+        game_text m_current_player_text;
 
         sf::Texture X_texture;
         sf::Texture O_texture;
@@ -33,16 +34,18 @@ class TicTacToe
     public:
         TicTacToe();
 
-        void set_players_name(const std::pair<std::string, std::string> &players);
+        void set_players_name(std::string player1, std::string player2);
         
-        player_turn_text get_text() const;
+        std::pair<std::string, std::string>& get_players_name();
         int8_t get_next_grid() const;
         Status get_grid_status(uint8_t index) const;
         std::vector<std::vector<Square>>& get_board();
         Square& get_board_at(uint8_t i, uint8_t j);
         Status get_victory() const;
+        Status get_current_player();
 
         void iterate_board(void (*func) (Square &s, TicTacToe &t, sf::RenderWindow &window), sf::RenderWindow &window);
         void play(sf::RenderWindow &window);
+        void draw_current_player_text(sf::RenderWindow &window);
         void reset();
 };
