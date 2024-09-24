@@ -1,6 +1,6 @@
 #include "TicTacToe.hpp"
 
-/* Initializes an status::empty 9x9 board. */
+/* Initializes an an EMPTY 9x9 board. */
 TicTacToe::TicTacToe()
 {
     // Load textures
@@ -24,7 +24,7 @@ TicTacToe::TicTacToe()
     sf::RectangleShape square;
     set_square(square);
 
-    m_board.reserve(9);
+    m_board.resize(9);
 
     for (int i = 0; i < 9; i++)
     {
@@ -42,9 +42,6 @@ TicTacToe::TicTacToe()
 
     m_grids.resize(9, {Status::EMPTY, 0});
 }
-
-
-// Private Functions:
 
 /* Checks all the cases where the player may have scored in a grid. */
 void TicTacToe::update_grid_score(int8_t grid, int8_t low_limit_i, int8_t low_limit_j)
