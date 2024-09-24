@@ -57,3 +57,4 @@ $(BIN_INT)/%.o: $(UTILS_DIR)/%.cpp | $(BIN_INT)
 clean:
 	if exist $(BIN_DIR)\$(EXE).exe $(RM) $(BIN_DIR)\$(EXE).exe
 	for %%f in ($(BIN_INT)\*.o) do $(RM) %%f
+	for /r $(BIN_INT) %%f in (*.o) do $(RM) "%%f"
