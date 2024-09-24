@@ -1,5 +1,6 @@
 #include "text.hpp"
 
+/* Loads and sets the font and color of the text. */
 game_text::game_text() : m_open_sans(std::make_shared<sf::Font>())
 {   
     load_font();
@@ -8,6 +9,7 @@ game_text::game_text() : m_open_sans(std::make_shared<sf::Font>())
     m_text.setFillColor(BLACK);
 }
 
+/* Loads and sets the font and sets the text and it's color. */
 game_text::game_text(std::string text) : m_open_sans(std::make_shared<sf::Font>())
 {   
     load_font();
@@ -17,7 +19,7 @@ game_text::game_text(std::string text) : m_open_sans(std::make_shared<sf::Font>(
     m_text.setString(text);
 }
 
-// private function
+/* Finds the path of the font and loads it. */
 void game_text::load_font()
 {
     std::string exe_dir = get_executable_path();
@@ -30,14 +32,13 @@ void game_text::load_font()
     }
 }
 
-// setters / getters
-
 void game_text::set_text(const std::string &text)
 {
     str = text;
     m_text.setString(text);
 }
 
+/* Sets the text and the character size. */
 void game_text::set_text(const std::string &text, uint32_t char_size)
 {
     str = text;
@@ -45,6 +46,7 @@ void game_text::set_text(const std::string &text, uint32_t char_size)
     m_text.setCharacterSize(char_size);
 }
 
+/* Sets the text, the character size and the position of the text. */
 void game_text::set_text(const std::string &text, uint32_t char_size, const sf::Vector2f position)
 {
     str = text;
@@ -53,6 +55,7 @@ void game_text::set_text(const std::string &text, uint32_t char_size, const sf::
     m_text.setPosition(position);
 }
 
+/* Sets the text (for utf-8 chars), the character size and the position of the text. */
 void game_text::set_text_utf_8(const std::string &text, uint32_t char_size, const sf::Vector2f position)
 {
     str = text;
@@ -81,17 +84,16 @@ std::string& game_text::get_string()
     return str;
 }
 
-// public
+/* Draws the text. */
 void game_text::draw(sf::RenderWindow &window)
 {
     window.draw(m_text);
 }
 
 
-// text_box:
+/* Sets the size and color of the box. */
 text_box::text_box() : game_text()
 {
-    m_text.setPosition(10.f, 10.f);
     m_box.setFillColor(TRANSPARENT_BLACK);
     m_box.setSize({465.f, 45.f});
 
@@ -99,9 +101,7 @@ text_box::text_box() : game_text()
     m_box.setOrigin(bounds.left + bounds.width / 2.0f, bounds.top + bounds.height / 2.0f);
 }
 
-// private functions:
-
-/* Returns true If the box was clicked */
+/* Returns true if the box was clicked. */
 bool text_box::check_box_selected(sf::RenderWindow &window) 
 {
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && 
@@ -113,7 +113,7 @@ bool text_box::check_box_selected(sf::RenderWindow &window)
     return false;
 }
 
-/* Used for the backwards key */
+/* Used for the backwards key. */
 void text_box::delete_last_char()
 {
     std::string t = m_text_string.str();
@@ -125,7 +125,7 @@ void text_box::delete_last_char()
     m_text.setString(m_text_string.str());
 }
 
-/* Will add or remove text from the screen */
+/* Will handle the keys pressed. */
 void text_box::input_handler(uint32_t typed_char)
 {
     if (typed_char == BACKSPACE)
@@ -145,15 +145,12 @@ void text_box::input_handler(uint32_t typed_char)
     m_text.setString(m_text_string.str() + "_");
 }
 
-// public functions:
-
-
 void text_box::set_box_position(const sf::Vector2f position)
 {
     m_box.setPosition(position);
 }
 
-/* If the box was clicked then it is selected to write on*/
+/* If the box was clicked then it is selected to write on. */
 void text_box::set_selected(sf::RenderWindow &window)
 {
     if (check_box_selected(window))
@@ -171,7 +168,7 @@ void text_box::set_selected(sf::RenderWindow &window)
     }
 }
 
-/* If the key was typed it will handle the input */
+/* If the key was typed it will handle the input. */
 void text_box::typed(uint32_t unicode)
 {
     if (m_selected)
@@ -184,6 +181,7 @@ void text_box::typed(uint32_t unicode)
     }
 }
 
+/* Returns true if the box is selected to write on. */
 bool text_box::is_selected()
 {
     return m_selected;
@@ -199,18 +197,21 @@ std::pair<float, float> text_box::get_box_sizes() const
     return {m_box.getGlobalBounds().width, m_box.getGlobalBounds().height};
 }
 
+/* Draws the box and the text. */
 void text_box::draw(sf::RenderWindow &window)
 {
     window.draw(m_box);
     window.draw(m_text);
 }
 
+/* Clears the text written on the box. */
 void text_box::clear()
 {
     m_text.setString("_");
     m_text_string.str("");
 }
 
+/* Clears the text written on the box and deselects. */
 void text_box::clear_deselect()
 {
     m_text.setString("");

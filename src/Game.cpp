@@ -2,7 +2,7 @@
 
 static const sf::Vector2u s_window_size(1680, 900);
 
-// Constructor
+/* Constructor */
 Game::Game() : m_window(sf::VideoMode(1680, 900), "Super Tic Tac Toe", sf::Style::Close), 
                m_game_menu(s_window_size), m_credits_menu(s_window_size), m_name_input_menu(s_window_size),
                m_end_screen_menu(s_window_size)
@@ -19,7 +19,7 @@ Game::Game() : m_window(sf::VideoMode(1680, 900), "Super Tic Tac Toe", sf::Style
     set_board_position();
 }
 
-/* will set the position of all the 9x9 board. */
+/* will set the position of all the board objects. */
 void Game::set_board_position()
 {
     // seting the board's position
@@ -89,7 +89,7 @@ void Game::update_poll_events()
     }
 }
 
-/* Renders all the squares and lines of the board. */
+/* Draws all the squares and lines of the board. */
 void Game::draw_board()
 {
     for (const auto &i : m_tic_tac_toe.get_board())
@@ -100,6 +100,7 @@ void Game::draw_board()
         m_window.draw(l);
 }
 
+/* Draws and handle events from the current game state. */
 void Game::state_manager()
 {
     switch (m_current_state)
@@ -191,11 +192,11 @@ bool Game::running() const
 
 // Public Functions:
 
+/* Update poll events and hoever effect. */
 void Game::update()
 {
     update_poll_events();
 
-    // hoever effect
     if (m_current_state == GameState::WAITING_INPUT)
         hoever_effect(m_window, m_tic_tac_toe);
 }

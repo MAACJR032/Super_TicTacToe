@@ -3,16 +3,7 @@
 /* Initializes an status::empty 9x9 board. */
 TicTacToe::TicTacToe()
 {
-    sf::RectangleShape square;
-    set_square(square);
-    
-
-    // if (!X_texture.loadFromFile(exe_dir + "/../Assets/X_sprite.png") || 
-    //     !O_texture.loadFromFile(exe_dir + "/../Assets/O_sprite.png"))
-    // {
-    //     std::cerr << "Error loading textures\n";
-    //     return;
-    // }
+    // Load textures
     std::string exe_dir = get_executable_path();
 
     std::string pngPath = exe_dir + "Assets/X_sprite.png";
@@ -29,7 +20,11 @@ TicTacToe::TicTacToe()
         return;
     }
     
-    m_board.resize(9);
+    // init board
+    sf::RectangleShape square;
+    set_square(square);
+
+    m_board.reserve(9);
 
     for (int i = 0; i < 9; i++)
     {
@@ -54,7 +49,7 @@ TicTacToe::TicTacToe()
 /* Checks all the cases where the player may have scored in a grid. */
 void TicTacToe::update_grid_score(int8_t grid, int8_t low_limit_i, int8_t low_limit_j)
 {
-    // Checking the lines
+    // Lines
     for (int i = low_limit_i; i < low_limit_i + 3; i++)
     {
         if (m_board[i][low_limit_j].player == m_current_player && 
@@ -66,7 +61,7 @@ void TicTacToe::update_grid_score(int8_t grid, int8_t low_limit_i, int8_t low_li
         }
     }
 
-    // Checking the columns
+    // Ccolumns
     for (int j = low_limit_j; j < low_limit_j + 3; j++)
     {
         if (m_board[low_limit_i][j].player == m_current_player && 
@@ -78,7 +73,7 @@ void TicTacToe::update_grid_score(int8_t grid, int8_t low_limit_i, int8_t low_li
         }
     }
     
-    // Checking the Diagonals
+    // Diagonals
     if (m_board[low_limit_i][low_limit_j].player == m_current_player && 
         m_board[low_limit_i + 1][low_limit_j + 1].player == m_current_player && 
         m_board[low_limit_i + 2][low_limit_j + 2].player == m_current_player)
@@ -232,6 +227,7 @@ void TicTacToe::iterate_board(void (TicTacToe::*func) (Square&, sf::RenderWindow
             (this->*func)(s, window);
 }
 
+/* Sets the name of both players. */
 void TicTacToe::set_players_name(std::string player1, std::string player2)
 {
     m_players_name.first = player1;
@@ -240,8 +236,7 @@ void TicTacToe::set_players_name(std::string player1, std::string player2)
     m_current_player_text.set_text(player1, 40);
 }
 
-// Getters:
-
+/* Returns a reference to players_name pair. */
 std::pair<std::string, std::string>& TicTacToe::get_players_name()
 {
     return m_players_name;
@@ -279,17 +274,17 @@ Square& TicTacToe::get_board_at(uint8_t i, uint8_t j)
     return m_board[i][j];
 }
 
+/* Returns the current result of the game. */
 Status TicTacToe::get_victory() const
 {
     return m_victory;
 }
 
+/* Returns whose player is the current turn. */
 Status TicTacToe::get_current_player()
 {
     return m_current_player;
 }
-
-// Public Functions:
 
 /* will iterate the board and call func for each square. */
 void TicTacToe::iterate_board(void (*func) (Square &s, TicTacToe &t, sf::RenderWindow &window), sf::RenderWindow &window)
@@ -300,12 +295,13 @@ void TicTacToe::iterate_board(void (*func) (Square &s, TicTacToe &t, sf::RenderW
             func(s, *this, window);
 }
 
-/* Will iterate through the board and call update_square to handle the player's play. */
+/* Will iterate through the board and call update_square to handle the player's move. */
 void TicTacToe::play(sf::RenderWindow &window)
 {
     iterate_board(update_square, window);    
 }
 
+/* Draws the text of whose player is the turn. */
 void TicTacToe::draw_current_player_text(sf::RenderWindow &window)
 {
     m_current_player_text.draw(window);

@@ -1,5 +1,6 @@
 #include "path_utils.hpp"
 
+/* Returns the assets folder path. */
 std::string get_executable_path()
 {
     wchar_t buffer[MAX_PATH];
@@ -10,7 +11,8 @@ std::string get_executable_path()
     std::string path(wstr.begin(), wstr.end());
 
     std::string::size_type pos = path.find_last_of("\\/");
-    std::string exeDir = path.substr(0, pos);
-    std::string assetsDir = exeDir + "/../assets/"; // Get the assets folder path
-    return assetsDir;
+    std::string exe_dir = path.substr(0, pos);
+    std::string assets_dir = exe_dir + "/../assets/";
+    
+    return assets_dir;
 }

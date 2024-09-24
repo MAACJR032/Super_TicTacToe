@@ -1,5 +1,6 @@
 #include "menu.hpp"
 
+/* Sets the position of the title and all the buttons. */
 main_menu::main_menu(sf::Vector2u window_size)
 {
     m_title.set_text("SUPER TIC TAC TOE", 50);
@@ -32,21 +33,25 @@ main_menu::main_menu(sf::Vector2u window_size)
     );
 }
 
+/* Returns true if the start button was clicked.*/
 bool main_menu::start_button_clicked(sf::RenderWindow &window)
 {
     return m_start_button.button_clicked(window);
 }
 
+/* Returns true if the exit button was clicked.*/
 bool main_menu::exit_button_clicked(sf::RenderWindow &window)
 {
     return m_exit_button.button_clicked(window);
 }
 
+/* Returns true if the credits button was clicked.*/
 bool main_menu::credits_button_clicked(sf::RenderWindow &window)
 {
     return m_credits_button.button_clicked(window);
 }
 
+/* Draws all the buttons and the game title.*/
 void main_menu::draw(sf::RenderWindow &window)
 {
     m_title.draw(window);
@@ -56,6 +61,7 @@ void main_menu::draw(sf::RenderWindow &window)
 }
 
 
+/* Sets the position of the text and all the buttons. */
 credits_menu::credits_menu(sf::Vector2u window_size)
 {
     float half_x = window_size.x / 2.f;
@@ -93,11 +99,13 @@ credits_menu::credits_menu(sf::Vector2u window_size)
 }
 
 
+/* Returns true if the back button was clicked.*/
 bool credits_menu::back_button_clicked(sf::RenderWindow &window)
 {
     return m_return_button.button_clicked(window);
 }
 
+/* Draws all the back button and the text.*/
 void credits_menu::draw(sf::RenderWindow &window)
 {
     for (auto &t : m_credits_text)
@@ -107,6 +115,7 @@ void credits_menu::draw(sf::RenderWindow &window)
 }
 
 
+/* Sets the position of the text box and the type message. */
 name_input_menu::name_input_menu(sf::Vector2u window_size)
 {
     float half_x = window_size.x / 2.f;
@@ -123,31 +132,37 @@ name_input_menu::name_input_menu(sf::Vector2u window_size)
     m_type_message.set_position({half_x - m_player_name_box.get_box_sizes().first / 1.1f, half_y / 1.275f});
 }
 
+/* Returns a reference to text_box. */ 
 text_box& name_input_menu::get_text_box()
 {
     return m_player_name_box;
 }
 
+/* Returns true if it is player 1's turn to write their name. */
 bool name_input_menu::is_player1_turn() const
 {
     return player1_turn;
 }
 
+/* Wil set player 2's turn to write their name. */
 void name_input_menu::set_player2_turn()
 {
     player1_turn = false;
 }
 
+/* Sets the text of the text_box. */
 void name_input_menu::set_box_text(const std::string &s)
 {
     m_player_name_box.set_text(s, 30);
 }
 
+/* Sets the message of which player turn is to type the name. */
 void name_input_menu::set_type_message(const std::string &s)
 {
     m_type_message.set_text(s, 40);
 }
 
+/* Draws the type message and the text_box. */
 void name_input_menu::draw(sf::RenderWindow &window)
 {
     window.draw(m_type_message.get_text());
@@ -155,6 +170,7 @@ void name_input_menu::draw(sf::RenderWindow &window)
 }
 
 
+/* Sets the position of all the buttons. */
 end_screen_menu::end_screen_menu(sf::Vector2u window_size)
 {
     float half_x = window_size.x / 2.f;
@@ -175,6 +191,7 @@ end_screen_menu::end_screen_menu(sf::Vector2u window_size)
     );
 }
 
+/* Sets the position of the result message. */
 void end_screen_menu::set_result(const std::string &result_message, sf::Vector2u window_size)
 {
     float half_x = window_size.x / 2.f;
@@ -186,16 +203,19 @@ void end_screen_menu::set_result(const std::string &result_message, sf::Vector2u
     );
 }
 
+/* Returns true if the menu button was clicked.*/
 bool end_screen_menu::menu_button_clicked(sf::RenderWindow &window)
 {
     return m_menu_button.button_clicked(window);
 }
 
+/* Returns true if the rematch button was clicked.*/
 bool end_screen_menu::rematch_button_clicked(sf::RenderWindow &window)
 {
     return m_rematch_button.button_clicked(window);
 }
 
+/* Draws all the buttons and the result text.*/
 void end_screen_menu::draw(sf::RenderWindow &window)
 {
     window.draw(m_result_text.get_text());

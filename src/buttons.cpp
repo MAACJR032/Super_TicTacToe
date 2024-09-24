@@ -15,12 +15,14 @@ button::button(std::string s) : game_text(s)
     m_text.setCharacterSize(40);
 }
 
+/* Set the the button and it's text position on the window. */
 void button::set_button_position(const sf::Vector2f &button_position, const sf::Vector2f &text_position)
 {
     m_button_rect.setPosition(button_position);
     m_text.setPosition(text_position);
 }
 
+/* Returns true if the button was clicked. */
 bool button::button_clicked(sf::RenderWindow &window)
 {
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && 
@@ -32,6 +34,7 @@ bool button::button_clicked(sf::RenderWindow &window)
     return false;
 }
 
+/* Draw the button and it's text. */
 void button::draw(sf::RenderWindow &window)
 {
     window.draw(m_button_rect);
