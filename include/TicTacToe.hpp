@@ -5,7 +5,8 @@
 #include <vector>
 #include <string>
 #include "squares.hpp"
-#include "text.hpp"
+#include "Utils/Text/text.hpp"
+#include "Utils/Path/path_utils.hpp"
 
 using std::unique_ptr;
 

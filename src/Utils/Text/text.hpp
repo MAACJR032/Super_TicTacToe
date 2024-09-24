@@ -6,9 +6,10 @@
 #include <sstream>
 #include <memory>
 
-#include "colors.hpp"
+#include "../colors.hpp"
 #include "keys_unicode.hpp"
-#include "status.hpp"
+#include "types/status.hpp"
+#include "Utils/Path/path_utils.hpp"
 
 class game_text
 {

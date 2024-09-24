@@ -1,6 +1,6 @@
 #pragma once
 
-#include "text.hpp"
+#include "Utils/Text/text.hpp"
 
 class button : public game_text
 {

@@ -20,8 +20,14 @@ game_text::game_text(std::string text) : m_open_sans(std::make_shared<sf::Font>(
 // private function
 void game_text::load_font()
 {
-    if (!m_open_sans->loadFromFile("Utils/Open_Sans/OpenSans.ttf"))
+    std::string exe_dir = get_executable_path();
+
+    std::string fontPath = exe_dir + "font/Open_Sans/OpenSans.ttf";
+    if (!m_open_sans->loadFromFile(fontPath))
+    {
         std::cerr << "Could Not Load Font\n";
+        return;
+    }
 }
 
 // setters / getters

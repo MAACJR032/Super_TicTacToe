@@ -74,7 +74,6 @@ void get_player_name(name_input_menu &menu, uint32_t unicode, std::pair<std::str
         }
         else if (box.get_text_string() != players.first)
         {
-            std::cout << str << " " << str.length() << '\n';
             players.second = box.get_text_string();
         }
         

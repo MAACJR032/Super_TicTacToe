@@ -4,3 +4,4 @@
 *.dll
 SFML_src
 bin
+bin-int

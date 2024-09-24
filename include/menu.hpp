@@ -2,6 +2,8 @@
 
 #include <vector>
 #include <fstream>
+#include <locale>
+#include <codecvt>
 #include "buttons.hpp"
 
 class main_menu

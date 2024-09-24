@@ -1,8 +1,8 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "colors.hpp"
-#include "status.hpp"
+#include "Utils/colors.hpp"
+#include "types/status.hpp"
 
 struct Square
 {

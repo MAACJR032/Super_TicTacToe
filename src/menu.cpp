@@ -1,7 +1,4 @@
 #include "menu.hpp"
-#include <iostream>
-#include <locale>
-#include <codecvt>
 
 main_menu::main_menu(sf::Vector2u window_size)
 {

@@ -4,7 +4,7 @@
 #include <memory>
 #include "menu.hpp"
 #include "TicTacToe.hpp"
-#include "game_state.hpp"
+#include "types/game_state.hpp"
 
 sf::Vector2f get_mouse_position(sf::RenderWindow &window);
 

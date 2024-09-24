@@ -5,11 +5,27 @@ TicTacToe::TicTacToe()
 {
     sf::RectangleShape square;
     set_square(square);
+    
 
-    if (!X_texture.loadFromFile("Assets/X_sprite.png") || 
-        !O_texture.loadFromFile("Assets/O_sprite.png"))
+    // if (!X_texture.loadFromFile(exe_dir + "/../Assets/X_sprite.png") || 
+    //     !O_texture.loadFromFile(exe_dir + "/../Assets/O_sprite.png"))
+    // {
+    //     std::cerr << "Error loading textures\n";
+    //     return;
+    // }
+    std::string exe_dir = get_executable_path();
+
+    std::string pngPath = exe_dir + "Assets/X_sprite.png";
+    if (!X_texture.loadFromFile(pngPath))
     {
-        std::cerr << "Error loading textures\n";
+        std::cerr << "Error loading X_sprite.png\n";
+        return;
+    }
+
+    pngPath = exe_dir + "Assets/O_sprite.png";
+    if (!O_texture.loadFromFile(pngPath))
+    {
+        std::cerr << "Error loading O_sprite.png\n";
         return;
     }
     

@@ -7,7 +7,7 @@
 #include "events.hpp"
 #include "buttons.hpp"
 #include "menu.hpp"
-#include "game_state.hpp"
+#include "types/game_state.hpp"
 
 class Game
 {
