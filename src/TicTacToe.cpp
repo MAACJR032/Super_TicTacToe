@@ -13,10 +13,24 @@ TicTacToe::TicTacToe()
         return;
     }
 
+    pngPath = exe_dir + "Assets/Big_X_sprite.png";
+    if (!X_texture.loadFromFile(pngPath))
+    {
+        std::cerr << "Error loading Big_X_sprite.png\n";
+        return;
+    }
+
     pngPath = exe_dir + "Assets/O_sprite.png";
     if (!O_texture.loadFromFile(pngPath))
     {
         std::cerr << "Error loading O_sprite.png\n";
+        return;
+    }
+
+    pngPath = exe_dir + "Assets/Big_O_sprite.png";
+    if (!O_texture.loadFromFile(pngPath))
+    {
+        std::cerr << "Error loading Big_O_sprite.png\n";
         return;
     }
     
@@ -36,7 +50,7 @@ TicTacToe::TicTacToe()
         }
     }
 
-    for (auto i = 0; i < 9; i++)
+    for (int i = 0; i < 9; i++)
         m_grids.push_back({0, square(i)});
 }
 
@@ -299,10 +313,24 @@ void TicTacToe::play(sf::RenderWindow &window)
     iterate_board(update_square, window);    
 }
 
-/* Draws the text of whose player is the turn. */
-void TicTacToe::draw_current_player_text(sf::RenderWindow &window)
+/* Draws the text of whose player is the turn, the squares and the textures. */
+void TicTacToe::draw(sf::RenderWindow &window)
 {
     m_current_player_text.draw(window);
+
+    for (auto &g : m_board)
+        for (auto &s : g)
+            s.draw(window);
+
+    for (auto &s : m_grids)
+    {
+        if (s.grid.get_status() == Status::X || 
+            s.grid.get_status() == Status::O)
+        {
+            s.grid.get_rectangle().setTexture((m_current_player == Status::X) ? &Big_X_texture : &Big_O_texture);
+            s.grid.draw(window);
+        }
+    }
 }
 
 void TicTacToe::reset()

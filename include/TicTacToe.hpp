@@ -19,7 +19,7 @@ struct Grid
 class TicTacToe
 {
     private:
-        std::vector<Grid> m_grids; // first - Status, second - how many subgrids where played
+        std::vector<Grid> m_grids;
         std::vector<std::vector<subgrid>> m_board;
 
         int8_t m_next_grid = -1;
@@ -29,7 +29,9 @@ class TicTacToe
         game_text m_current_player_text;
 
         sf::Texture X_texture;
+        sf::Texture Big_X_texture;
         sf::Texture O_texture;
+        sf::Texture Big_O_texture;
 
         void update_grid_score(int8_t grid, int8_t low_limit_i, int8_t low_limit_j);
         void grid_score(int8_t grid);
@@ -53,6 +55,6 @@ class TicTacToe
 
         void iterate_board(void (*func) (subgrid &s, TicTacToe &t, sf::RenderWindow &window), sf::RenderWindow &window);
         void play(sf::RenderWindow &window);
-        void draw_current_player_text(sf::RenderWindow &window);
+        void draw(sf::RenderWindow &window);
         void reset();
 };

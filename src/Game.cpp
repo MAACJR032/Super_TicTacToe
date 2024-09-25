@@ -92,9 +92,7 @@ void Game::update_poll_events()
 /* Draws all the squares and lines of the board. */
 void Game::draw_board()
 {
-    for (auto &i : m_tic_tac_toe.get_board())
-        for (auto &s : i)
-            s.draw(m_window);
+    m_tic_tac_toe.draw(m_window);
     
     for (const auto &l : m_lines)
         m_window.draw(l);
@@ -134,7 +132,6 @@ void Game::state_manager()
         
         case GameState::WAITING_INPUT: case GameState::PLAYING:
             draw_board();
-            m_tic_tac_toe.draw_current_player_text(m_window);
             break;
 
         case GameState::END_SCREEN:
