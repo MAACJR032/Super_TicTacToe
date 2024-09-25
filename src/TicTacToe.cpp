@@ -50,8 +50,14 @@ TicTacToe::TicTacToe()
         }
     }
 
+    // float x = 500.f;
     for (int i = 0; i < 9; i++)
+    {
         m_grids.push_back({0, square(i)});
+    }
+
+    for (int i = 0; i < 3; i++)
+        m_grids[i].grid.set_position({505.f + 228.f * i, 100.f});
 }
 
 /* Checks all the cases where the player may have scored in a grid. */
@@ -324,10 +330,14 @@ void TicTacToe::draw(sf::RenderWindow &window)
 
     for (auto &s : m_grids)
     {
-        if (s.grid.get_status() == Status::X || 
-            s.grid.get_status() == Status::O)
+        if (s.grid.get_status() == Status::X) 
         {
-            s.grid.get_rectangle().setTexture((m_current_player == Status::X) ? &Big_X_texture : &Big_O_texture);
+            s.grid.get_rectangle().setFillColor(TRANSPARENT_RED);
+            s.grid.draw(window);
+        }
+        else if (s.grid.get_status() == Status::O)
+        {
+            s.grid.get_rectangle().setFillColor(TRANSPARENT_BLUE);
             s.grid.draw(window);
         }
     }

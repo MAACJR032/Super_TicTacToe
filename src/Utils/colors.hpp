@@ -8,6 +8,7 @@
 #define TRANSPARENT_BLACK sf::Color(0, 0, 0, 50)
 #define WHITE sf::Color::White
 #define RED sf::Color::Red
+#define TRANSPARENT_RED sf::Color(255, 97, 95, 195)
+#define TRANSPARENT_BLUE sf::Color(62, 197, 243, 195)
 #define BLUE sf::Color::Blue
 #define GREEN sf::Color::Green
-#define TRANSPARENT sf::Color::Transparent

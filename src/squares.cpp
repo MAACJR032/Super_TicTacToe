@@ -4,7 +4,7 @@
 square::square(int8_t grid)
 {
     m_grid = grid;
-    m_rect.setSize(sf::Vector2f(71.f, 71.f));
+    m_rect.setSize(sf::Vector2f(208.f, 208.f));
     m_rect.setFillColor(WHITE);
     m_status = Status::EMPTY;
 }
@@ -60,6 +60,7 @@ subgrid::subgrid(int8_t sub_grid, int8_t grid) : square(0)
     m_sub_grid = sub_grid;
     m_grid = grid;
 
+    m_rect.setSize({71.f, 71.f});
     m_rect.setOutlineColor(DARK_GREY);
     m_rect.setOutlineThickness(2.f);
 }
