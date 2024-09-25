@@ -8,7 +8,7 @@
 
 sf::Vector2f get_mouse_position(sf::RenderWindow &window);
 
-void apply_hoever_effect(Square &s, TicTacToe &t, sf::RenderWindow &window);
+void apply_hoever_effect(subgrid &s, TicTacToe &t, sf::RenderWindow &window);
 void hoever_effect(sf::RenderWindow &window, TicTacToe &t);
 
 void handle_player_move(sf::Event &event, sf::RenderWindow &window, GameState &curr_state, TicTacToe &t);

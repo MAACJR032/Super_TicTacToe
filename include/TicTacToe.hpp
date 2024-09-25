@@ -10,11 +10,17 @@
 
 using std::unique_ptr;
 
+struct Grid
+{
+    int8_t subgrids_scored; // unavailable subgrids 
+    square grid;
+};
+
 class TicTacToe
 {
     private:
-        std::vector<std::pair<Status, int8_t>> m_grids; // first - Status, second - how many subgrids where played
-        std::vector<std::vector<Square>> m_board;
+        std::vector<Grid> m_grids; // first - Status, second - how many subgrids where played
+        std::vector<std::vector<subgrid>> m_board;
 
         int8_t m_next_grid = -1;
         Status m_current_player = Status::X;
@@ -28,9 +34,9 @@ class TicTacToe
         void update_grid_score(int8_t grid, int8_t low_limit_i, int8_t low_limit_j);
         void grid_score(int8_t grid);
         Status update_grid_tie(int8_t grid);
-        void update_square(Square &s, sf::RenderWindow &window);
+        void update_square(subgrid &s, sf::RenderWindow &window);
         void check_win();
-        void iterate_board(void (TicTacToe::*func) (Square&, sf::RenderWindow &window), sf::RenderWindow &window);
+        void iterate_board(void (TicTacToe::*func) (subgrid&, sf::RenderWindow &window), sf::RenderWindow &window);
         
     public:
         TicTacToe();
@@ -40,12 +46,12 @@ class TicTacToe
         std::pair<std::string, std::string>& get_players_name();
         int8_t get_next_grid() const;
         Status get_grid_status(uint8_t index) const;
-        std::vector<std::vector<Square>>& get_board();
-        Square& get_board_at(uint8_t i, uint8_t j);
+        std::vector<std::vector<subgrid>>& get_board();
+        subgrid& get_board_at(uint8_t i, uint8_t j);
         Status get_victory() const;
         Status get_current_player();
 
-        void iterate_board(void (*func) (Square &s, TicTacToe &t, sf::RenderWindow &window), sf::RenderWindow &window);
+        void iterate_board(void (*func) (subgrid &s, TicTacToe &t, sf::RenderWindow &window), sf::RenderWindow &window);
         void play(sf::RenderWindow &window);
         void draw_current_player_text(sf::RenderWindow &window);
         void reset();

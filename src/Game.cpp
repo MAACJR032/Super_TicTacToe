@@ -26,7 +26,7 @@ void Game::set_board_position()
     float x = 500.f, y = 100.f;
     for (int i = 0; i < 9; i++)
         for (int j = 0; j < 9; j++)
-            m_tic_tac_toe.get_board_at(i, j).rect.setPosition({x + j * 75, y + i * 75});
+            m_tic_tac_toe.get_board_at(i, j).get_rectangle().setPosition({x + j * 75, y + i * 75});
     
     // vertical lines
     for (int i = 0; i < 2; i++)
@@ -92,9 +92,9 @@ void Game::update_poll_events()
 /* Draws all the squares and lines of the board. */
 void Game::draw_board()
 {
-    for (const auto &i : m_tic_tac_toe.get_board())
-        for (const auto &s : i)
-            m_window.draw(s.rect);
+    for (auto &i : m_tic_tac_toe.get_board())
+        for (auto &s : i)
+            s.draw(m_window);
     
     for (const auto &l : m_lines)
         m_window.draw(l);

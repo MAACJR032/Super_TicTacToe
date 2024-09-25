@@ -7,22 +7,22 @@ sf::Vector2f get_mouse_position(sf::RenderWindow &window)
 }
 
 /* Changes color of valid squares to play on (hoever effect). */
-void apply_hoever_effect(Square &s, TicTacToe &t, sf::RenderWindow &window)
+void apply_hoever_effect(subgrid &s, TicTacToe &t, sf::RenderWindow &window)
 {
-    if (t.get_grid_status(s.grid - 1) == Status::EMPTY && (t.get_next_grid() == -1 || t.get_next_grid() == s.grid))
+    if (t.get_grid_status(s.get_grid() - 1) == Status::EMPTY && (t.get_next_grid() == -1 || t.get_next_grid() == s.get_grid()))
     {
-        if (s.rect.getGlobalBounds().contains(get_mouse_position(window)) && 
-            s.player == Status::EMPTY)
+        if (s.get_rectangle().getGlobalBounds().contains(get_mouse_position(window)) && 
+            s.get_status() == Status::EMPTY)
         {
-            s.rect.setFillColor(GREY);
+            s.get_rectangle().setFillColor(GREY);
         }
     }
 
     // make sure that every square affected by the hoever effect get back to it's original color
-    if (!s.rect.getGlobalBounds().contains(get_mouse_position(window)) && 
-        s.rect.getFillColor() == GREY)
+    if (!s.get_rectangle().getGlobalBounds().contains(get_mouse_position(window)) && 
+        s.get_rectangle().getFillColor() == GREY)
     {
-        s.rect.setFillColor(WHITE);
+        s.get_rectangle().setFillColor(WHITE);
     }
 }
 
