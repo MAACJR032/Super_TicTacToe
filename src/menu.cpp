@@ -34,25 +34,25 @@ main_menu::main_menu(sf::Vector2u window_size)
 }
 
 /* Returns true if the start button was clicked.*/
-bool main_menu::start_button_clicked(sf::RenderWindow &window)
+bool main_menu::start_button_clicked(sf::RenderWindow &window) const
 {
     return m_start_button.button_clicked(window);
 }
 
 /* Returns true if the exit button was clicked.*/
-bool main_menu::exit_button_clicked(sf::RenderWindow &window)
+bool main_menu::exit_button_clicked(sf::RenderWindow &window) const
 {
     return m_exit_button.button_clicked(window);
 }
 
 /* Returns true if the credits button was clicked.*/
-bool main_menu::credits_button_clicked(sf::RenderWindow &window)
+bool main_menu::credits_button_clicked(sf::RenderWindow &window) const
 {
     return m_credits_button.button_clicked(window);
 }
 
 /* Draws all the buttons and the game title.*/
-void main_menu::draw(sf::RenderWindow &window)
+void main_menu::draw(sf::RenderWindow &window) const
 {
     m_title.draw(window);
     m_start_button.draw(window);
@@ -100,13 +100,13 @@ credits_menu::credits_menu(sf::Vector2u window_size)
 
 
 /* Returns true if the back button was clicked.*/
-bool credits_menu::back_button_clicked(sf::RenderWindow &window)
+bool credits_menu::back_button_clicked(sf::RenderWindow &window) const
 {
     return m_return_button.button_clicked(window);
 }
 
 /* Draws all the back button and the text.*/
-void credits_menu::draw(sf::RenderWindow &window)
+void credits_menu::draw(sf::RenderWindow &window) const
 {
     for (auto &t : m_credits_text)
         t.draw(window);
@@ -130,6 +130,8 @@ name_input_menu::name_input_menu(sf::Vector2u window_size)
 
     m_type_message.set_text("X's Name:", 40);
     m_type_message.set_position({half_x - m_player_name_box.get_box_sizes().first / 1.1f, half_y / 1.275f});
+
+    m_error_message.get_text().setFillColor(RED);
 }
 
 /* Returns a reference to text_box. */ 
@@ -150,6 +152,11 @@ void name_input_menu::set_player2_turn()
     player1_turn = false;
 }
 
+void name_input_menu::set_error_message_false()
+{
+    display_error_message = false;
+}
+
 /* Sets the text of the text_box. */
 void name_input_menu::set_box_text(const std::string &s)
 {
@@ -162,11 +169,27 @@ void name_input_menu::set_type_message(const std::string &s)
     m_type_message.set_text(s, 40);
 }
 
+void name_input_menu::set_error_message(const std::string &error_message, const sf::Vector2u window_size)
+{
+    float half_x = window_size.x / 2.f;
+    float half_y = window_size.y / 2.f;
+
+    m_error_message.set_text(
+        error_message, 40,
+        {half_x - m_player_name_box.get_box_sizes().first / 2.1f, half_y / 1.48f}
+    );
+
+    display_error_message = true;
+}
+
 /* Draws the type message and the text_box. */
-void name_input_menu::draw(sf::RenderWindow &window)
+void name_input_menu::draw(sf::RenderWindow &window) const
 {
     window.draw(m_type_message.get_text());
     m_player_name_box.draw(window);
+
+    if (display_error_message)
+        m_error_message.draw(window);
 }
 
 
@@ -204,19 +227,19 @@ void end_screen_menu::set_result(const std::string &result_message, sf::Vector2u
 }
 
 /* Returns true if the menu button was clicked.*/
-bool end_screen_menu::menu_button_clicked(sf::RenderWindow &window)
+bool end_screen_menu::menu_button_clicked(sf::RenderWindow &window) const
 {
     return m_menu_button.button_clicked(window);
 }
 
 /* Returns true if the rematch button was clicked.*/
-bool end_screen_menu::rematch_button_clicked(sf::RenderWindow &window)
+bool end_screen_menu::rematch_button_clicked(sf::RenderWindow &window) const
 {
     return m_rematch_button.button_clicked(window);
 }
 
 /* Draws all the buttons and the result text.*/
-void end_screen_menu::draw(sf::RenderWindow &window)
+void end_screen_menu::draw(sf::RenderWindow &window) const
 {
     window.draw(m_result_text.get_text());
     m_menu_button.draw(window);

@@ -54,7 +54,7 @@ class TicTacToe
         std::vector<std::vector<subgrid>>& get_board();
         subgrid& get_board_at(uint8_t i, uint8_t j);
         Status get_victory() const;
-        Status get_current_player();
+        Status get_current_player() const;
 
         void iterate_board(void (*func) (subgrid &s, TicTacToe &t, sf::RenderWindow &window), sf::RenderWindow &window);
         void play(sf::RenderWindow &window);

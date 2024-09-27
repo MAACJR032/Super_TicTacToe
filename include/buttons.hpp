@@ -12,6 +12,6 @@ class button : public game_text
         button(std::string s);
 
         void set_button_position(const sf::Vector2f &button_position, const sf::Vector2f &text_position);
-        bool button_clicked(sf::RenderWindow &window);
-        void draw(sf::RenderWindow &window) override;
+        bool button_clicked(sf::RenderWindow &window) const;
+        void draw(sf::RenderWindow &window) const override;
 };

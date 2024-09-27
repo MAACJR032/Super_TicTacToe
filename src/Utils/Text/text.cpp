@@ -10,7 +10,7 @@ game_text::game_text() : m_open_sans(std::make_shared<sf::Font>())
 }
 
 /* Loads and sets the font and sets the text and it's color. */
-game_text::game_text(std::string text) : m_open_sans(std::make_shared<sf::Font>())
+game_text::game_text(const std::string &text) : m_open_sans(std::make_shared<sf::Font>())
 {   
     load_font();
     
@@ -74,6 +74,11 @@ sf::Text game_text::get_text() const
     return m_text;
 }
 
+sf::Text& game_text::get_text()
+{
+    return m_text;
+}
+
 std::string game_text::get_string() const
 {
     return str;
@@ -85,7 +90,7 @@ std::string& game_text::get_string()
 }
 
 /* Draws the text. */
-void game_text::draw(sf::RenderWindow &window)
+void game_text::draw(sf::RenderWindow &window) const
 {
     window.draw(m_text);
 }
@@ -102,7 +107,7 @@ text_box::text_box() : game_text()
 }
 
 /* Returns true if the box was clicked. */
-bool text_box::check_box_selected(sf::RenderWindow &window) 
+bool text_box::check_box_selected(sf::RenderWindow &window) const
 {
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && 
         m_box.getGlobalBounds().contains((sf::Vector2f) sf::Mouse::getPosition(window)))
@@ -182,7 +187,7 @@ void text_box::typed(uint32_t unicode)
 }
 
 /* Returns true if the box is selected to write on. */
-bool text_box::is_selected()
+bool text_box::is_selected() const
 {
     return m_selected;
 }
@@ -198,7 +203,7 @@ std::pair<float, float> text_box::get_box_sizes() const
 }
 
 /* Draws the box and the text. */
-void text_box::draw(sf::RenderWindow &window)
+void text_box::draw(sf::RenderWindow &window) const
 {
     window.draw(m_box);
     window.draw(m_text);

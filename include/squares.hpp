@@ -19,8 +19,8 @@ class square
         Status get_status() const;
         int8_t get_grid() const;
         sf::RectangleShape& get_rectangle();
-        bool square_clicked(sf::RenderWindow &window);
-        void draw(sf::RenderWindow &window);
+        bool square_clicked(sf::RenderWindow &window) const;
+        void draw(sf::RenderWindow &window) const;
 };
 
 class subgrid : public square

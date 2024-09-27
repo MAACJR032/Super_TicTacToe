@@ -315,7 +315,7 @@ Status TicTacToe::get_victory() const
 }
 
 /* Returns whose player is the current turn. */
-Status TicTacToe::get_current_player()
+Status TicTacToe::get_current_player() const
 {
     return m_current_player;
 }

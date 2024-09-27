@@ -56,9 +56,10 @@ void handle_text_box_sel(text_box &t, sf::RenderWindow &window)
 }
 
 /* Stores the the player when ENTER is pressed. */
-void get_player_name(name_input_menu &menu, uint32_t unicode, std::pair<std::string, std::string> &players, GameState &curr_state, sf::RenderWindow &window)
+void get_player_name(name_input_menu &menu, uint32_t unicode, std::pair<std::string, std::string> &players)
 {
     if (unicode != ENTER) return;
+    menu.set_error_message_false();
 
     text_box &box = menu.get_text_box();
     
@@ -73,34 +74,16 @@ void get_player_name(name_input_menu &menu, uint32_t unicode, std::pair<std::str
             menu.set_player2_turn();
         }
         else if (box.get_text_string() != players.first)
-        {
+        {   
             players.second = box.get_text_string();
         }
-        
-        // TODO: Error message if press ENTER for empty name or repeated name
-
-        // else if (t.get_text_string() != players.first)
-        // {
-        //     players.second = t.get_text_string();
-        //     curr_state = GameState::WAITING_INPUT;
-        // }
-        // else
-        // {
-        //     game_text error_message;
-            
-        //     float half_x = window.getSize().x / 2.f;
-        //     float half_y = window.getSize().y / 2.f;
-
-        //     if (t.get_text_string().empty())
-        //     {
-        //         error_message.set_text("EMPTY NAME", 40);
-        //         sf::FloatRect bounds = error_message.get_text().getLocalBounds();
-                
-        //         error_message.set_position({half_x - bounds.width, half_y / 1.5f});
-        //         error_message.draw(window);
-        //     }
-        // }
-
-        box.clear();
+        else
+        {
+            menu.set_error_message("REPEATED NAME", {1680, 900});
+        }
     }
+    else
+        menu.set_error_message("EMPTY NAME", {1680, 900});
+
+    box.clear();
 }

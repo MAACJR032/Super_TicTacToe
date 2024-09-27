@@ -23,7 +23,7 @@ void button::set_button_position(const sf::Vector2f &button_position, const sf::
 }
 
 /* Returns true if the button was clicked. */
-bool button::button_clicked(sf::RenderWindow &window)
+bool button::button_clicked(sf::RenderWindow &window) const
 {
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && 
         m_button_rect.getGlobalBounds().contains((sf::Vector2f) sf::Mouse::getPosition(window)))
@@ -35,7 +35,7 @@ bool button::button_clicked(sf::RenderWindow &window)
 }
 
 /* Draw the button and it's text. */
-void button::draw(sf::RenderWindow &window)
+void button::draw(sf::RenderWindow &window) const
 {
     window.draw(m_button_rect);
     window.draw(m_text);

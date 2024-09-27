@@ -36,7 +36,7 @@ sf::RectangleShape& square::get_rectangle()
 }
 
 /* Returns true if the square was clicked by the mouse. */
-bool square::square_clicked(sf::RenderWindow &window)
+bool square::square_clicked(sf::RenderWindow &window) const
 {
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && 
         m_rect.getGlobalBounds().contains((sf::Vector2f) sf::Mouse::getPosition(window)))
@@ -48,7 +48,7 @@ bool square::square_clicked(sf::RenderWindow &window)
 }
 
 /* Draws the square. */
-void square::draw(sf::RenderWindow &window)
+void square::draw(sf::RenderWindow &window) const
 {
     window.draw(m_rect);
 }

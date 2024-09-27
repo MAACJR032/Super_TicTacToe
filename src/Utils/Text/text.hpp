@@ -22,7 +22,7 @@ class game_text
 
     public:
         game_text();
-        game_text(std::string text);
+        game_text(const std::string &text);
 
         void set_text(const std::string &text);
         void set_text(const std::string &text, uint32_t char_size);
@@ -31,10 +31,11 @@ class game_text
         void set_position(const sf::Vector2f position);
 
         sf::Text get_text() const;
+        sf::Text& get_text();
         std::string get_string() const;
         std::string& get_string();
         
-        virtual void draw(sf::RenderWindow &window);
+        virtual void draw(sf::RenderWindow &window) const;
 };
 
 class text_box : public game_text
@@ -45,7 +46,7 @@ class text_box : public game_text
         int m_limit = 15;
         bool m_selected = false;
 
-        bool check_box_selected(sf::RenderWindow &window);
+        bool check_box_selected(sf::RenderWindow &window) const;
         void delete_last_char();
         void input_handler(uint32_t typed_char);
 
@@ -54,13 +55,13 @@ class text_box : public game_text
 
         void set_box_position(const sf::Vector2f position);
         void set_selected(sf::RenderWindow &window);
-        bool is_selected();
+        bool is_selected() const;
         void typed(uint32_t unicode);
         
         std::string get_text_string() const;
         std::pair<float, float> get_box_sizes() const;
 
-        void draw(sf::RenderWindow &window) override;
+        void draw(sf::RenderWindow &window) const override;
         void clear();
         void clear_deselect();
 };
