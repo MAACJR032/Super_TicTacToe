@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <cmath>
 #include "squares.hpp"
 #include "Utils/Text/text.hpp"
 #include "Utils/Path/path_utils.hpp"
@@ -25,6 +26,8 @@ class TicTacToe
         int8_t m_next_grid = -1;
         Status m_current_player = Status::X;
         Status m_victory;
+        Line m_result_line = Line::EMPTY;
+
         std::pair<std::string, std::string> m_players_name;
         game_text m_current_player_text;
 
@@ -56,5 +59,6 @@ class TicTacToe
         void iterate_board(void (*func) (subgrid &s, TicTacToe &t, sf::RenderWindow &window), sf::RenderWindow &window);
         void play(sf::RenderWindow &window);
         void draw(sf::RenderWindow &window);
+        void draw_endline(sf::RenderWindow &window);
         void reset();
 };
