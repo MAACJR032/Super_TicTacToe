@@ -100,7 +100,7 @@ credits_menu::credits_menu(sf::Vector2u window_size)
 
 
 /* Returns true if the back button was clicked.*/
-bool credits_menu::back_button_clicked(sf::RenderWindow &window) const
+bool credits_menu::return_button_clicked(sf::RenderWindow &window) const
 {
     return m_return_button.button_clicked(window);
 }
@@ -130,8 +130,15 @@ name_input_menu::name_input_menu(sf::Vector2u window_size)
 
     m_type_message.set_text("X's Name:", 40);
     m_type_message.set_position({half_x - m_player_name_box.get_box_sizes().first / 1.1f, half_y / 1.275f});
-
     m_error_message.get_text().setFillColor(RED);
+
+    m_return_button.set_text("RETURN", 40);
+    sf::FloatRect bounds = m_return_button.get_text().getLocalBounds();
+
+    m_return_button.set_button_position(
+        {half_x - 150.f, 1.2f * half_y}, 
+        {half_x - bounds.width / 2.f, 1.2f * half_y + 10.f}
+    );
 }
 
 /* Returns a reference to text_box. */ 
@@ -140,10 +147,22 @@ text_box& name_input_menu::get_text_box()
     return m_player_name_box;
 }
 
+/* Returns true if the return button was clicked. */
+bool name_input_menu::return_button_clicked(sf::RenderWindow &window) const
+{
+    return m_return_button.button_clicked(window);
+}
+
 /* Returns true if it is player 1's turn to write their name. */
 bool name_input_menu::is_player1_turn() const
 {
     return player1_turn;
+}
+
+/* Wil set player 1's turn to write their name. */
+void name_input_menu::set_player1_turn()
+{
+    player1_turn = true;
 }
 
 /* Wil set player 2's turn to write their name. */
@@ -187,6 +206,7 @@ void name_input_menu::draw(sf::RenderWindow &window) const
 {
     window.draw(m_type_message.get_text());
     m_player_name_box.draw(window);
+    m_return_button.draw(window);
 
     if (display_error_message)
         m_error_message.draw(window);

@@ -31,13 +31,14 @@ class credits_menu
     public:
         credits_menu(sf::Vector2u window_size);
 
-        bool back_button_clicked(sf::RenderWindow &window) const;
+        bool return_button_clicked(sf::RenderWindow &window) const;
         void draw(sf::RenderWindow &window) const;
 };
 
 class name_input_menu
 {
     private:
+        button m_return_button;
         game_text m_type_message;
         game_text m_error_message;
         text_box m_player_name_box;
@@ -48,7 +49,9 @@ class name_input_menu
         name_input_menu(sf::Vector2u window_size);
 
         text_box& get_text_box();
+        bool return_button_clicked(sf::RenderWindow &window) const;
         bool is_player1_turn() const;
+        void set_player1_turn();
         void set_player2_turn();
         void set_error_message_false();
         void set_box_text(const std::string &text);

@@ -61,15 +61,17 @@ void Game::update_poll_events()
             
             // Click on available squares to play
             case sf::Event::MouseButtonPressed:
-                handle_player_move(m_event, m_window, m_current_state, m_tic_tac_toe);
-                handle_text_box_sel(m_name_input_menu.get_text_box(), m_window);
+                if (m_current_state == GameState::WAITING_INPUT || m_current_state == GameState::PLAYING)
+                    handle_player_move(m_event, m_window, m_current_state, m_tic_tac_toe);
+                else if (m_current_state == GameState::NAME_INPUT)
+                    handle_text_box_sel(m_name_input_menu.get_text_box(), m_window);
                 break;
                 
             case sf::Event::TextEntered:
                 if (m_current_state == GameState::NAME_INPUT)
                 {
                     m_name_input_menu.get_text_box().typed(m_event.text.unicode);
-                    get_player_name(m_name_input_menu, m_event.text.unicode, m_tic_tac_toe.get_players_name(), m_current_state, m_window);
+                    get_player_name(m_name_input_menu, m_event.text.unicode, m_tic_tac_toe.get_players_name());
                     
                     if (!m_name_input_menu.is_player1_turn())
                     {
@@ -116,18 +118,23 @@ void Game::state_manager()
         
         case GameState::CREDITS:
             m_credits_menu.draw(m_window);
-            
-            if (m_credits_menu.back_button_clicked(m_window))
+            break;
+        
+        case GameState::NAME_INPUT:
+            m_name_input_menu.draw(m_window);
+
+            if (m_credits_menu.return_button_clicked(m_window))
             {
+                m_tic_tac_toe.set_players_name("", "");
+                m_name_input_menu.get_text_box().clear_deselect();
+                m_name_input_menu.set_type_message("X's Name:");
+                m_name_input_menu.set_player1_turn();
+
                 m_timer.restart();
                 while (m_timer.getElapsedTime().asMilliseconds() < 300) {};
 
                 m_current_state = GameState::MENU;
             }
-            break;
-        
-        case GameState::NAME_INPUT:
-            m_name_input_menu.draw(m_window);
             break;
         
         case GameState::WAITING_INPUT: case GameState::PLAYING:
