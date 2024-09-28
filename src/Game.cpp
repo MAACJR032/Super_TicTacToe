@@ -120,7 +120,7 @@ void Game::state_manager()
             break;
         
         case GameState::CREDITS:
-            m_credits_menu.draw(m_window);
+            handle_credits_menu();
             break;
         
         case GameState::NAME_INPUT:
@@ -150,6 +150,19 @@ void Game::handle_main_menu()
         m_window.close();
     else if (m_game_menu.credits_button_clicked(m_window))
         m_current_state = GameState::CREDITS;
+}
+
+void Game::handle_credits_menu()
+{
+    m_credits_menu.draw(m_window);
+
+    if (m_credits_menu.return_button_clicked(m_window))
+    {
+        m_timer.restart();
+        while (m_timer.getElapsedTime().asMilliseconds() < 300) {};
+
+        m_current_state = GameState::MENU;
+    }
 }
 
 void Game::handle_name_input_menu()

@@ -45,9 +45,10 @@ class Game
         void handle_text_input();
 
         void handle_main_menu();
+        void handle_credits_menu();
         void handle_name_input_menu();
         void handle_end_screen_menu();
-    
+
     public:
         Game();
 
