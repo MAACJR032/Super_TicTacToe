@@ -2,6 +2,6 @@
 *.o
 *.vscode
 *.dll
-SFML_src
+SFML
 bin
 bin-int
