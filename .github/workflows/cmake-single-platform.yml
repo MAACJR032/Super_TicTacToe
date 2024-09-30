@@ -26,11 +26,15 @@ jobs:
       - name: Build the project
         run: |
           make
-
-      # Passo 5: Salvar o executável
-      - name: Save Linux executable
+          
+      # - name: Upload executable
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: SuperTicTacToe
+      #     path: bin/SuperTicTacToe
+      - name: Save Linux Exec
         run: |
-          cp build/SFMLProject ./SFMLProject_Linux
+          cp bin/SuperTicTacToe ./SuperTicTacToe_Linux
 
   build-windows:
     runs-on: windows-latest
@@ -48,7 +52,8 @@ jobs:
       # Passo 4: Compilar o projeto
       - name: Build the project
         run: |
-          make 
+          cd build
+          cmake --build . --config Release
 
       # Passo 5: Salvar o executável
       - name: Save Windows executable
