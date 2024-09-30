@@ -276,46 +276,46 @@ void TicTacToe::set_players_name(std::string player1, std::string player2)
 
 void TicTacToe::set_line_parameters()
 {
-     switch (m_result_line)
+    switch (m_result_line)
     {
         case Line::ROW1:
-            start = m_grids[0].grid.get_rectangle().getPosition();
-            end = m_grids[2].grid.get_rectangle().getPosition();
+            start = m_board[1][0].get_rectangle().getPosition();
+            end = m_board[1][8].get_rectangle().getPosition();
             break;
     
         case Line::ROW2:
-            start = m_grids[3].grid.get_rectangle().getPosition();
-            end = m_grids[5].grid.get_rectangle().getPosition();
+            start = m_board[5][0].get_rectangle().getPosition();
+            end = m_board[5][8].get_rectangle().getPosition();
             break;
     
         case Line::ROW3:
-            start = m_grids[6].grid.get_rectangle().getPosition();
-            end = m_grids[8].grid.get_rectangle().getPosition();
+            start = m_board[7][0].get_rectangle().getPosition();
+            end = m_board[7][8].get_rectangle().getPosition();
             break;
     
         case Line::COLUMN1:
-            start = m_grids[0].grid.get_rectangle().getPosition();
-            end = m_grids[6].grid.get_rectangle().getPosition();
+            start = m_board[0][1].get_rectangle().getPosition();
+            end = m_board[8][1].get_rectangle().getPosition();
             break;
     
         case Line::COLUMN2:
-            start = m_grids[1].grid.get_rectangle().getPosition();
-            end = m_grids[7].grid.get_rectangle().getPosition();
+            start = m_board[0][5].get_rectangle().getPosition();
+            end = m_board[8][5].get_rectangle().getPosition();
             break;
     
         case Line::COLUMN3:
-            start = m_grids[2].grid.get_rectangle().getPosition();
-            end = m_grids[8].grid.get_rectangle().getPosition();
+            start = m_board[0][7].get_rectangle().getPosition();
+            end = m_board[8][7].get_rectangle().getPosition();
             break;
     
         case Line::DIAGONAL1:
-            start = m_grids[0].grid.get_rectangle().getPosition();
-            end = m_grids[8].grid.get_rectangle().getPosition();
+            start = m_board[0][0].get_rectangle().getPosition();
+            end = m_board[8][8].get_rectangle().getPosition();
             break;
     
         case Line::DIAGONAL2:
-            start = m_grids[2].grid.get_rectangle().getPosition();
-            end = m_grids[6].grid.get_rectangle().getPosition();
+            start = m_board[0][8].get_rectangle().getPosition();
+            end = m_board[8][0].get_rectangle().getPosition();
             break;
 
         default:
