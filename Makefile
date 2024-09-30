@@ -8,6 +8,7 @@ CXXFLAGS = -std=c++17 -Wall -Wextra -Wno-error=implicit-fallthrough \
             -I$(INCLUDE_DIR)/types \
             -I$(SRC_DIR) \
             -I$(UTILS_DIR)
+			-I$(SFML_BIN)
 
 # Delete
 RM = del /f
@@ -18,9 +19,11 @@ SRC_DIR = src
 ifeq ($(OS),Windows_NT)
     SFML_INCLUDE = "C:/Program Files (x86)/SFML/include"
     SFML_LIB = "C:/Program Files (x86)/SFML/lib"
+	SFML_BIN = "C:/Program Files (x86)/SFML/bin/"
 else
     SFML_INCLUDE = SFML_src/include
     SFML_LIB = SFML_src/lib
+	SFML_BIN = SFML_src/bin
 endif
 INCLUDE_DIR = include
 
