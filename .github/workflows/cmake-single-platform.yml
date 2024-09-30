@@ -27,3 +27,9 @@ jobs:
       - name: Build the project
         run: |
           make
+          
+      - name: Upload executable
+        uses: actions/upload-artifact@v3
+        with:
+          name: SuperTicTacToe
+          path: bin/SuperTicTacToe
