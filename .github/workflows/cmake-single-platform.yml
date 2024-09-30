@@ -35,6 +35,7 @@ jobs:
       - name: Save Linux Exec
         run: |
           cp bin/SuperTicTacToe ./SuperTicTacToe_Linux
+          ls
 # Dando algum erro de include quando executa ele da erro tipo:
 # C:/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: bin-int/Text/text.o:text.cpp:(.text$_ZSt8_DestroyIN2sf4FontEEvPT_[_ZSt8_DestroyIN2sf4FontEEvPT_]+0x16): undefined reference to `__imp__ZN2sf4FontD1Ev'
 # oque no caso é erro de linkagem, mas não consegui resolver isso mesmo mexendo no makefile
@@ -96,10 +97,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Passo 4: Fazer upload do executável Windows
-      # - name: Upload Windows executable
-      #   uses: softprops/action-gh-release@v1
-      #   with:
-      #     tag_name: "v1.0.0-${{ github.sha }}"  # O mesmo que no passo anterior
-      #     files: SuperTicTacToe_Windonws.exe
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Windows executable
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: "v1.0.0-${{ github.sha }}"  # O mesmo que no passo anterior
+          files: SuperTicTacToe_Windonws.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
