@@ -5,17 +5,24 @@
 #include <vector>
 #include <string>
 #include <cmath>
+#include <numeric>
 #include "squares.hpp"
 #include "Utils/Text/text.hpp"
 #include "Utils/Path/path_utils.hpp"
 
 using std::unique_ptr;
 
+constexpr float GROW_RATE = 0.2f;
+constexpr float PI = 3.14159f;
+constexpr float speed = 100.f;
+constexpr float thickness = 10.f;
+
 struct Grid
 {
     int8_t subgrids_scored; // unavailable subgrids 
     square grid;
 };
+
 
 class TicTacToe
 {
@@ -26,6 +33,7 @@ class TicTacToe
         int8_t m_next_grid = -1;
         Status m_current_player = Status::X;
         Status m_victory;
+
         Line m_result_line = Line::EMPTY;
 
         std::pair<std::string, std::string> m_players_name;
@@ -35,6 +43,11 @@ class TicTacToe
         sf::Texture Big_X_texture;
         sf::Texture O_texture;
         sf::Texture Big_O_texture;
+
+        sf::RectangleShape line;
+        sf::Vector2f start, end;
+        float totalLength;
+        float currentLength = 0.f;
 
         void update_grid_score(int8_t grid, int8_t low_limit_i, int8_t low_limit_j);
         void grid_score(int8_t grid);
@@ -47,6 +60,7 @@ class TicTacToe
         TicTacToe();
 
         void set_players_name(std::string player1, std::string player2);
+        void set_line_parameters();
         
         std::pair<std::string, std::string>& get_players_name();
         int8_t get_next_grid() const;

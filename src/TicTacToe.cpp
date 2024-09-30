@@ -58,6 +58,10 @@ TicTacToe::TicTacToe()
         int col = i % 3;
         m_grids[i].grid.set_position({505.f + 228.f * col, 105.f + 227.f * row});
     }
+
+    line.setFillColor(sf::Color::Red);
+    line.setSize(sf::Vector2f(0.f, thickness));
+    line.setOrigin(0.f, thickness / 2.f);
 }
 
 /* Checks all the cases where the player may have scored in a grid. */
@@ -270,6 +274,61 @@ void TicTacToe::set_players_name(std::string player1, std::string player2)
     m_current_player_text.set_text(player1, 40);
 }
 
+void TicTacToe::set_line_parameters()
+{
+     switch (m_result_line)
+    {
+        case Line::ROW1:
+            start = m_grids[0].grid.get_rectangle().getPosition();
+            end = m_grids[2].grid.get_rectangle().getPosition();
+            break;
+    
+        case Line::ROW2:
+            start = m_grids[3].grid.get_rectangle().getPosition();
+            end = m_grids[5].grid.get_rectangle().getPosition();
+            break;
+    
+        case Line::ROW3:
+            start = m_grids[6].grid.get_rectangle().getPosition();
+            end = m_grids[8].grid.get_rectangle().getPosition();
+            break;
+    
+        case Line::COLUMN1:
+            start = m_grids[0].grid.get_rectangle().getPosition();
+            end = m_grids[6].grid.get_rectangle().getPosition();
+            break;
+    
+        case Line::COLUMN2:
+            start = m_grids[1].grid.get_rectangle().getPosition();
+            end = m_grids[7].grid.get_rectangle().getPosition();
+            break;
+    
+        case Line::COLUMN3:
+            start = m_grids[2].grid.get_rectangle().getPosition();
+            end = m_grids[8].grid.get_rectangle().getPosition();
+            break;
+    
+        case Line::DIAGONAL1:
+            start = m_grids[0].grid.get_rectangle().getPosition();
+            end = m_grids[8].grid.get_rectangle().getPosition();
+            break;
+    
+        case Line::DIAGONAL2:
+            start = m_grids[2].grid.get_rectangle().getPosition();
+            end = m_grids[6].grid.get_rectangle().getPosition();
+            break;
+
+        default:
+            break;
+    }
+
+    totalLength = std::sqrt(std::pow(end.x - start.x, 2) + std::pow(end.y - start.y, 2));
+    float angle = std::atan2(end.y - start.y, end.x - start.x) * 180 / PI;
+
+    line.setPosition(start);
+    line.setRotation(angle);
+}
+
 /* Returns a reference to players_name pair. */
 std::pair<std::string, std::string>& TicTacToe::get_players_name()
 {
@@ -340,8 +399,8 @@ void TicTacToe::draw(sf::RenderWindow &window)
 {
     m_current_player_text.draw(window);
 
-    for (auto &g : m_board)
-        for (auto &s : g)
+    for (const auto &g : m_board)
+        for (const auto &s : g)
             s.draw(window);
 
     for (auto &s : m_grids)
@@ -361,81 +420,13 @@ void TicTacToe::draw(sf::RenderWindow &window)
 
 void TicTacToe::draw_endline(sf::RenderWindow &window)
 {
-    if (m_result_line == Line::EMPTY)
-        return;
-
-    sf::VertexArray line(sf::LinesStrip, 2);
-
-    // Define the thickness of the line by creating a rectangle that represents the line
-    sf::RectangleShape thickLine;
-    thickLine.setFillColor(sf::Color::Red); // Use red for the end line color
-    thickLine.setSize(sf::Vector2f(10, 10)); // Example thickness (adjust as needed)
-
-    sf::Vector2f start, end;
-
-    switch (m_result_line)
-    {
-        case Line::ROW1:
-            start = m_grids[0].grid.get_rectangle().getPosition();
-            end = m_grids[2].grid.get_rectangle().getPosition();
-            break;
+    currentLength += speed * GROW_RATE;
+    if (currentLength > totalLength)
+        currentLength = totalLength;
     
-        case Line::ROW2:
-            start = m_grids[3].grid.get_rectangle().getPosition();
-            end = m_grids[5].grid.get_rectangle().getPosition();
-            break;
-    
-        case Line::ROW3:
-            start = m_grids[6].grid.get_rectangle().getPosition();
-            end = m_grids[8].grid.get_rectangle().getPosition();
-            break;
-    
-        case Line::COLUMN1:
-            start = m_grids[0].grid.get_rectangle().getPosition();
-            end = m_grids[6].grid.get_rectangle().getPosition();
-            break;
-    
-        case Line::COLUMN2:
-            start = m_grids[1].grid.get_rectangle().getPosition();
-            end = m_grids[7].grid.get_rectangle().getPosition();
-            break;
-    
-        case Line::COLUMN3:
-            start = m_grids[2].grid.get_rectangle().getPosition();
-            end = m_grids[8].grid.get_rectangle().getPosition();
-            break;
-    
-        case Line::DIAGONAL1:
-            start = m_grids[0].grid.get_rectangle().getPosition();
-            end = m_grids[8].grid.get_rectangle().getPosition();
-            break;
-    
-        case Line::DIAGONAL2:
-            start = m_grids[2].grid.get_rectangle().getPosition();
-            end = m_grids[6].grid.get_rectangle().getPosition();
-            break;
+    line.setSize(sf::Vector2f(currentLength, thickness));
 
-        default:
-            break;
-    }
-
-    std::cout << (uint8_t) m_result_line << '\n';
-        
-    // Adjust start and end positions to the center of the grid cells
-    start += sf::Vector2f(114.f, 114.f); // Assuming 228x228 cell size, center would be 114,114
-    end += sf::Vector2f(114.f, 114.f);
-
-    // Set line properties
-    thickLine.setPosition(start);
-    float lineLength = std::sqrt((end.x - start.x) * (end.x - start.x) + (end.y - start.y) * (end.y - start.y));
-    thickLine.setSize(sf::Vector2f(lineLength, 10)); // Adjust thickness as needed
-
-    // Rotate the line to match the angle between the start and end points
-    float angle = std::atan2(end.y - start.y, end.x - start.x) * 180 / 3.14159265;
-    thickLine.setRotation(angle);
-
-    // Draw the line
-    window.draw(thickLine);
+    window.draw(line);
 }
 
 void TicTacToe::reset()
