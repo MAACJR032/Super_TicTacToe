@@ -46,12 +46,13 @@ jobs:
       # Passo 2: Instalar dependências (SFML e CMake)
       - name: Install dependencies
         run: |
-          choco install make git
-          git clone https://github.com/microsoft/vcpkg.git
-          cd vcpkg
-          .\bootstrap-vcpkg.bat
-          .\vcpkg install sfml
-
+          choco install make 
+      - name: Install SFML
+        id: sfml
+        uses: oprypin/install-sfml@v1
+        with:
+          sfml: 2.5.1
+          config: Release
       # Passo 4: Compilar o projeto
       - name: Build the project
         run: |
