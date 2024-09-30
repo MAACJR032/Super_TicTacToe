@@ -7,16 +7,26 @@ CXXFLAGS = -std=c++17 -Wall -Wextra -Wno-error=implicit-fallthrough \
             -I$(INCLUDE_DIR) \
             -I$(INCLUDE_DIR)/types \
             -I$(SRC_DIR) \
-            -I$(UTILS_DIR)
+            -I$(UTILS_DIR) \
+	    -I$(SFML_BIN)
 
 # Delete
 RM = del /f
 
 # Paths
 SRC_DIR = src
-SFML_INCLUDE = SFML_src/include
-SFML_LIB = SFML_src/lib
+# para o windowns compilar no actions github
+ifeq ($(OS),Windows_NT)
+    SFML_INCLUDE = "C:/Program Files (x86)/SFML/include"
+    SFML_LIB = "C:/Program Files (x86)/SFML/lib"
+	SFML_BIN = "C:/Program Files (x86)/SFML/bin/"
+else
+    SFML_INCLUDE = SFML_src/include
+    SFML_LIB = SFML_src/lib
+	SFML_BIN = SFML_src/bin
+endif
 INCLUDE_DIR = include
+
 UTILS_DIR = src/Utils
 BIN_INT = bin-int
 BIN_DIR = bin
@@ -39,7 +49,10 @@ $(BIN_DIR)/$(EXE): $(OBJS)
 
 # Create necessary directories
 $(BIN_INT):
-	mkdir $(BIN_INT)
+	mkdir $(BIN_INT) 
+	mkdir $(BIN_INT)/Path 
+	mkdir $(BIN_INT)/Text 
+	mkdir bin
 
 # Compile main.cpp separately
 $(BIN_INT)/SuperTicTacToe.o: $(MAIN) | $(BIN_INT)
@@ -55,6 +68,12 @@ $(BIN_INT)/%.o: $(UTILS_DIR)/%.cpp | $(BIN_INT)
 
 # Clean up
 clean:
+# linux
+ifeq (Linux,$(shell uname -s))
+	rm -rf bin-int/*.o bin-int/Path/*.o bin-int/Text/*.o bin/*
+else 
+# windows
 	if exist $(BIN_DIR)\$(EXE).exe $(RM) $(BIN_DIR)\$(EXE).exe
 	for %%f in ($(BIN_INT)\*.o) do $(RM) %%f
 	for /r $(BIN_INT) %%f in (*.o) do $(RM) "%%f"
+endif

@@ -3,5 +3,5 @@
 *.vscode
 *.dll
 SFML
-bin
-bin-int
+bin/
+bin-int/

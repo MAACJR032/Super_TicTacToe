@@ -54,7 +54,7 @@ class TicTacToe
         Status update_grid_tie(int8_t grid);
         void update_square(subgrid &s, sf::RenderWindow &window);
         void check_win();
-        void iterate_board(void (TicTacToe::*func) (subgrid&, sf::RenderWindow &window), sf::RenderWindow &window);
+        void iterate_board_private(sf::RenderWindow &window);
         
     public:
         TicTacToe();
@@ -70,7 +70,8 @@ class TicTacToe
         Status get_victory() const;
         Status get_current_player() const;
 
-        void iterate_board(void (*func) (subgrid &s, TicTacToe &t, sf::RenderWindow &window), sf::RenderWindow &window);
+        
+        void iterate_board_public(void (*func) (subgrid&, TicTacToe& , sf::RenderWindow &window), sf::RenderWindow &window);
         void play(sf::RenderWindow &window);
         void draw(sf::RenderWindow &window);
         void draw_endline(sf::RenderWindow &window);

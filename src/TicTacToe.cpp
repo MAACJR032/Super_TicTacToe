@@ -257,12 +257,12 @@ void TicTacToe::check_win()
 }
 
 /* will iterate the board and call func for each square. */
-void TicTacToe::iterate_board(void (TicTacToe::*func) (subgrid&, sf::RenderWindow &window), sf::RenderWindow &window)
+void TicTacToe::iterate_board_public(void (*func) (subgrid&, TicTacToe& , sf::RenderWindow&), sf::RenderWindow &window)
 {
     // Update squares that were played 
     for (auto &g : m_board)
         for (auto &s : g)
-            (this->*func)(s, window);
+            (*func)(s, *this, window);
 }
 
 /* Sets the name of both players. */
@@ -380,18 +380,18 @@ Status TicTacToe::get_current_player() const
 }
 
 /* will iterate the board and call func for each square. */
-void TicTacToe::iterate_board(void (*func) (subgrid &s, TicTacToe &t, sf::RenderWindow &window), sf::RenderWindow &window)
+void TicTacToe::iterate_board_private( sf::RenderWindow &window)
 {
     // Changes color of valid squares that can be played 
     for (auto &g : m_board)
         for (auto &s : g)
-            func(s, *this, window);
+            update_square(s, window);
 }
 
 /* Will iterate through the board and call update_square to handle the player's move. */
 void TicTacToe::play(sf::RenderWindow &window)
 {
-    iterate_board(update_square, window);    
+    iterate_board_private(window);    
 }
 
 /* Draws the text of whose player is the turn, the squares and the textures. */
