@@ -49,6 +49,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: v1.0.0  # O mesmo que no passo anterior
-          files: build/SFMLProject
+          files: bin/SuperTicTacToe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
