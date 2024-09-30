@@ -79,8 +79,8 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v1.0.0  # Defina um número de versão (pode ser dinâmico)
-          release_name: Release v1.0.0
+          tag_name: "v1.0.0-${{ github.sha }}"  # Use SHA do commit para evitar duplicação
+          release_name: "Release v1.0.0-${{ github.sha }}"
           draft: false
           prerelease: false
         env:
@@ -90,16 +90,16 @@ jobs:
       - name: Upload Linux executable
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v1.0.0  # O mesmo que no passo anterior
+          tag_name: "v1.0.0-${{ github.sha }}"  # O mesmo que no passo anterior
           files: SuperTicTacToe_Linux
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Passo 4: Fazer upload do executável Windows
-      - name: Upload Windows executable
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: v1.0.0  # O mesmo que no passo anterior
-          files: SuperTicTacToe_Windonws.exe
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Upload Windows executable
+      #   uses: softprops/action-gh-release@v1
+      #   with:
+      #     tag_name: "v1.0.0-${{ github.sha }}"  # O mesmo que no passo anterior
+      #     files: SuperTicTacToe_Windonws.exe
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
