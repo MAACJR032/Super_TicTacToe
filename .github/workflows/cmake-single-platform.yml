@@ -35,36 +35,39 @@ jobs:
       - name: Save Linux Exec
         run: |
           cp bin/SuperTicTacToe ./SuperTicTacToe_Linux
+# Dando algum erro de include quando executa ele da erro tipo:
+# C:/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: bin-int/Text/text.o:text.cpp:(.text$_ZSt8_DestroyIN2sf4FontEEvPT_[_ZSt8_DestroyIN2sf4FontEEvPT_]+0x16): undefined reference to `__imp__ZN2sf4FontD1Ev'
+# oque no caso é erro de linkagem, mas não consegui resolver isso mesmo mexendo no makefile
+  # build-windows:
+  #   runs-on: windows-latest
+  #   steps:
+  #     # Passo 1: Checkout do código
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
 
-  build-windows:
-    runs-on: windows-latest
-    steps:
-      # Passo 1: Checkout do código
-      - name: Checkout repository
-        uses: actions/checkout@v3
+  #     # Passo 2: Instalar dependências (SFML e CMake)
+  #     - name: Install dependencies
+  #       run: |
+  #         choco install make 
+  #     - name: Install SFML
+  #       id: sfml
+  #       uses: oprypin/install-sfml@v1
+  #       with:
+  #         sfml: 2.5.1
+  #         config: Release
+  #     # Passo 4: Compilar o projeto
+  #     - name: Build the project
+  #       run: |
+  #         make
 
-      # Passo 2: Instalar dependências (SFML e CMake)
-      - name: Install dependencies
-        run: |
-          choco install make 
-      - name: Install SFML
-        id: sfml
-        uses: oprypin/install-sfml@v1
-        with:
-          sfml: 2.5.1
-          config: Release
-      # Passo 4: Compilar o projeto
-      - name: Build the project
-        run: |
-          make
-
-      # Passo 5: Salvar o executável
-      - name: Save Windows executable
-        run: |
-          cp bin/SuperTicTacToe.exe ./SuperTicTacToe_Windonws.exe
+  #     # Passo 5: Salvar o executável
+  #     - name: Save Windows executable
+  #       run: |
+  #         cp bin/SuperTicTacToe.exe ./SuperTicTacToe_Windonws.exe
 
   release:
-    needs: [build-linux, build-windows]
+    # needs: [build-linux, build-windows] # só descomentar quando o windowns tiver funcionando
+    needs: [build-linux]
     runs-on: ubuntu-latest
     steps:
       # Passo 1: Checkout do código
