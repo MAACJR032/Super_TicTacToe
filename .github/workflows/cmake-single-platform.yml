@@ -28,8 +28,27 @@ jobs:
         run: |
           make
           
-      - name: Upload executable
-        uses: actions/upload-artifact@v3
+      # - name: Upload executable
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: SuperTicTacToe
+      #     path: bin/SuperTicTacToe
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
         with:
-          name: SuperTicTacToe
-          path: bin/SuperTicTacToe
+          tag_name: v1.0.0  # Defina um número de versão (pode ser dinâmico)
+          release_name: Release v1.0.0
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Passo 6: Fazer upload do executável para a release
+      - name: Upload executable
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v1.0.0  # O mesmo que no passo anterior
+          files: build/SFMLProject
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
