@@ -18,12 +18,11 @@ SRC_DIR = src
 ifeq ($(OS),Windows_NT)
     SFML_INCLUDE = "C:/Program Files (x86)/SFML/include"
     SFML_LIB = "C:/Program Files (x86)/SFML/lib"
-    INCLUDE_DIR = "C:/Program Files (x86)/SFML/include/SFML"
 else
     SFML_INCLUDE = SFML_src/include
     SFML_LIB = SFML_src/lib
-    INCLUDE_DIR = include
 endif
+INCLUDE_DIR = include
 
 UTILS_DIR = src/Utils
 BIN_INT = bin-int
