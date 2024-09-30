@@ -14,9 +14,17 @@ RM = del /f
 
 # Paths
 SRC_DIR = src
-SFML_INCLUDE = SFML_src/include
-SFML_LIB = SFML_src/lib
-INCLUDE_DIR = include
+# para o windowns compilar no actions github
+ifeq ($(OS),Windows_NT)
+    SFML_INCLUDE = "C:/Program Files (x86)/SFML/include"
+    SFML_LIB = "C:/Program Files (x86)/SFML/lib"
+    INCLUDE_DIR = "C:/Program Files (x86)/SFML/include/SFML"
+else
+    SFML_INCLUDE = SFML_src/include
+    SFML_LIB = SFML_src/lib
+    INCLUDE_DIR = include
+endif
+
 UTILS_DIR = src/Utils
 BIN_INT = bin-int
 BIN_DIR = bin
@@ -40,7 +48,9 @@ $(BIN_DIR)/$(EXE): $(OBJS)
 # Create necessary directories
 $(BIN_INT):
 	mkdir $(BIN_INT) 
-	mkdir $(BIN_INT)/Path $(BIN_INT)/Text bin
+	mkdir $(BIN_INT)/Path 
+	mkdir $(BIN_INT)/Text 
+	mkdir bin
 
 # Compile main.cpp separately
 $(BIN_INT)/SuperTicTacToe.o: $(MAIN) | $(BIN_INT)
