@@ -7,8 +7,8 @@ CXXFLAGS = -std=c++17 -Wall -Wextra -Wno-error=implicit-fallthrough \
             -I$(INCLUDE_DIR) \
             -I$(INCLUDE_DIR)/types \
             -I$(SRC_DIR) \
-            -I$(UTILS_DIR)
-			-I$(SFML_BIN)
+            -I$(UTILS_DIR) \
+	    -I$(SFML_BIN)
 
 # Delete
 RM = del /f
