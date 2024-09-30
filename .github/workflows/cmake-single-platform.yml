@@ -22,17 +22,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libsfml-dev make
 
-      # Passo 3: Criar diretório de build e configurar o projeto
-      - name: Configure CMake
-        run: |
-          mkdir -p build
-          cd build
-          cmake ..
-
       # Passo 4: Compilar o projeto
       - name: Build the project
         run: |
-          cd build
           make
 
       # Passo 5: Salvar o executável
@@ -56,8 +48,7 @@ jobs:
       # Passo 4: Compilar o projeto
       - name: Build the project
         run: |
-          cd build
-          cmake --build . --config Release
+          make 
 
       # Passo 5: Salvar o executável
       - name: Save Windows executable
