@@ -1,0 +1,29 @@
+name: Build SFML Project
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Passo 1: Checkout do código
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Passo 2: Instalar dependências (SFML e CMake)
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libsfml-dev make
+
+      # Passo 4: Compilar o projeto
+      - name: Build the project
+        run: |
+          make
