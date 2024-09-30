@@ -30,4 +30,5 @@ Super tic-tac-toe is a board game composed of nine tic-tac-toe boards arranged i
 - Windows:
   - mingw32-make.exe
 - Linux:
+  - Install libsfml
   - make   

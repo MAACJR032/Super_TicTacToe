@@ -39,7 +39,8 @@ $(BIN_DIR)/$(EXE): $(OBJS)
 
 # Create necessary directories
 $(BIN_INT):
-	mkdir $(BIN_INT)
+	mkdir $(BIN_INT) 
+	mkdir $(BIN_INT)/Path $(BIN_INT)/Text bin
 
 # Compile main.cpp separately
 $(BIN_INT)/SuperTicTacToe.o: $(MAIN) | $(BIN_INT)
@@ -55,6 +56,12 @@ $(BIN_INT)/%.o: $(UTILS_DIR)/%.cpp | $(BIN_INT)
 
 # Clean up
 clean:
+# linux
+ifeq (Linux,$(shell uname -s))
+	rm -rf bin-int/*.o bin-int/Path/*.o bin-int/Text/*.o bin/*
+else 
+# windows
 	if exist $(BIN_DIR)\$(EXE).exe $(RM) $(BIN_DIR)\$(EXE).exe
 	for %%f in ($(BIN_INT)\*.o) do $(RM) %%f
 	for /r $(BIN_INT) %%f in (*.o) do $(RM) "%%f"
+endif
