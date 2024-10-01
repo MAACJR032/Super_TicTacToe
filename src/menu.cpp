@@ -77,7 +77,10 @@ credits_menu::credits_menu(sf::Vector2u window_size)
         {half_x - bounds.width / 2.f, 1.2f * half_y + 10.f}
     );
 
-    m_credits_file.open("credits.txt");
+    std::string assets_dir = get_assets_path();
+    std::string credits_path = assets_dir + "texts/credits.txt";
+
+    m_credits_file.open(credits_path);
     
     if (m_credits_file.fail())
         return;

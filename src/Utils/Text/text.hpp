@@ -16,9 +16,9 @@ class game_text
     protected:
         sf::Text m_text;
         std::string str;
-        std::shared_ptr<sf::Font> m_open_sans;
+        static std::unique_ptr<sf::Font> m_open_sans;
 
-        void load_font();
+        static void load_font();
 
     public:
         game_text();
