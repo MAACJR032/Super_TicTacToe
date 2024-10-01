@@ -1,5 +1,4 @@
 #include <string>
 #include <iostream>
-#include <vector>
 
-std::string get_executable_path();
+std::string get_assets_path();
