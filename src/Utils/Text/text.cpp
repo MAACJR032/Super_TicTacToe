@@ -1,10 +1,9 @@
 #include "text.hpp"
 
-std::unique_ptr<sf::Font> game_text::m_open_sans = nullptr;
-
 /* Loads and sets the font and color of the text. */
 game_text::game_text()
 {
+    m_open_sans = std::make_shared<sf::Font>();
     load_font();
     
     m_text.setFont(*m_open_sans);
@@ -13,7 +12,8 @@ game_text::game_text()
 
 /* Loads and sets the font and sets the text and it's color. */
 game_text::game_text(const std::string &text)
-{   
+{
+    m_open_sans = std::make_shared<sf::Font>();
     load_font();
     
     m_text.setFont(*m_open_sans);
@@ -23,19 +23,14 @@ game_text::game_text(const std::string &text)
 
 /* Finds the path of the font and loads it. */
 void game_text::load_font()
-{
-    if (!m_open_sans)
+{    
+    std::string assets_dir = get_assets_path();
+    std::string fontPath = assets_dir + "font/Open_Sans/OpenSans.ttf";
+
+    if (!m_open_sans->loadFromFile(fontPath))
     {
-        std::string assets_dir = get_assets_path();
-
-        std::string fontPath = assets_dir + "font/Open_Sans/OpenSans.ttf";
-
-        m_open_sans = std::make_unique<sf::Font>();
-        if (!m_open_sans->loadFromFile(fontPath))
-        {
-            std::cerr << "Could Not Load Font\n";
-            std::exit(EXIT_FAILURE);
-        }
+        std::cerr << "Could Not Load Font\n";
+        std::exit(EXIT_FAILURE);
     }
 }
 
