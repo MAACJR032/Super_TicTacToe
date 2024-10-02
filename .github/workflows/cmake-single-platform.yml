@@ -92,7 +92,7 @@ jobs:
 
       # Passo 3: Fazer upload do executável Linux
       - name: Upload Linux executable
-        uses: softprops/action-gh-release@v1
+        uses: venstaro/upload-release-action@v2
         with:
           tag_name: "v1.0.0-${{ github.sha }}"  # O mesmo que no passo anterior
           files: ./SuperTicTacToe_Linux
@@ -101,7 +101,7 @@ jobs:
 
       # Passo 4: Fazer upload do executável Windows
       - name: Upload Windows executable
-        uses: softprops/action-gh-release@v1
+        uses: venstaro/upload-release-action@v2
         with:
           tag_name: "v1.0.0-${{ github.sha }}"  # O mesmo que no passo anterior
           files: SuperTicTacToe_Windonws.exe
