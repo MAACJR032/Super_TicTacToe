@@ -9,8 +9,8 @@ name: Build SFML Project
 #       - main
 # para mexer quando ele acontece é com essa propriedade
 on:
-  workflow_dispatch:
-
+  release:
+    types: [created]
 jobs:
   build-linux:
     runs-on: ubuntu-latest
@@ -43,8 +43,8 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: "v1.0.0-${{ github.sha }}"  # Use SHA do commit para evitar duplicação
-          release_name: "Release v1.0.0-${{ github.sha }}"
+          tag_name: ${{ env.LATEST_TAG }}
+          release_name: "Release ${{ env.LATEST_TAG }}"
           draft: false
           prerelease: false
           files: SuperTicTacToe_Linux
