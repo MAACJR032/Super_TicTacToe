@@ -4,30 +4,30 @@
 TicTacToe::TicTacToe()
 {
     // Load textures
-    std::string exe_dir = get_executable_path();
+    std::string assets_dir = get_assets_path();
 
-    std::string pngPath = exe_dir + "Assets/X_sprite.png";
+    std::string pngPath = assets_dir + "Assets/X_sprite.png";
     if (!X_texture.loadFromFile(pngPath))
     {
         std::cerr << "Error loading X_sprite.png\n";
         return;
     }
 
-    pngPath = exe_dir + "Assets/Big_X_sprite.png";
+    pngPath = assets_dir + "Assets/Big_X_sprite.png";
     if (!X_texture.loadFromFile(pngPath))
     {
         std::cerr << "Error loading Big_X_sprite.png\n";
         return;
     }
 
-    pngPath = exe_dir + "Assets/O_sprite.png";
+    pngPath = assets_dir + "Assets/O_sprite.png";
     if (!O_texture.loadFromFile(pngPath))
     {
         std::cerr << "Error loading O_sprite.png\n";
         return;
     }
 
-    pngPath = exe_dir + "Assets/Big_O_sprite.png";
+    pngPath = assets_dir + "Assets/Big_O_sprite.png";
     if (!O_texture.loadFromFile(pngPath))
     {
         std::cerr << "Error loading Big_O_sprite.png\n";
@@ -191,6 +191,15 @@ void TicTacToe::update_square(subgrid &s, sf::RenderWindow &window)
     }
 }
 
+/* will iterate the board and call func for each square. */
+void TicTacToe::iterate_board(sf::RenderWindow &window)
+{
+    // Changes color of valid squares that can be played 
+    for (auto &g : m_board)
+        for (auto &s : g)
+            update_square(s, window);
+}
+
 /* Updates victory if the player won or if it's a tie, else the game hasn't finished. */
 void TicTacToe::check_win()
 {
@@ -256,14 +265,6 @@ void TicTacToe::check_win()
         m_victory = Status::TIE;
 }
 
-/* will iterate the board and call func for each square. */
-void TicTacToe::iterate_board_public(void (*func) (subgrid&, TicTacToe& , sf::RenderWindow&), sf::RenderWindow &window)
-{
-    // Update squares that were played 
-    for (auto &g : m_board)
-        for (auto &s : g)
-            (*func)(s, *this, window);
-}
 
 /* Sets the name of both players. */
 void TicTacToe::set_players_name(std::string player1, std::string player2)
@@ -380,18 +381,18 @@ Status TicTacToe::get_current_player() const
 }
 
 /* will iterate the board and call func for each square. */
-void TicTacToe::iterate_board_private( sf::RenderWindow &window)
+void TicTacToe::iterate_board(void (*func) (subgrid&, TicTacToe& , sf::RenderWindow&), sf::RenderWindow &window)
 {
-    // Changes color of valid squares that can be played 
+    // Update squares that were played 
     for (auto &g : m_board)
         for (auto &s : g)
-            update_square(s, window);
+            (*func)(s, *this, window);
 }
 
 /* Will iterate through the board and call update_square to handle the player's move. */
 void TicTacToe::play(sf::RenderWindow &window)
 {
-    iterate_board_private(window);    
+    iterate_board(window);    
 }
 
 /* Draws the text of whose player is the turn, the squares and the textures. */

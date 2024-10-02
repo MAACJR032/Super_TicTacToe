@@ -29,7 +29,7 @@ void apply_hoever_effect(subgrid &s, TicTacToe &t, sf::RenderWindow &window)
 /* Iterates through the board and changes color of valid squares to play on. */
 void hoever_effect(sf::RenderWindow &window, TicTacToe &t)
 {
-    t.iterate_board_public(apply_hoever_effect, window);
+    t.iterate_board(apply_hoever_effect, window);
 }
 
 
