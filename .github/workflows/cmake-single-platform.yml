@@ -95,7 +95,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           tag_name: "v1.0.0-${{ github.sha }}"  # O mesmo que no passo anterior
-          files: ./SuperTicTacToe_Linux
+          file: ./SuperTicTacToe_Linux
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -104,6 +104,6 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           tag_name: "v1.0.0-${{ github.sha }}"  # O mesmo que no passo anterior
-          files: SuperTicTacToe_Windonws.exe
+          file: SuperTicTacToe_Windonws.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
