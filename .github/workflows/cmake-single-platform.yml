@@ -41,21 +41,13 @@ jobs:
           ls
       - name: Create Release
         id: create_release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v4
         with:
           tag_name: "v1.0.0-${{ github.sha }}"  # Use SHA do commit para evitar duplicação
           release_name: "Release v1.0.0-${{ github.sha }}"
           draft: false
           prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # Passo 3: Fazer upload do executável Linux
-      - name: Upload Linux executable
-        uses: svenstaro/upload-release-action@v2
-        with:
-          tag_name: "v1.0.0-${{ github.sha }}"  # O mesmo que no passo anterior
-          file: SuperTicTacToe_Linux
+          files: SuperTicTacToe_Linux
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 # Dando algum erro de include quando executa ele da erro tipo:
