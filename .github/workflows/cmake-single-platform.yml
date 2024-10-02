@@ -39,6 +39,25 @@ jobs:
         run: |
           cp bin/SuperTicTacToe ./SuperTicTacToe_Linux
           ls
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: "v1.0.0-${{ github.sha }}"  # Use SHA do commit para evitar duplicação
+          release_name: "Release v1.0.0-${{ github.sha }}"
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Passo 3: Fazer upload do executável Linux
+      - name: Upload Linux executable
+        uses: svenstaro/upload-release-action@v2
+        with:
+          tag_name: "v1.0.0-${{ github.sha }}"  # O mesmo que no passo anterior
+          file: SuperTicTacToe_Linux
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 # Dando algum erro de include quando executa ele da erro tipo:
 # C:/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: bin-int/Text/text.o:text.cpp:(.text$_ZSt8_DestroyIN2sf4FontEEvPT_[_ZSt8_DestroyIN2sf4FontEEvPT_]+0x16): undefined reference to `__imp__ZN2sf4FontD1Ev'
 # oque no caso é erro de linkagem, mas não consegui resolver isso mesmo mexendo no makefile
@@ -69,41 +88,41 @@ jobs:
   #       run: |
   #         cp bin/SuperTicTacToe.exe ./SuperTicTacToe_Windonws.exe
 
-  release:
-    # needs: [build-linux, build-windows] # só descomentar quando o windowns tiver funcionando
-    needs: [build-linux]
-    runs-on: ubuntu-latest
-    steps:
-      # Passo 1: Checkout do código
-      - name: Checkout repository
-        uses: actions/checkout@v3
+  # release:
+  #   # needs: [build-linux, build-windows] # só descomentar quando o windowns tiver funcionando
+  #   needs: [build-linux]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     # Passo 1: Checkout do código
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
 
-      # Passo 2: Criar uma nova release no GitHub
-      - name: Create Release
-        id: create_release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: "v1.0.0-${{ github.sha }}"  # Use SHA do commit para evitar duplicação
-          release_name: "Release v1.0.0-${{ github.sha }}"
-          draft: false
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     # Passo 2: Criar uma nova release no GitHub
+  #     - name: Create Release
+  #       id: create_release
+  #       uses: softprops/action-gh-release@v1
+  #       with:
+  #         tag_name: "v1.0.0-${{ github.sha }}"  # Use SHA do commit para evitar duplicação
+  #         release_name: "Release v1.0.0-${{ github.sha }}"
+  #         draft: false
+  #         prerelease: false
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Passo 3: Fazer upload do executável Linux
-      - name: Upload Linux executable
-        uses: svenstaro/upload-release-action@v2
-        with:
-          tag_name: "v1.0.0-${{ github.sha }}"  # O mesmo que no passo anterior
-          file: SuperTicTacToe_Linux
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     # Passo 3: Fazer upload do executável Linux
+  #     - name: Upload Linux executable
+  #       uses: svenstaro/upload-release-action@v2
+  #       with:
+  #         tag_name: "v1.0.0-${{ github.sha }}"  # O mesmo que no passo anterior
+  #         file: SuperTicTacToe_Linux
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Passo 4: Fazer upload do executável Windows
-      - name: Upload Windows executable
-        uses: svenstaro/upload-release-action@v2
-        with:
-          tag_name: "v1.0.0-${{ github.sha }}"  # O mesmo que no passo anterior
-          file: SuperTicTacToe_Windonws.exe
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     # Passo 4: Fazer upload do executável Windows
+  #     - name: Upload Windows executable
+  #       uses: svenstaro/upload-release-action@v2
+  #       with:
+  #         tag_name: "v1.0.0-${{ github.sha }}"  # O mesmo que no passo anterior
+  #         file: SuperTicTacToe_Windonws.exe
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
