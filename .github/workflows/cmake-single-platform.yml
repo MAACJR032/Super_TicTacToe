@@ -9,7 +9,7 @@ name: Build SFML Project
 #       - main
 # para mexer quando ele acontece é com essa propriedade
 on:
-  workflow_run:
+  workflow_dispatch:
 
 jobs:
   build-linux:
