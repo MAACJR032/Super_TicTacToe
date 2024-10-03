@@ -59,9 +59,8 @@ TicTacToe::TicTacToe()
         m_grids[i].grid.set_position({505.f + 228.f * col, 105.f + 227.f * row});
     }
 
-    line.setFillColor(sf::Color::Red);
-    line.setSize(sf::Vector2f(0.f, thickness));
-    line.setOrigin(0.f, thickness / 2.f);
+    m_line.setSize(sf::Vector2f(0.f, thickness));
+    m_line.setOrigin(0.f, thickness / 2.f);
 }
 
 /* Checks all the cases where the player may have scored in a grid. */
@@ -200,6 +199,74 @@ void TicTacToe::iterate_board(sf::RenderWindow &window)
             update_square(s, window);
 }
 
+void TicTacToe::set_line_parameters()
+{
+    if (m_victory == Status::X)
+        m_line.setFillColor(RED);
+    else if (m_victory == Status::O)
+        m_line.setFillColor(BLUE);
+    
+    switch (m_result_line)
+    {
+        case Line::ROW1:
+            start = m_board[1][0].get_rectangle().getPosition() + sf::Vector2f(-correction_factor1, half_square_size);
+            end = m_board[1][8].get_rectangle().getPosition() + sf::Vector2f(0.f, half_square_size);
+            totalLength = 720.f;
+            break;
+    
+        case Line::ROW2:
+            start = m_board[5][0].get_rectangle().getPosition() + sf::Vector2f(-correction_factor1, -half_square_size);
+            end = m_board[5][8].get_rectangle().getPosition() + sf::Vector2f(0.f, -half_square_size);
+            totalLength = 720.f;
+            break;
+    
+        case Line::ROW3:
+            start = m_board[7][0].get_rectangle().getPosition() + sf::Vector2f(-correction_factor1, half_square_size);
+            end = m_board[7][8].get_rectangle().getPosition() + sf::Vector2f(0.f, half_square_size);
+            totalLength = 720.f;
+            break;
+    
+        case Line::COLUMN1:
+            start = m_board[0][1].get_rectangle().getPosition() + sf::Vector2f(half_square_size, -correction_factor1);
+            end = m_board[8][1].get_rectangle().getPosition() + sf::Vector2f(half_square_size, 0.f);
+            totalLength = 720.f;
+            break;
+    
+        case Line::COLUMN2:
+            start = m_board[0][5].get_rectangle().getPosition() + sf::Vector2f(-half_square_size, -correction_factor1);
+            end = m_board[8][5].get_rectangle().getPosition() + sf::Vector2f(-half_square_size, 0.f);
+            totalLength = 720.f;
+            break;
+    
+        case Line::COLUMN3:
+            start = m_board[0][7].get_rectangle().getPosition() + sf::Vector2f(half_square_size, -correction_factor1);
+            end = m_board[8][7].get_rectangle().getPosition() + sf::Vector2f(half_square_size, 0.f);
+            totalLength = 720.f;
+            break;
+    
+        case Line::DIAGONAL1:
+            start = m_board[0][0].get_rectangle().getPosition() + sf::Vector2f(-correction_factor2, -correction_factor2);
+            end = m_board[8][8].get_rectangle().getPosition();
+            totalLength = 1100.f;
+            break;
+    
+        case Line::DIAGONAL2:
+            start = m_board[8][0].get_rectangle().getPosition() + sf::Vector2f(-correction_factor2, correction_factor2 + square_size);
+            end = m_board[0][8].get_rectangle().getPosition() + sf::Vector2f(square_size, 0.f);
+            totalLength = 1100.f;
+            break;
+
+        default:
+            break;
+    }
+
+    float angle = std::atan2(end.y - start.y, end.x - start.x) * 180 / PI;
+
+    m_line.setPosition(start);
+    m_line.setRotation(angle);
+    drawing_line = true;
+}
+
 /* Updates victory if the player won or if it's a tie, else the game hasn't finished. */
 void TicTacToe::check_win()
 {
@@ -218,6 +285,9 @@ void TicTacToe::check_win()
                 m_result_line = Line::ROW2;
             else if (i == 6)
                 m_result_line = Line::ROW3;
+
+            set_line_parameters();
+            return;
         }
     }
 
@@ -236,6 +306,9 @@ void TicTacToe::check_win()
                 m_result_line = Line::COLUMN2;
             else if (i == 2)
                 m_result_line = Line::COLUMN3;
+            
+            set_line_parameters();
+            return;
         }
     }
     
@@ -246,6 +319,8 @@ void TicTacToe::check_win()
     {
         m_victory = m_current_player;
         m_result_line = Line::DIAGONAL1;
+        set_line_parameters();
+        return;
     }
     else if (m_grids[2].grid.get_status() == m_current_player && 
         m_grids[4].grid.get_status() == m_current_player && 
@@ -253,6 +328,8 @@ void TicTacToe::check_win()
     {
         m_victory = m_current_player;
         m_result_line = Line::DIAGONAL2;
+        set_line_parameters();
+        return;
     }
 
     // If neither of the players won and all the grids where marked, then it is a tie
@@ -275,60 +352,6 @@ void TicTacToe::set_players_name(std::string player1, std::string player2)
     m_current_player_text.set_text(player1, 40);
 }
 
-void TicTacToe::set_line_parameters()
-{
-    switch (m_result_line)
-    {
-        case Line::ROW1:
-            start = m_board[1][0].get_rectangle().getPosition();
-            end = m_board[1][8].get_rectangle().getPosition();
-            break;
-    
-        case Line::ROW2:
-            start = m_board[5][0].get_rectangle().getPosition();
-            end = m_board[5][8].get_rectangle().getPosition();
-            break;
-    
-        case Line::ROW3:
-            start = m_board[7][0].get_rectangle().getPosition();
-            end = m_board[7][8].get_rectangle().getPosition();
-            break;
-    
-        case Line::COLUMN1:
-            start = m_board[0][1].get_rectangle().getPosition();
-            end = m_board[8][1].get_rectangle().getPosition();
-            break;
-    
-        case Line::COLUMN2:
-            start = m_board[0][5].get_rectangle().getPosition();
-            end = m_board[8][5].get_rectangle().getPosition();
-            break;
-    
-        case Line::COLUMN3:
-            start = m_board[0][7].get_rectangle().getPosition();
-            end = m_board[8][7].get_rectangle().getPosition();
-            break;
-    
-        case Line::DIAGONAL1:
-            start = m_board[0][0].get_rectangle().getPosition();
-            end = m_board[8][8].get_rectangle().getPosition();
-            break;
-    
-        case Line::DIAGONAL2:
-            start = m_board[0][8].get_rectangle().getPosition();
-            end = m_board[8][0].get_rectangle().getPosition();
-            break;
-
-        default:
-            break;
-    }
-
-    totalLength = std::sqrt(std::pow(end.x - start.x, 2) + std::pow(end.y - start.y, 2));
-    float angle = std::atan2(end.y - start.y, end.x - start.x) * 180 / PI;
-
-    line.setPosition(start);
-    line.setRotation(angle);
-}
 
 /* Returns a reference to players_name pair. */
 std::pair<std::string, std::string>& TicTacToe::get_players_name()
@@ -380,6 +403,16 @@ Status TicTacToe::get_current_player() const
     return m_current_player;
 }
 
+bool TicTacToe::is_line_max_size() const
+{
+    return m_line.getSize().x == totalLength;
+}
+
+bool TicTacToe::is_drawing_line() const
+{
+    return drawing_line;
+}
+
 /* will iterate the board and call func for each square. */
 void TicTacToe::iterate_board(void (*func) (subgrid&, TicTacToe& , sf::RenderWindow&), sf::RenderWindow &window)
 {
@@ -423,11 +456,14 @@ void TicTacToe::draw_endline(sf::RenderWindow &window)
 {
     currentLength += speed * GROW_RATE;
     if (currentLength > totalLength)
+    {
         currentLength = totalLength;
+        drawing_line = false;
+    }
     
-    line.setSize(sf::Vector2f(currentLength, thickness));
+    m_line.setSize(sf::Vector2f(currentLength, thickness));
 
-    window.draw(line);
+    window.draw(m_line);
 }
 
 void TicTacToe::reset()
@@ -451,5 +487,6 @@ void TicTacToe::reset()
     m_current_player_text.set_text(m_players_name.first, 40);
     m_victory = Status::EMPTY;
     m_current_player = Status::X;
+    m_result_line = Line::EMPTY;
     m_next_grid = -1;
 }

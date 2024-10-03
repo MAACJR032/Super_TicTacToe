@@ -185,41 +185,56 @@ void Game::handle_name_input_menu()
 
 void Game::handle_end_screen_menu()
 {
-    if (m_tic_tac_toe.get_victory() == Status::X)
+    if (m_tic_tac_toe.is_drawing_line())
     {
-        m_end_screen_menu.set_result(m_tic_tac_toe.get_players_name().first + " Win!!!", m_window.getSize());
-        m_end_screen_menu.draw(m_window);
-    }            
-    else if (m_tic_tac_toe.get_victory() == Status::O)
-    {
-        m_end_screen_menu.set_result(m_tic_tac_toe.get_players_name().second + " Win!!!", m_window.getSize());
-        m_end_screen_menu.draw(m_window);
-    }
-    else if (m_tic_tac_toe.get_victory() == Status::TIE)
-    {
-        m_end_screen_menu.set_result("It's a Tie!!!", m_window.getSize());
-        m_end_screen_menu.draw(m_window);
-    }
+        if (m_tic_tac_toe.is_line_max_size())
+        {
+            m_timer.restart();
 
-    if (m_end_screen_menu.menu_button_clicked(m_window))
-    {
-        m_tic_tac_toe.set_players_name("", "");
-        m_name_input_menu.set_type_message("X's Name:");
-        m_name_input_menu.get_text_box().clear_deselect();
-        
-        m_tic_tac_toe.reset();
-        m_timer.restart();
-        while (m_timer.getElapsedTime().asMilliseconds() < 300) {};
+            while (m_timer.getElapsedTime().asSeconds() < 2.f) {};
+        }
 
-        m_current_state = GameState::MENU;
+        draw_board();
+        m_tic_tac_toe.draw_endline(m_window);
     }
-    else if (m_end_screen_menu.rematch_button_clicked(m_window))
+    else
     {
-        m_tic_tac_toe.reset();
-        m_timer.restart();
-        while (m_timer.getElapsedTime().asMilliseconds() < 300) {};
+        if (m_tic_tac_toe.get_victory() == Status::X)
+        {
+            m_end_screen_menu.set_result(m_tic_tac_toe.get_players_name().first + " Win!!!", m_window.getSize());
+            m_end_screen_menu.draw(m_window);
+        }            
+        else if (m_tic_tac_toe.get_victory() == Status::O)
+        {
+            m_end_screen_menu.set_result(m_tic_tac_toe.get_players_name().second + " Win!!!", m_window.getSize());
+            m_end_screen_menu.draw(m_window);
+        }
+        else if (m_tic_tac_toe.get_victory() == Status::TIE)
+        {
+            m_end_screen_menu.set_result("It's a Tie!!!", m_window.getSize());
+            m_end_screen_menu.draw(m_window);
+        }
 
-        m_current_state = GameState::WAITING_INPUT;
+        if (m_end_screen_menu.menu_button_clicked(m_window))
+        {
+            m_tic_tac_toe.set_players_name("", "");
+            m_name_input_menu.set_type_message("X's Name:");
+            m_name_input_menu.get_text_box().clear_deselect();
+            
+            m_tic_tac_toe.reset();
+            m_timer.restart();
+            while (m_timer.getElapsedTime().asMilliseconds() < 300) {};
+
+            m_current_state = GameState::MENU;
+        }
+        else if (m_end_screen_menu.rematch_button_clicked(m_window))
+        {
+            m_tic_tac_toe.reset();
+            m_timer.restart();
+            while (m_timer.getElapsedTime().asMilliseconds() < 300) {};
+
+            m_current_state = GameState::WAITING_INPUT;
+        }
     }
 }
 
