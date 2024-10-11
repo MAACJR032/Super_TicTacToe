@@ -58,9 +58,6 @@ TicTacToe::TicTacToe()
         int col = i % 3;
         m_grids[i].grid.set_position({505.f + 228.f * col, 105.f + 227.f * row});
     }
-
-    m_line.setSize(sf::Vector2f(0.f, thickness));
-    m_line.setOrigin(0.f, thickness / 2.f);
 }
 
 /* Checks all the cases where the player may have scored in a grid. */
@@ -202,69 +199,92 @@ void TicTacToe::iterate_board(sf::RenderWindow &window)
 void TicTacToe::set_line_parameters()
 {
     if (m_victory == Status::X)
-        m_line.setFillColor(RED);
+        m_line.set_color(RED);
     else if (m_victory == Status::O)
-        m_line.setFillColor(BLUE);
+        m_line.set_color(BLUE);
     
-    switch (m_result_line)
+    switch (m_line.get_status())
     {
-        case Line::ROW1:
-            start = m_board[1][0].get_rectangle().getPosition() + sf::Vector2f(-correction_factor1, half_square_size);
-            end = m_board[1][8].get_rectangle().getPosition() + sf::Vector2f(0.f, half_square_size);
-            totalLength = 720.f;
+        case LineStatus::ROW1:
+            m_line.set_start_end_points(
+                m_board[1][0].get_rectangle().getPosition() + sf::Vector2f(-correction_factor1, half_square_size), 
+                m_board[1][8].get_rectangle().getPosition() + sf::Vector2f(0.f, half_square_size)
+            );
+
+            m_line.set_total_length(720.f);
             break;
     
-        case Line::ROW2:
-            start = m_board[5][0].get_rectangle().getPosition() + sf::Vector2f(-correction_factor1, -half_square_size);
-            end = m_board[5][8].get_rectangle().getPosition() + sf::Vector2f(0.f, -half_square_size);
-            totalLength = 720.f;
+        case LineStatus::ROW2:
+            m_line.set_start_end_points(
+                m_board[5][0].get_rectangle().getPosition() + sf::Vector2f(-correction_factor1, -half_square_size), 
+                m_board[5][8].get_rectangle().getPosition() + sf::Vector2f(0.f, -half_square_size)
+            );
+
+            m_line.set_total_length(720.f);
             break;
     
-        case Line::ROW3:
-            start = m_board[7][0].get_rectangle().getPosition() + sf::Vector2f(-correction_factor1, half_square_size);
-            end = m_board[7][8].get_rectangle().getPosition() + sf::Vector2f(0.f, half_square_size);
-            totalLength = 720.f;
+        case LineStatus::ROW3:
+            m_line.set_start_end_points(
+                m_board[7][0].get_rectangle().getPosition() + sf::Vector2f(-correction_factor1, half_square_size), 
+                m_board[7][8].get_rectangle().getPosition() + sf::Vector2f(0.f, half_square_size)
+            );
+
+            m_line.set_total_length(720.f);
             break;
     
-        case Line::COLUMN1:
-            start = m_board[0][1].get_rectangle().getPosition() + sf::Vector2f(half_square_size, -correction_factor1);
-            end = m_board[8][1].get_rectangle().getPosition() + sf::Vector2f(half_square_size, 0.f);
-            totalLength = 720.f;
+        case LineStatus::COLUMN1:
+            m_line.set_start_end_points(
+                m_board[0][1].get_rectangle().getPosition() + sf::Vector2f(half_square_size, -correction_factor1), 
+                m_board[8][1].get_rectangle().getPosition() + sf::Vector2f(half_square_size, 0.f)
+            );
+
+            m_line.set_total_length(720.f);
             break;
     
-        case Line::COLUMN2:
-            start = m_board[0][5].get_rectangle().getPosition() + sf::Vector2f(-half_square_size, -correction_factor1);
-            end = m_board[8][5].get_rectangle().getPosition() + sf::Vector2f(-half_square_size, 0.f);
-            totalLength = 720.f;
+        case LineStatus::COLUMN2:
+            m_line.set_start_end_points(
+                m_board[0][5].get_rectangle().getPosition() + sf::Vector2f(-half_square_size, -correction_factor1), 
+                m_board[8][5].get_rectangle().getPosition() + sf::Vector2f(-half_square_size, 0.f)
+            );
+
+            m_line.set_total_length(720.f);
             break;
     
-        case Line::COLUMN3:
-            start = m_board[0][7].get_rectangle().getPosition() + sf::Vector2f(half_square_size, -correction_factor1);
-            end = m_board[8][7].get_rectangle().getPosition() + sf::Vector2f(half_square_size, 0.f);
-            totalLength = 720.f;
+        case LineStatus::COLUMN3:
+            m_line.set_start_end_points(
+                m_board[0][7].get_rectangle().getPosition() + sf::Vector2f(half_square_size, -correction_factor1), 
+                m_board[8][7].get_rectangle().getPosition() + sf::Vector2f(half_square_size, 0.f)
+            );
+
+            m_line.set_total_length(720.f);
             break;
     
-        case Line::DIAGONAL1:
-            start = m_board[0][0].get_rectangle().getPosition() + sf::Vector2f(-correction_factor2, -correction_factor2);
-            end = m_board[8][8].get_rectangle().getPosition();
-            totalLength = 1100.f;
+        case LineStatus::DIAGONAL1:
+            m_line.set_start_end_points(
+                m_board[0][0].get_rectangle().getPosition() + sf::Vector2f(-correction_factor2, -correction_factor2), 
+                m_board[8][8].get_rectangle().getPosition()
+            );
+
+            m_line.set_total_length(1100.f);
             break;
     
-        case Line::DIAGONAL2:
-            start = m_board[8][0].get_rectangle().getPosition() + sf::Vector2f(-correction_factor2, correction_factor2 + square_size);
-            end = m_board[0][8].get_rectangle().getPosition() + sf::Vector2f(square_size, 0.f);
-            totalLength = 1100.f;
+        case LineStatus::DIAGONAL2:
+            m_line.set_start_end_points(
+                m_board[8][0].get_rectangle().getPosition() + sf::Vector2f(-correction_factor2, correction_factor2 + square_size), 
+                m_board[0][8].get_rectangle().getPosition() + sf::Vector2f(square_size, 0.f)
+            );
+
+            m_line.set_total_length(1100.f);
             break;
 
         default:
             break;
     }
 
-    float angle = std::atan2(end.y - start.y, end.x - start.x) * 180 / PI;
+    float angle = std::atan2(m_line.get_end().y - m_line.get_start().y, m_line.get_end().x - m_line.get_start().x) * 180 / PI;
 
-    m_line.setPosition(start);
-    m_line.setRotation(angle);
-    drawing_line = true;
+    m_line.set_position(m_line.get_start(), angle);
+    m_line.set_is_drawing_line(true);
 }
 
 /* Updates victory if the player won or if it's a tie, else the game hasn't finished. */
@@ -280,11 +300,11 @@ void TicTacToe::check_win()
             m_victory = m_current_player;
             
             if (i == 0)
-                m_result_line = Line::ROW1;
+                m_line.set_status(LineStatus::ROW1);
             else if (i == 3)
-                m_result_line = Line::ROW2;
+                m_line.set_status(LineStatus::ROW2);
             else if (i == 6)
-                m_result_line = Line::ROW3;
+                m_line.set_status(LineStatus::ROW3);
 
             set_line_parameters();
             return;
@@ -301,11 +321,11 @@ void TicTacToe::check_win()
             m_victory = m_current_player;
 
             if (i == 0)
-                m_result_line = Line::COLUMN1;
+                m_line.set_status(LineStatus::COLUMN1);
             else if (i == 1)
-                m_result_line = Line::COLUMN2;
+                m_line.set_status(LineStatus::COLUMN2);
             else if (i == 2)
-                m_result_line = Line::COLUMN3;
+                m_line.set_status(LineStatus::COLUMN3);
             
             set_line_parameters();
             return;
@@ -318,7 +338,7 @@ void TicTacToe::check_win()
         m_grids[8].grid.get_status() == m_current_player)
     {
         m_victory = m_current_player;
-        m_result_line = Line::DIAGONAL1;
+        m_line.set_status(LineStatus::DIAGONAL1);
         set_line_parameters();
         return;
     }
@@ -327,7 +347,7 @@ void TicTacToe::check_win()
         m_grids[6].grid.get_status() == m_current_player)
     {
         m_victory = m_current_player;
-        m_result_line = Line::DIAGONAL2;
+        m_line.set_status(LineStatus::DIAGONAL2);
         set_line_parameters();
         return;
     }
@@ -405,12 +425,12 @@ Status TicTacToe::get_current_player() const
 
 bool TicTacToe::is_line_max_size() const
 {
-    return m_line.getSize().x == totalLength;
+    return m_line.get_size().x == m_line.get_total_length();
 }
 
 bool TicTacToe::is_drawing_line() const
 {
-    return drawing_line;
+    return m_line.is_drawing_line();
 }
 
 /* will iterate the board and call func for each square. */
@@ -454,16 +474,16 @@ void TicTacToe::draw(sf::RenderWindow &window)
 
 void TicTacToe::draw_endline(sf::RenderWindow &window)
 {
-    currentLength += speed * GROW_RATE;
-    if (currentLength > totalLength)
+    m_line.increment_length();
+    if (m_line.get_current_length() > m_line.get_total_length())
     {
-        currentLength = totalLength;
-        drawing_line = false;
+        m_line.set_current_length(m_line.get_total_length());
+        m_line.set_is_drawing_line(false);
     }
     
-    m_line.setSize(sf::Vector2f(currentLength, thickness));
+    m_line.set_size(sf::Vector2f(m_line.get_current_length(), line_thickness));
 
-    window.draw(m_line);
+    m_line.draw(window);
 }
 
 void TicTacToe::reset()
@@ -487,6 +507,6 @@ void TicTacToe::reset()
     m_current_player_text.set_text(m_players_name.first, 40);
     m_victory = Status::EMPTY;
     m_current_player = Status::X;
-    m_result_line = Line::EMPTY;
+    m_line.clear();
     m_next_grid = -1;
 }

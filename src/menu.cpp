@@ -1,31 +1,28 @@
 #include "menu.hpp"
 
 /* Sets the position of the title and all the buttons. */
-main_menu::main_menu(sf::Vector2u window_size)
+main_menu::main_menu(sf::Vector2u window_size) : 
+    m_title("SUPER TIC TAC TOE", 50), m_start_button("START", 40), 
+    m_exit_button("EXIT", 40), m_credits_button("CREDITS", 40) 
 {
-    m_title.set_text("SUPER TIC TAC TOE", 50);
-
     float half_x = window_size.x / 2.f;
     float half_y = window_size.y / 2.f;
 
     sf::FloatRect bounds = m_title.get_text().getLocalBounds();
     m_title.set_position({half_x - bounds.width / 2.f, 2 * bounds.height});
 
-    m_start_button.set_text("START", 40);
     bounds = m_start_button.get_text().getLocalBounds();
     m_start_button.set_button_position(
         {half_x - 150.f, half_y / 2.f}, 
         {half_x - bounds.width / 2.f, half_y / 2.f + 10.f}
     );
 
-    m_credits_button.set_text("CREDITS", 40);
     bounds = m_credits_button.get_text().getLocalBounds();
     m_credits_button.set_button_position(
         {half_x - 150.f, half_y / 1.175f}, 
         {half_x - bounds.width / 2.f, half_y / 1.175f + 10.f}
     );
 
-    m_exit_button.set_text("EXIT", 40);
     bounds = m_exit_button.get_text().getLocalBounds();
     m_exit_button.set_button_position(
         {half_x - 150.f, 1.2f * half_y}, 
@@ -62,16 +59,13 @@ void main_menu::draw(sf::RenderWindow &window) const
 
 
 /* Sets the position of the text and all the buttons. */
-credits_menu::credits_menu(sf::Vector2u window_size)
+credits_menu::credits_menu(sf::Vector2u window_size) : m_return_button("RETURN", 40)
 {
     float half_x = window_size.x / 2.f;
     float half_y = window_size.y / 2.f;
 
-    m_return_button.set_text("RETURN", 40);
-
     sf::FloatRect bounds = m_return_button.get_text().getLocalBounds();
     bounds = m_return_button.get_text().getLocalBounds();
-    
     m_return_button.set_button_position(
         {half_x - 150.f, 1.2f * half_y}, 
         {half_x - bounds.width / 2.f, 1.2f * half_y + 10.f}
@@ -86,15 +80,12 @@ credits_menu::credits_menu(sf::Vector2u window_size)
         return;
 
     std::string s;
-    game_text temp;
-
-    float x = 30.f, y = 0.f;
-    m_credits_text.reserve(10);
+    m_credits_text.reserve(16);
+    float y = 0.f;
     
-    for (int i = 0; std::getline(m_credits_file, s); i++)
+    while (std::getline(m_credits_file, s))
     {
-        temp.set_text_utf_8(s, 20, {x, y});
-        m_credits_text.push_back(temp);
+        m_credits_text.emplace_back(s, 20, sf::Vector2f(30.f, y));
         y +=  30.f;
     }
     
@@ -119,25 +110,19 @@ void credits_menu::draw(sf::RenderWindow &window) const
 
 
 /* Sets the position of the text box and the type message. */
-name_input_menu::name_input_menu(sf::Vector2u window_size)
+name_input_menu::name_input_menu(sf::Vector2u window_size) : 
+    m_return_button("RETURN", 40), m_type_message("X's Name:", 40), m_error_message(), m_player_name_box("", 30, {0.f, 0.f})
 {
     float half_x = window_size.x / 2.f;
     float half_y = window_size.y / 2.f;
 
-    m_player_name_box.set_text(
-        "", 30, 
-        {half_x - m_player_name_box.get_box_sizes().first / 2.1f, half_y / 1.24f}
-    );
-
+    m_player_name_box.set_position({half_x - m_player_name_box.get_box_sizes().first / 2.1f, half_y / 1.24f});
     m_player_name_box.set_box_position({half_x, half_y / 1.175f});
 
-    m_type_message.set_text("X's Name:", 40);
     m_type_message.set_position({half_x - m_player_name_box.get_box_sizes().first / 1.1f, half_y / 1.275f});
     m_error_message.get_text().setFillColor(RED);
 
-    m_return_button.set_text("RETURN", 40);
     sf::FloatRect bounds = m_return_button.get_text().getLocalBounds();
-
     m_return_button.set_button_position(
         {half_x - 150.f, 1.2f * half_y}, 
         {half_x - bounds.width / 2.f, 1.2f * half_y + 10.f}
@@ -217,19 +202,20 @@ void name_input_menu::draw(sf::RenderWindow &window) const
 
 
 /* Sets the position of all the buttons. */
-end_screen_menu::end_screen_menu(sf::Vector2u window_size)
+end_screen_menu::end_screen_menu(sf::Vector2u window_size) : 
+    m_rematch_button("REMATCH", 40), m_menu_button("MENU", 40)
 {
     float half_x = window_size.x / 2.f;
     float half_y = window_size.y / 2.f;
 
-    m_menu_button.set_text("MENU", 40);
+    // m_menu_button.set_text("MENU", 40);
     sf::FloatRect bounds = m_menu_button.get_text().getLocalBounds();
     m_menu_button.set_button_position(
         {half_x - 150.f, half_y / 2.f}, 
         {half_x - bounds.width / 2.f, half_y / 2.f + 10.f}
     );
 
-    m_rematch_button.set_text("REMATCH", 40);
+    // m_rematch_button.set_text("REMATCH", 40);
     bounds = m_rematch_button.get_text().getLocalBounds();
     m_rematch_button.set_button_position(
         {half_x - 150.f, half_y / 1.175f}, 

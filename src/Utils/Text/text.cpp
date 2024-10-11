@@ -3,22 +3,32 @@
 /* Loads and sets the font and color of the text. */
 game_text::game_text()
 {
-    m_open_sans = std::make_shared<sf::Font>();
     load_font();
-    
-    m_text.setFont(*m_open_sans);
+    m_text.setFont(m_open_sans);
     m_text.setFillColor(BLACK);
 }
 
 /* Loads and sets the font and sets the text and it's color. */
-game_text::game_text(const std::string &text)
+game_text::game_text(const std::string &text, uint32_t char_size)
 {
-    m_open_sans = std::make_shared<sf::Font>();
     load_font();
+    m_text.setFont(m_open_sans);
     
-    m_text.setFont(*m_open_sans);
     m_text.setFillColor(BLACK);
     m_text.setString(text);
+    m_text.setCharacterSize(char_size);
+}
+
+game_text::game_text(const std::string &text, uint32_t char_size, const sf::Vector2f &position)
+{
+    load_font();
+    m_text.setFont(m_open_sans);
+
+    str = text;
+    m_text.setString(sf::String::fromUtf8(text.begin(), text.end()));
+    m_text.setFillColor(BLACK);
+    m_text.setCharacterSize(char_size);
+    m_text.setPosition(position);
 }
 
 /* Finds the path of the font and loads it. */
@@ -27,7 +37,7 @@ void game_text::load_font()
     std::string assets_dir = get_assets_path();
     std::string fontPath = assets_dir + "font/Open_Sans/OpenSans.ttf";
 
-    if (!m_open_sans->loadFromFile(fontPath))
+    if (!m_open_sans.loadFromFile(fontPath))
     {
         std::cerr << "Could Not Load Font\n";
         std::exit(EXIT_FAILURE);
@@ -49,7 +59,7 @@ void game_text::set_text(const std::string &text, uint32_t char_size)
 }
 
 /* Sets the text, the character size and the position of the text. */
-void game_text::set_text(const std::string &text, uint32_t char_size, const sf::Vector2f position)
+void game_text::set_text(const std::string &text, uint32_t char_size, const sf::Vector2f &position)
 {
     str = text;
     m_text.setString(text);
@@ -58,7 +68,7 @@ void game_text::set_text(const std::string &text, uint32_t char_size, const sf::
 }
 
 /* Sets the text (for utf-8 chars), the character size and the position of the text. */
-void game_text::set_text_utf_8(const std::string &text, uint32_t char_size, const sf::Vector2f position)
+void game_text::set_text_utf_8(const std::string &text, uint32_t char_size, const sf::Vector2f &position)
 {
     str = text;
     m_text.setString(sf::String::fromUtf8(text.begin(), text.end()));
@@ -66,7 +76,7 @@ void game_text::set_text_utf_8(const std::string &text, uint32_t char_size, cons
     m_text.setPosition(position);
 }
 
-void game_text::set_position(const sf::Vector2f position)
+void game_text::set_position(const sf::Vector2f &position)
 {
     m_text.setPosition(position);
 }
@@ -99,7 +109,8 @@ void game_text::draw(sf::RenderWindow &window) const
 
 
 /* Sets the size and color of the box. */
-text_box::text_box() : game_text()
+/* adicionar mais coisa*/
+text_box::text_box(const std::string &text, uint32_t char_size, const sf::Vector2f &position) : game_text(text, char_size, position)
 {
     m_box.setFillColor(TRANSPARENT_BLACK);
     m_box.setSize({465.f, 45.f});
@@ -152,7 +163,7 @@ void text_box::input_handler(uint32_t typed_char)
     m_text.setString(m_text_string.str() + "_");
 }
 
-void text_box::set_box_position(const sf::Vector2f position)
+void text_box::set_box_position(const sf::Vector2f &position)
 {
     m_box.setPosition(position);
 }

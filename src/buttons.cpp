@@ -7,12 +7,11 @@ button::button() : game_text()
     m_button_rect.setSize({300.f, 70.f});
 }
 
-button::button(std::string s) : game_text(s)
+button::button(const std::string &s, uint32_t char_size) : game_text(s, char_size)
 {
     m_button_rect.setFillColor(DARK_GREY);
     m_button_rect.setOutlineColor(BLACK);
     m_button_rect.setSize({300.f, 70.f});
-    m_text.setCharacterSize(40);
 }
 
 /* Set the the button and it's text position on the window. */

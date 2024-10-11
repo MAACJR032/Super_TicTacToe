@@ -12,15 +12,6 @@
 
 using std::unique_ptr;
 
-constexpr float GROW_RATE = 0.2f;
-constexpr float PI = 3.14159f;
-constexpr float speed = 100.f;
-constexpr float thickness = 20.f;
-constexpr float square_size = 71.f;
-constexpr float half_square_size = 35.5f;
-constexpr float correction_factor1 = 25.f;
-constexpr float correction_factor2 = 50.f;
-
 struct Grid
 {
     int8_t subgrids_scored; // unavailable subgrids 
@@ -38,7 +29,7 @@ class TicTacToe
         Status m_current_player = Status::X;
         Status m_victory = Status::EMPTY;
 
-        Line m_result_line = Line::DIAGONAL2;
+        line m_line;
 
         std::pair<std::string, std::string> m_players_name;
         game_text m_current_player_text;
@@ -47,13 +38,6 @@ class TicTacToe
         sf::Texture Big_X_texture;
         sf::Texture O_texture;
         sf::Texture Big_O_texture;
-
-        // TODO: struct or class for the line
-        sf::RectangleShape m_line;
-        sf::Vector2f start, end;
-        float totalLength = 0.f;
-        float currentLength = 0.f;
-        bool drawing_line = false;
 
         void update_grid_score(int8_t grid, int8_t low_limit_i, int8_t low_limit_j);
         void grid_score(int8_t grid);

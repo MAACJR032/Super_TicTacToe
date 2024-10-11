@@ -16,19 +16,20 @@ class game_text
     protected:
         sf::Text m_text;
         std::string str;
-        std::shared_ptr<sf::Font> m_open_sans;
+        sf::Font m_open_sans;
 
         void load_font();
 
     public:
         game_text();
-        game_text(const std::string &text);
+        game_text(const std::string &text, uint32_t char_size);
+        game_text(const std::string &text, uint32_t char_size, const sf::Vector2f &position);
 
         void set_text(const std::string &text);
         void set_text(const std::string &text, uint32_t char_size);
-        void set_text(const std::string &text, uint32_t char_size, const sf::Vector2f position);
-        void set_text_utf_8(const std::string &text, uint32_t char_size, const sf::Vector2f position);
-        void set_position(const sf::Vector2f position);
+        void set_text(const std::string &text, uint32_t char_size, const sf::Vector2f &position);
+        void set_text_utf_8(const std::string &text, uint32_t char_size, const sf::Vector2f &position);
+        void set_position(const sf::Vector2f &position);
 
         sf::Text get_text() const;
         sf::Text& get_text();
@@ -51,9 +52,9 @@ class text_box : public game_text
         void input_handler(uint32_t typed_char);
 
     public:
-        text_box();
+        text_box(const std::string &text, uint32_t char_size, const sf::Vector2f &position);
 
-        void set_box_position(const sf::Vector2f position);
+        void set_box_position(const sf::Vector2f &position);
         void set_selected(sf::RenderWindow &window);
         bool is_selected() const;
         void typed(uint32_t unicode);

@@ -244,7 +244,6 @@ bool Game::running() const
     return m_window.isOpen();
 }
 
-// Public Functions:
 
 /* Update poll events and hoever effect. */
 void Game::update()
