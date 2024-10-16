@@ -33,7 +33,11 @@ Super tic-tac-toe is a board game composed of nine tic-tac-toe boards arranged i
 
 ## Windows:
 - Install MinGW with g++ version 7.3.0 or newer.
+- Download SFML (version 2.5.1) from [https://www.sfml-dev.org/](https://www.sfml-dev.org/download.php).
+- After downloading SFML, create a folder named SFML in the root directory of your project.
+- Copy the include and lib folders from the downloaded SFML folder into the SFML folder you just created.
 - Use `mingw32-make` for building the project.
+- After building, copy the .dll files from the SFML bin folder (from the SFML download) into your project's bin folder.
 
 ## Linux:
 - Ensure g++ version 7.3.0 or newer is installed.
