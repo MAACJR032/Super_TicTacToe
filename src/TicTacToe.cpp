@@ -6,6 +6,9 @@ TicTacToe::TicTacToe()
     // Load textures
     std::string assets_dir = get_assets_path();
 
+    /*
+        Sprites taken from here: https://www.pngwing.com/en/free-png-kbndf 
+    */
     std::string pngPath = assets_dir + "Assets/X_sprite.png";
     if (!X_texture.loadFromFile(pngPath))
     {
