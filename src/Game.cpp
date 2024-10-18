@@ -169,7 +169,7 @@ void Game::handle_name_input_menu()
 {
     m_name_input_menu.draw(m_window);
 
-    if (m_credits_menu.return_button_clicked(m_window))
+    if (m_name_input_menu.return_button_clicked(m_window))
     {
         m_tic_tac_toe.set_players_name("", "");
         m_name_input_menu.get_text_box().clear_deselect();

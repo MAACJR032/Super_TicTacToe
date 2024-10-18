@@ -76,6 +76,11 @@ void game_text::set_text_utf_8(const std::string &text, uint32_t char_size, cons
     m_text.setPosition(position);
 }
 
+void game_text::set_char_size(uint32_t char_size)
+{
+    m_text.setCharacterSize(char_size);
+}
+
 void game_text::set_position(const sf::Vector2f &position)
 {
     m_text.setPosition(position);

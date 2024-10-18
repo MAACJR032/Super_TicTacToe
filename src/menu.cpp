@@ -67,8 +67,8 @@ credits_menu::credits_menu(sf::Vector2u window_size) : m_return_button("RETURN",
     sf::FloatRect bounds = m_return_button.get_text().getLocalBounds();
     bounds = m_return_button.get_text().getLocalBounds();
     m_return_button.set_button_position(
-        {half_x - 150.f, 1.2f * half_y}, 
-        {half_x - bounds.width / 2.f, 1.2f * half_y + 10.f}
+        {half_x - 150.f, 1.5f * half_y}, 
+        {half_x - bounds.width / 2.f, 1.5f * half_y + 10.f}
     );
 
     std::string assets_dir = get_assets_path();
@@ -80,15 +80,34 @@ credits_menu::credits_menu(sf::Vector2u window_size) : m_return_button("RETURN",
         return;
 
     std::string s;
-    m_credits_text.reserve(16);
-    float y = 0.f;
+    m_credits_text.reserve(22);
+    float x = window_size.y / 1.5f, y = 90.f;
+    int i = 0;
     
     while (std::getline(m_credits_file, s))
     {
-        m_credits_text.emplace_back(s, 20, sf::Vector2f(30.f, y));
-        y +=  30.f;
+        m_credits_text.emplace_back(s, 30, sf::Vector2f(x, y));
+        if (s.back() == ':')
+        {
+            m_credits_text[i].get_text().setStyle(sf::Text::Bold);
+            x = (window_size.y / 1.5f) + m_credits_text[i].get_text().getLocalBounds().width + 20.f;
+        }
+        else
+            x = window_size.y / 1.5f;
+
+        if (s.empty())
+            y +=  60.f;
+        i++;
     }
-    
+
+    m_credits_text[0].set_position({window_size.y / 1.25f, 30.f});
+    m_credits_text[0].get_text().setStyle(sf::Text::Italic);
+
+    m_credits_text[1].set_position({window_size.y / 1.25f, 80.f});
+    m_credits_text[1].set_char_size(25.f);
+
+    m_credits_text[i-1].set_position({window_size.y / 1.5f, y - 30.f});
+
     m_credits_file.close();
 }
 

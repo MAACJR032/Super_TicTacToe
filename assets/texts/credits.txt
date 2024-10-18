@@ -1,16 +1,22 @@
 Super Tic Tac Toe
 Developed with SFML
 
-Creative Director: Márcio Campos Júnior
+Lead Developer:
+Márcio Campos Júnior
 
-Lead Developer: Márcio Campos Júnior
+Game Design:
+Márcio Campos Júnior
 
-Game Design: Márcio Campos Júnior
+Programming:
+Márcio Campos Júnior
 
-Programming: Márcio Campos Júnior
+Graphics & Art:
+Sprites sourced from the internet
 
-Graphics & Art: Márcio Campos Júnior
+Testing & QA:
+Márcio Campos Júnior
 
-Music & Sound Design: Márcio Campos Júnior
+Contribution:
+Luiz Gustavo Pinheiro
 
-Testing & QA: Márcio Campos Júnior
+(for improving cross-platform compatibility and code organization)
