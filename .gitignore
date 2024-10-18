@@ -1,7 +1,4 @@
-*.exe
-*.o
 *.vscode
-*.dll
-SFML
+SFML/
 bin/
 bin-int/
