@@ -28,7 +28,6 @@ class game_text
         void set_text(const std::string &text);
         void set_text(const std::string &text, uint32_t char_size);
         void set_text(const std::string &text, uint32_t char_size, const sf::Vector2f &position);
-        void set_text_utf_8(const std::string &text, uint32_t char_size, const sf::Vector2f &position);
         void set_char_size(uint32_t char_size);
         void set_position(const sf::Vector2f &position);
 
@@ -44,11 +43,11 @@ class text_box : public game_text
 {
     private:
         sf::RectangleShape m_box;
-        std::ostringstream m_text_string;
+        std::string m_text_string;
         int m_limit = 15;
         bool m_selected = false;
 
-        bool check_box_selected(sf::RenderWindow &window) const;
+        bool is_box_clicked(sf::RenderWindow &window) const;
         void delete_last_char();
         void input_handler(uint32_t typed_char);
 
@@ -64,6 +63,5 @@ class text_box : public game_text
         std::pair<float, float> get_box_sizes() const;
 
         void draw(sf::RenderWindow &window) const override;
-        void clear();
-        void clear_deselect();
+        void clear(bool deselect);
 };

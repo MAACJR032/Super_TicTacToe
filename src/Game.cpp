@@ -96,6 +96,7 @@ void Game::handle_text_input()
         if (!m_tic_tac_toe.get_players_name().second.empty())
         {
             m_tic_tac_toe.set_players_name(m_tic_tac_toe.get_players_name().first, m_tic_tac_toe.get_players_name().second);
+            m_name_input_menu.set_player1_turn();
             m_current_state = GameState::WAITING_INPUT;
         }
     }
@@ -172,7 +173,7 @@ void Game::handle_name_input_menu()
     if (m_name_input_menu.return_button_clicked(m_window))
     {
         m_tic_tac_toe.set_players_name("", "");
-        m_name_input_menu.get_text_box().clear_deselect();
+        m_name_input_menu.get_text_box().clear(true);
         m_name_input_menu.set_type_message("X's Name:");
         m_name_input_menu.set_player1_turn();
 
@@ -219,7 +220,7 @@ void Game::handle_end_screen_menu()
         {
             m_tic_tac_toe.set_players_name("", "");
             m_name_input_menu.set_type_message("X's Name:");
-            m_name_input_menu.get_text_box().clear_deselect();
+            m_name_input_menu.get_text_box().clear(true);
             
             m_tic_tac_toe.reset();
             m_timer.restart();

@@ -85,5 +85,5 @@ void get_player_name(name_input_menu &menu, uint32_t unicode, std::pair<std::str
     else
         menu.set_error_message("EMPTY NAME", {1680, 900});
 
-    box.clear();
+    box.clear(false);
 }
