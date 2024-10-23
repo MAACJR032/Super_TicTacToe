@@ -25,8 +25,20 @@ class square
     public:
         square(int8_t grid);
 
+        bool operator==(Status stat)
+        {
+            return static_cast<uint8_t>(m_status) == static_cast<uint8_t>(stat); 
+        }
+        bool operator!=(Status stat)
+        {
+            return static_cast<uint8_t>(m_status) != static_cast<uint8_t>(stat); 
+        }
+        void operator=(Status stat)
+        {
+            m_status = stat; 
+        }
+
         void set_position(const sf::Vector2f &position);
-        void set_status(Status status);
         Status get_status() const;
         int8_t get_grid() const;
         sf::RectangleShape& get_rectangle();
@@ -41,6 +53,8 @@ class subgrid : public square
 
     public:
         subgrid(int8_t sub_grid, int8_t grid);
+
+        using square::operator=;
 
         void set_subgrid(int8_t sub_grid);
         void set_subgrid(int8_t sub_grid, int8_t grid);
@@ -60,6 +74,11 @@ class line
 
     public:
         line();
+
+        void operator=(LineStatus stat)
+        {
+            m_line_status = stat;
+        }
 
         void set_color(sf::Color color);
         void set_start_end_points(sf::Vector2f start_position, sf::Vector2f end_position);

@@ -28,7 +28,6 @@ class TicTacToe
         int8_t m_next_grid = -1;
         Status m_current_player = Status::X;
         Status m_victory = Status::EMPTY;
-
         line m_line;
 
         std::pair<std::string, std::string> m_players_name;

@@ -9,11 +9,6 @@ square::square(int8_t grid)
     m_status = Status::EMPTY;
 }
 
-void square::set_status(Status status)
-{
-    m_status = status;
-}
-
 void square::set_position(const sf::Vector2f &position)
 {
     m_rect.setPosition(position);
