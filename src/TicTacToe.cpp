@@ -163,7 +163,7 @@ Status TicTacToe::update_grid_tie(int8_t grid)
 void TicTacToe::update_square(subgrid &s, sf::RenderWindow &window)
 {
     if (m_grids[s.get_grid() - 1].grid == Status::EMPTY && 
-        s.square_clicked(window) == true && 
+        s.clicked(window) == true && 
        (m_next_grid == -1 || m_next_grid == s.get_grid()) && 
        s == Status::EMPTY)
     {

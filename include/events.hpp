@@ -6,8 +6,6 @@
 #include "TicTacToe.hpp"
 #include "types/game_state.hpp"
 
-sf::Vector2f get_mouse_position(sf::RenderWindow &window);
-
 void apply_hoever_effect(subgrid &s, TicTacToe &t, sf::RenderWindow &window);
 void hoever_effect(sf::RenderWindow &window, TicTacToe &t);
 
