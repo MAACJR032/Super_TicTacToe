@@ -5,12 +5,12 @@ void apply_hoever_effect(subgrid &s, TicTacToe &t, sf::RenderWindow &window)
 {
     if (t.get_grid_status(s.get_grid() - 1) == Status::EMPTY && (t.get_next_grid() == -1 || t.get_next_grid() == s.get_grid()))
     {
-        if (s.clicked(window) && s.get_status() == Status::EMPTY)
+        if (s.is_mouse_on_square(window) && s.get_status() == Status::EMPTY)
             s.get_rectangle().setFillColor(GREY);
     }
 
     // make sure that every square affected by the hoever effect get back to it's original color
-    if (!s.clicked(window) && s.get_rectangle().getFillColor() == GREY)
+    if (!s.is_mouse_on_square(window) && s.get_rectangle().getFillColor() == GREY)
         s.get_rectangle().setFillColor(WHITE);
 }
 
@@ -19,7 +19,6 @@ void hoever_effect(sf::RenderWindow &window, TicTacToe &t)
 {
     t.iterate_board(apply_hoever_effect, window);
 }
-
 
 /* If a square was clicked the move will be handled. */
 void handle_player_move(sf::Event &event, sf::RenderWindow &window, GameState &curr_state, TicTacToe &t)

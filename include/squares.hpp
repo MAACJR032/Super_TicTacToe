@@ -43,6 +43,7 @@ class square
         int8_t get_grid() const;
         sf::RectangleShape& get_rectangle();
         bool clicked(sf::RenderWindow &window) const;
+        bool is_mouse_on_square(sf::RenderWindow &window) const;
         void draw(sf::RenderWindow &window) const;
 };
 

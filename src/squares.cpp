@@ -42,6 +42,17 @@ bool square::clicked(sf::RenderWindow &window) const
     return false;
 }
 
+/* Returns true if the square was clicked by the mouse. */
+bool square::is_mouse_on_square(sf::RenderWindow &window) const
+{
+    if (m_rect.getGlobalBounds().contains((sf::Vector2f) sf::Mouse::getPosition(window)))
+    {
+        return true;
+    }
+
+    return false;
+}
+
 /* Draws the square. */
 void square::draw(sf::RenderWindow &window) const
 {
