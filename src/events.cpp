@@ -67,10 +67,18 @@ void get_player_name(name_input_menu &menu, uint32_t unicode, std::pair<std::str
         else
         {
             menu.set_error_message("REPEATED NAME", {1680, 900});
+            
+            logger l;
+            l.Warning("the player can't have a repeated name");
         }
     }
     else
+    {
         menu.set_error_message("EMPTY NAME", {1680, 900});
+        
+        logger l;
+        l.Warning("the player can't have an empty name");
+    }
 
     box.clear(false);
 }

@@ -9,6 +9,10 @@
 #include "menu.hpp"
 #include "types/game_state.hpp"
 
+#ifdef DEBUG
+    #include "Utils/Log/logger.hpp"
+#endif
+
 class Game
 {
     private:
@@ -32,6 +36,8 @@ class Game
         credits_menu m_credits_menu;
         name_input_menu m_name_input_menu;
         end_screen_menu m_end_screen_menu;
+
+        logger l;
 
         // Initialization functions
         void set_board_position();

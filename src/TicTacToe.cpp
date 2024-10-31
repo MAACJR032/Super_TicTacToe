@@ -12,28 +12,28 @@ TicTacToe::TicTacToe()
     std::string pngPath = assets_dir + "Assets/X_sprite.png";
     if (!X_texture.loadFromFile(pngPath))
     {
-        std::cerr << "Error loading X_sprite.png\n";
+        l.Errorf("could not load X_sprite.png");
         return;
     }
 
     pngPath = assets_dir + "Assets/Big_X_sprite.png";
     if (!X_texture.loadFromFile(pngPath))
     {
-        std::cerr << "Error loading Big_X_sprite.png\n";
+        l.Errorf("could not load Big_X_sprite.png");
         return;
     }
 
     pngPath = assets_dir + "Assets/O_sprite.png";
     if (!O_texture.loadFromFile(pngPath))
     {
-        std::cerr << "Error loading O_sprite.png\n";
+        l.Errorf("could not load O_sprite.png");
         return;
     }
 
     pngPath = assets_dir + "Assets/Big_O_sprite.png";
     if (!O_texture.loadFromFile(pngPath))
     {
-        std::cerr << "Error loading Big_O_sprite.png\n";
+        l.Errorf("could not load Big_O_sprite.png");
         return;
     }
     
@@ -61,6 +61,10 @@ TicTacToe::TicTacToe()
         int col = i % 3;
         m_grids[i].grid.set_position({505.f + 228.f * col, 105.f + 227.f * row});
     }
+
+    #ifdef DEBUG
+        l.Debug("Tic Tac Toe board initialized");
+    #endif
 }
 
 /* Checks all the cases where the player may have scored in a grid. */
@@ -75,6 +79,12 @@ void TicTacToe::update_grid_score(int8_t grid, int8_t low_limit_i, int8_t low_li
         {
             m_grids[grid - 1].grid = m_current_player;
             m_grids[grid - 1].grid.get_rectangle().setTexture((m_current_player == Status::X) ? &X_texture : &O_texture);
+
+            #ifdef DEBUG
+                std::string player_name = (m_current_player == Status::X) ? m_players_name.first : m_players_name.second;
+                l.Debugf("Player %s scored in grid %d", player_name.c_str(), grid);
+            #endif
+
             return;
         }
     }
@@ -88,6 +98,12 @@ void TicTacToe::update_grid_score(int8_t grid, int8_t low_limit_i, int8_t low_li
         {
             m_grids[grid - 1].grid = m_current_player;
             m_grids[grid - 1].grid.get_rectangle().setTexture((m_current_player == Status::X) ? &X_texture : &O_texture);
+
+            #ifdef DEBUG
+                std::string player_name = (m_current_player == Status::X) ? m_players_name.first : m_players_name.second;
+                l.Debugf("Player %s scored in grid %d", player_name.c_str(), grid);
+            #endif
+
             return;
         }
     }
@@ -99,6 +115,11 @@ void TicTacToe::update_grid_score(int8_t grid, int8_t low_limit_i, int8_t low_li
     {
         m_grids[grid - 1].grid = m_current_player;
         m_grids[grid - 1].grid.get_rectangle().setTexture((m_current_player == Status::X) ? &X_texture : &O_texture);
+
+        #ifdef DEBUG
+            std::string player_name = (m_current_player == Status::X) ? m_players_name.first : m_players_name.second;
+            l.Debugf("Player %s scored in grid %d", player_name.c_str(), grid);
+        #endif
     }
     else if (m_board[low_limit_i][low_limit_j + 2] == m_current_player && 
         m_board[low_limit_i + 1][low_limit_j + 1] == m_current_player && 
@@ -106,6 +127,11 @@ void TicTacToe::update_grid_score(int8_t grid, int8_t low_limit_i, int8_t low_li
     {
         m_grids[grid - 1].grid = m_current_player;
         m_grids[grid - 1].grid.get_rectangle().setTexture((m_current_player == Status::X) ? &X_texture : &O_texture);
+
+        #ifdef DEBUG
+            std::string player_name = (m_current_player == Status::X) ? m_players_name.first : m_players_name.second;
+            l.Debugf("Player %s scored in grid %d", player_name.c_str(), grid);
+        #endif
     }
 }
 
@@ -512,4 +538,8 @@ void TicTacToe::reset()
     m_current_player = Status::X;
     m_line.clear();
     m_next_grid = -1;
+
+    #ifdef DEBUG
+        l.Debug("board reset");
+    #endif
 }

@@ -6,6 +6,10 @@
 #include <codecvt>
 #include "buttons.hpp"
 
+#ifdef DEBUG
+    #include "Utils/Log/logger.hpp"
+#endif
+
 class main_menu
 {
     private:

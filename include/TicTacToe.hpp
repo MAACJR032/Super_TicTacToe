@@ -9,6 +9,7 @@
 #include "squares.hpp"
 #include "Utils/Text/text.hpp"
 #include "Utils/Path/path_utils.hpp"
+#include "Utils/Log/logger.hpp"
 
 using std::unique_ptr;
 
@@ -32,7 +33,8 @@ class TicTacToe
 
         std::pair<std::string, std::string> m_players_name;
         game_text m_current_player_text;
-
+        logger l;
+        
         sf::Texture X_texture;
         sf::Texture Big_X_texture;
         sf::Texture O_texture;

@@ -36,6 +36,10 @@ bool square::clicked(sf::RenderWindow &window) const
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && 
         m_rect.getGlobalBounds().contains((sf::Vector2f) sf::Mouse::getPosition(window)))
     {
+        #ifdef DEBUG
+            l.Debugf("square of grid %d clicked", m_grid);
+        #endif
+
         return true;
     }
 
@@ -185,6 +189,10 @@ void line::clear()
 
     m_start = {0.f, 0.f};
     m_end = {0.f, 0.f};
+
+    #ifdef DEBUG
+        l.Debug("line reset");
+    #endif
 }
 
 void line::draw(sf::RenderWindow &window) const

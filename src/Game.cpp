@@ -17,6 +17,10 @@ Game::Game() : m_window(sf::VideoMode(1680, 900), "Super Tic Tac Toe", sf::Style
     m_horizontal_line.setFillColor(BLACK);
 
     set_board_position();
+
+    #ifdef DEBUG
+        l.Debug("window initialized");
+    #endif
 }
 
 /* will set the position of all the board objects. */
@@ -146,11 +150,29 @@ void Game::handle_main_menu()
     m_game_menu.draw(m_window);
 
     if (m_game_menu.start_button_clicked(m_window))
+    {
+        #ifdef DEBUG
+            l.Debug("start button clicked");
+        #endif
+
         m_current_state = GameState::NAME_INPUT;
+    }
     else if (m_game_menu.exit_button_clicked(m_window))
+    {
+        #ifdef DEBUG
+            l.Debug("exit button clicked");
+        #endif
+
         m_window.close();
+    }
     else if (m_game_menu.credits_button_clicked(m_window))
+    {
+        #ifdef DEBUG
+            l.Debug("credits button clicked");
+        #endif
+
         m_current_state = GameState::CREDITS;
+    }
 }
 
 void Game::handle_credits_menu()
@@ -159,6 +181,10 @@ void Game::handle_credits_menu()
 
     if (m_credits_menu.return_button_clicked(m_window))
     {
+        #ifdef DEBUG
+            l.Debug("return button clicked");
+        #endif
+
         m_timer.restart();
         while (m_timer.getElapsedTime().asMilliseconds() < 300) {};
 
@@ -172,6 +198,10 @@ void Game::handle_name_input_menu()
 
     if (m_name_input_menu.return_button_clicked(m_window))
     {
+        #ifdef DEBUG
+            l.Debug("return button clicked");
+        #endif
+
         m_tic_tac_toe.set_players_name("", "");
         m_name_input_menu.get_text_box().clear(true);
         m_name_input_menu.set_type_message("X's Name:");
@@ -218,6 +248,10 @@ void Game::handle_end_screen_menu()
 
         if (m_end_screen_menu.menu_button_clicked(m_window))
         {
+            #ifdef DEBUG
+                l.Debug("menu button clicked");
+            #endif
+
             m_tic_tac_toe.set_players_name("", "");
             m_name_input_menu.set_type_message("X's Name:");
             m_name_input_menu.get_text_box().clear(true);
@@ -230,6 +264,10 @@ void Game::handle_end_screen_menu()
         }
         else if (m_end_screen_menu.rematch_button_clicked(m_window))
         {
+            #ifdef DEBUG
+                l.Debug("rematch button clicked");
+            #endif
+
             m_tic_tac_toe.reset();
             m_timer.restart();
             while (m_timer.getElapsedTime().asMilliseconds() < 300) {};

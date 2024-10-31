@@ -5,6 +5,7 @@
 #include "menu.hpp"
 #include "TicTacToe.hpp"
 #include "types/game_state.hpp"
+#include "Utils/Log/logger.hpp"
 
 void apply_hoever_effect(subgrid &s, TicTacToe &t, sf::RenderWindow &window);
 void hoever_effect(sf::RenderWindow &window, TicTacToe &t);

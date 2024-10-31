@@ -4,6 +4,12 @@
 #include "Utils/colors.hpp"
 #include "types/status.hpp"
 
+#ifdef DEBUG
+    #include "Utils/Log/logger.hpp"
+
+    static logger l;
+#endif
+
 constexpr float GROW_RATE = 0.2f;
 constexpr float PI = 3.14159f;
 constexpr float speed = 100.f;

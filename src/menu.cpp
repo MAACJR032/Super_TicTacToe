@@ -28,6 +28,11 @@ main_menu::main_menu(sf::Vector2u window_size) :
         {half_x - 150.f, 1.2f * half_y}, 
         {half_x - bounds.width / 2.f, 1.2f * half_y + 10.f}
     );
+
+    #ifdef DEBUG
+        logger l;
+        l.Debug("main menu initialized");
+    #endif
 }
 
 /* Returns true if the start button was clicked.*/
@@ -109,6 +114,11 @@ credits_menu::credits_menu(sf::Vector2u window_size) : m_return_button("RETURN",
     m_credits_text[i-1].set_position({window_size.y / 1.5f, y - 30.f});
 
     m_credits_file.close();
+
+    #ifdef DEBUG
+        logger l;
+        l.Debug("credits menu initialized");
+    #endif
 }
 
 
@@ -146,6 +156,11 @@ name_input_menu::name_input_menu(sf::Vector2u window_size) :
         {half_x - 150.f, 1.2f * half_y}, 
         {half_x - bounds.width / 2.f, 1.2f * half_y + 10.f}
     );
+
+    #ifdef DEBUG
+        logger l;
+        l.Debug("name input menu initialized");
+    #endif
 }
 
 /* Returns a reference to text_box. */ 
@@ -240,6 +255,11 @@ end_screen_menu::end_screen_menu(sf::Vector2u window_size) :
         {half_x - 150.f, half_y / 1.175f}, 
         {half_x - bounds.width / 2.f, half_y / 1.175f + 10.f}
     );
+
+    #ifdef DEBUG
+        logger l;
+        l.Debug("end screen menu initialized");
+    #endif
 }
 
 /* Sets the position of the result message. */
