@@ -56,10 +56,10 @@ debug: $(BIN_DIR)/$(EXE)
 $(BIN_INT):
 ifeq ($(OS),Windows_NT)
 	if not exist $(BIN_INT) mkdir $(BIN_INT) 
-	if not exist $(BIN_INT)/Log mkdir $(BIN_INT)/Log 
-	if not exist $(BIN_INT)/Path mkdir $(BIN_INT)/Path 
-	if not exist $(BIN_INT)/Text mkdir $(BIN_INT)/Text 
-	if not exist $(BIN_INT) mkdir bin
+	if not exist $(BIN_INT)\Log mkdir $(BIN_INT)\Log 
+	if not exist $(BIN_INT)\Path mkdir $(BIN_INT)\Path 
+	if not exist $(BIN_INT)\Text mkdir $(BIN_INT)\Text 
+	if not exist $(BIN_DIR) mkdir $(BIN_DIR)
 else
 	mkdir -p $(BIN_INT)/Log $(BIN_INT)/Path $(BIN_INT)/Text $(BIN_DIR)
 endif
