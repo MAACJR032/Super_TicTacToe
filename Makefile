@@ -37,22 +37,32 @@ EXE = SuperTicTacToe
 
 # Find all .cpp files in SRC_DIR and create corresponding .o files in BIN_INT
 SRC_FILES = $(wildcard $(SRC_DIR)/*.cpp)
-UTILS_FILES = $(wildcard $(UTILS_DIR)/*/*.cpp) $(wildcard $(UTILS_DIR)/*.cpp) # Include subdirectories
+UTILS_FILES = $(wildcard $(UTILS_DIR)/**/*.cpp) $(wildcard $(UTILS_DIR)/*.cpp) # Include subdirectories
 OBJS = $(patsubst $(SRC_DIR)/%.cpp,$(BIN_INT)/%.o,$(SRC_FILES)) \
        $(patsubst $(UTILS_DIR)/%.cpp,$(BIN_INT)/%.o,$(UTILS_FILES)) \
        $(BIN_INT)/SuperTicTacToe.o
 
 all: $(BIN_DIR)/$(EXE)
 
+# Main target with regular compilation
 $(BIN_DIR)/$(EXE): $(OBJS)
 	$(CC) $(CXXFLAGS) $(OBJS) -o $@ -L$(SFML_LIB) -lsfml-graphics -lsfml-window -lsfml-system
 
+# Debug target with -DDEBUG flag
+debug: CXXFLAGS += -DDEBUG
+debug: $(BIN_DIR)/$(EXE)
+
 # Create necessary directories
 $(BIN_INT):
-	mkdir $(BIN_INT) 
-	mkdir $(BIN_INT)/Path 
-	mkdir $(BIN_INT)/Text 
-	mkdir bin
+ifeq ($(OS),Windows_NT)
+	if not exist $(BIN_INT) mkdir $(BIN_INT) 
+	if not exist $(BIN_INT)/Log mkdir $(BIN_INT)/Log 
+	if not exist $(BIN_INT)/Path mkdir $(BIN_INT)/Path 
+	if not exist $(BIN_INT)/Text mkdir $(BIN_INT)/Text 
+	if not exist $(BIN_INT) mkdir bin
+else
+	mkdir -p $(BIN_INT)/Log $(BIN_INT)/Path $(BIN_INT)/Text $(BIN_DIR)
+endif
 
 # Compile main.cpp separately
 $(BIN_INT)/SuperTicTacToe.o: $(MAIN) | $(BIN_INT)
@@ -76,5 +86,5 @@ ifeq ($(OS),Windows_NT)
 
 # linux
 else 
-	rm -rf bin-int/*.o bin-int/Path/*.o bin-int/Text/*.o bin/*
+	rm -rf bin-int/*.o bin-int/Path/*.o bin-int/Text/*.o bin/* bin-int/Log/*.o
 endif
