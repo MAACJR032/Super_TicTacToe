@@ -145,6 +145,31 @@ void Game::state_manager()
     }
 }
 
+/* It will wait until the button is released and then switch the game state */
+void Game::handle_button_pressed(GameState new_state)
+{
+    m_timer.restart();
+    bool buttonPressed = false;
+
+    while (m_timer.getElapsedTime().asMilliseconds() < 300.f)
+    {
+        while (m_window.pollEvent(m_event))
+        {
+            if (m_event.type == sf::Event::MouseButtonReleased)
+            {
+                if (m_event.mouseButton.button == sf::Mouse::Left)
+                    buttonPressed = true;
+            }
+
+            if (buttonPressed)
+            {
+                m_current_state = new_state;           
+                return;
+            }
+        }
+    }
+}
+
 void Game::handle_main_menu()
 {
     m_game_menu.draw(m_window);
@@ -179,16 +204,13 @@ void Game::handle_credits_menu()
 {
     m_credits_menu.draw(m_window);
 
-    if (m_credits_menu.return_button_clicked(m_window))
+    if (m_credits_menu.return_button_clicked(m_window) && m_event.type == sf::Event::MouseButtonPressed)
     {
         #ifdef DEBUG
             l.Debug("return button clicked");
         #endif
 
-        m_timer.restart();
-        while (m_timer.getElapsedTime().asMilliseconds() < 300) {};
-
-        m_current_state = GameState::MENU;
+        handle_button_pressed(GameState::MENU);
     }
 }
 
@@ -196,7 +218,7 @@ void Game::handle_name_input_menu()
 {
     m_name_input_menu.draw(m_window);
 
-    if (m_name_input_menu.return_button_clicked(m_window))
+    if (m_name_input_menu.return_button_clicked(m_window) && m_event.type == sf::Event::MouseButtonPressed)
     {
         #ifdef DEBUG
             l.Debug("return button clicked");
@@ -207,10 +229,7 @@ void Game::handle_name_input_menu()
         m_name_input_menu.set_type_message("X's Name:");
         m_name_input_menu.set_player1_turn();
 
-        m_timer.restart();
-        while (m_timer.getElapsedTime().asMilliseconds() < 300) {};
-
-        m_current_state = GameState::MENU;
+        handle_button_pressed(GameState::MENU);
     }
 }
 
@@ -257,10 +276,7 @@ void Game::handle_end_screen_menu()
             m_name_input_menu.get_text_box().clear(true);
             
             m_tic_tac_toe.reset();
-            m_timer.restart();
-            while (m_timer.getElapsedTime().asMilliseconds() < 300) {};
-
-            m_current_state = GameState::MENU;
+            handle_button_pressed(GameState::MENU);
         }
         else if (m_end_screen_menu.rematch_button_clicked(m_window))
         {
@@ -269,10 +285,7 @@ void Game::handle_end_screen_menu()
             #endif
 
             m_tic_tac_toe.reset();
-            m_timer.restart();
-            while (m_timer.getElapsedTime().asMilliseconds() < 300) {};
-
-            m_current_state = GameState::WAITING_INPUT;
+            handle_button_pressed(GameState::WAITING_INPUT);
         }
     }
 }

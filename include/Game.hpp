@@ -50,6 +50,7 @@ class Game
         void handle_mouse_button_pressed();
         void handle_text_input();
 
+        void handle_button_pressed(GameState new_state);
         void handle_main_menu();
         void handle_credits_menu();
         void handle_name_input_menu();
