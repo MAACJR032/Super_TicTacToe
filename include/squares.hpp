@@ -24,20 +24,20 @@ constexpr float correction_factor2 = 50.f;
 class square
 {
     protected:
-        int8_t m_grid;
+        int m_grid;
         Status m_status;
         sf::RectangleShape m_rect;
 
     public:
-        square(int8_t grid);
+        square(int grid);
 
         bool operator==(Status stat)
         {
-            return static_cast<uint8_t>(m_status) == static_cast<uint8_t>(stat); 
+            return m_status == stat; 
         }
         bool operator!=(Status stat)
         {
-            return static_cast<uint8_t>(m_status) != static_cast<uint8_t>(stat); 
+            return m_status != stat; 
         }
         void operator=(Status stat)
         {
@@ -46,7 +46,7 @@ class square
 
         void set_position(const sf::Vector2f &position);
         Status get_status() const;
-        int8_t get_grid() const;
+        int get_grid() const;
         sf::RectangleShape& get_rectangle();
         bool clicked(sf::RenderWindow &window) const;
         bool is_mouse_on_square(sf::RenderWindow &window) const;
@@ -56,16 +56,14 @@ class square
 class subgrid : public square
 {
     private:
-        int8_t m_sub_grid;
+        int m_sub_grid;
 
     public:
-        subgrid(int8_t sub_grid, int8_t grid);
+        subgrid(int sub_grid, int grid);
 
         using square::operator=;
 
-        void set_subgrid(int8_t sub_grid);
-        void set_subgrid(int8_t sub_grid, int8_t grid);
-        int8_t get_subgrid() const;
+        int get_subgrid() const;
 };
 
 class line

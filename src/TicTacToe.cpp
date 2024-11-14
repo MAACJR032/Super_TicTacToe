@@ -42,24 +42,24 @@ TicTacToe::TicTacToe()
 
     for (int i = 0; i < 9; i++)
     {
-        m_board[i].resize(9, subgrid(0, 0));
+        m_board.reserve(9);
 
         for (int j = 0; j < 9; j++)
         {
-            int8_t grid = (i / 3) * 3 + (j / 3) + 1;
-            int8_t subgrid = (i % 3) * 3 + (j % 3) + 1;
+            int grid = (i / 3) * 3 + (j / 3) + 1;
+            int subgrid = (i % 3) * 3 + (j % 3) + 1;
 
-            m_board[i][j].set_subgrid(subgrid, grid);
+            m_board[i].emplace_back(subgrid, grid);
         }
     }
 
     for (int i = 0; i < 9; i++)
     {
-        m_grids.push_back({0, square(i)});
+        m_grids.emplace_back(0, i);
         
         int row = i / 3;
         int col = i % 3;
-        m_grids[i].grid.set_position({505.f + 228.f * col, 105.f + 227.f * row});
+        m_grids[i].m_grid.set_position({505.f + 228.f * col, 105.f + 227.f * row});
     }
 
     #ifdef DEBUG
@@ -68,7 +68,7 @@ TicTacToe::TicTacToe()
 }
 
 /* Checks all the cases where the player may have scored in a grid. */
-void TicTacToe::update_grid_score(int8_t grid, int8_t low_limit_i, int8_t low_limit_j)
+void TicTacToe::update_grid_score(int grid, int low_limit_i, int low_limit_j)
 {
     // Lines
     for (int i = low_limit_i; i < low_limit_i + 3; i++)
@@ -77,8 +77,8 @@ void TicTacToe::update_grid_score(int8_t grid, int8_t low_limit_i, int8_t low_li
             m_board[i][low_limit_j + 1] == m_current_player && 
             m_board[i][low_limit_j + 2] == m_current_player)
         {
-            m_grids[grid - 1].grid = m_current_player;
-            m_grids[grid - 1].grid.get_rectangle().setTexture((m_current_player == Status::X) ? &X_texture : &O_texture);
+            m_grids[grid - 1].m_grid = m_current_player;
+            m_grids[grid - 1].m_grid.get_rectangle().setTexture((m_current_player == Status::X) ? &X_texture : &O_texture);
 
             #ifdef DEBUG
                 std::string player_name = (m_current_player == Status::X) ? m_players_name.first : m_players_name.second;
@@ -96,8 +96,8 @@ void TicTacToe::update_grid_score(int8_t grid, int8_t low_limit_i, int8_t low_li
             m_board[low_limit_i + 1][j] == m_current_player && 
             m_board[low_limit_i + 2][j] == m_current_player)
         {
-            m_grids[grid - 1].grid = m_current_player;
-            m_grids[grid - 1].grid.get_rectangle().setTexture((m_current_player == Status::X) ? &X_texture : &O_texture);
+            m_grids[grid - 1].m_grid = m_current_player;
+            m_grids[grid - 1].m_grid.get_rectangle().setTexture((m_current_player == Status::X) ? &X_texture : &O_texture);
 
             #ifdef DEBUG
                 std::string player_name = (m_current_player == Status::X) ? m_players_name.first : m_players_name.second;
@@ -113,8 +113,8 @@ void TicTacToe::update_grid_score(int8_t grid, int8_t low_limit_i, int8_t low_li
         m_board[low_limit_i + 1][low_limit_j + 1] == m_current_player && 
         m_board[low_limit_i + 2][low_limit_j + 2] == m_current_player)
     {
-        m_grids[grid - 1].grid = m_current_player;
-        m_grids[grid - 1].grid.get_rectangle().setTexture((m_current_player == Status::X) ? &X_texture : &O_texture);
+        m_grids[grid - 1].m_grid = m_current_player;
+        m_grids[grid - 1].m_grid.get_rectangle().setTexture((m_current_player == Status::X) ? &X_texture : &O_texture);
 
         #ifdef DEBUG
             std::string player_name = (m_current_player == Status::X) ? m_players_name.first : m_players_name.second;
@@ -125,8 +125,8 @@ void TicTacToe::update_grid_score(int8_t grid, int8_t low_limit_i, int8_t low_li
         m_board[low_limit_i + 1][low_limit_j + 1] == m_current_player && 
         m_board[low_limit_i + 2][low_limit_j] == m_current_player)
     {
-        m_grids[grid - 1].grid = m_current_player;
-        m_grids[grid - 1].grid.get_rectangle().setTexture((m_current_player == Status::X) ? &X_texture : &O_texture);
+        m_grids[grid - 1].m_grid = m_current_player;
+        m_grids[grid - 1].m_grid.get_rectangle().setTexture((m_current_player == Status::X) ? &X_texture : &O_texture);
 
         #ifdef DEBUG
             std::string player_name = (m_current_player == Status::X) ? m_players_name.first : m_players_name.second;
@@ -136,7 +136,7 @@ void TicTacToe::update_grid_score(int8_t grid, int8_t low_limit_i, int8_t low_li
 }
 
 /* Checks if player scored in the grid he just played */
-void TicTacToe::grid_score(int8_t grid)
+void TicTacToe::grid_score(int grid)
 {
     switch (grid)
     {
@@ -173,22 +173,22 @@ void TicTacToe::grid_score(int8_t grid)
 }
 
 /* Checks if the given grid is tied */
-Status TicTacToe::update_grid_tie(int8_t grid)
+Status TicTacToe::update_grid_tie(int grid)
 {
     // Grid is tied if all the 9 sub squares where marked but no player could score
-    if (m_grids[grid - 1].subgrids_scored == 9 && m_grids[grid - 1].grid == Status::EMPTY)
+    if (m_grids[grid - 1].m_subgrids_scored == 9 && m_grids[grid - 1].m_grid == Status::EMPTY)
     {
-        m_grids[grid - 1].grid = Status::TIE;
+        m_grids[grid - 1].m_grid = Status::TIE;
         return Status::TIE;
     }
 
-    return m_grids[grid - 1].grid.get_status();
+    return m_grids[grid - 1].m_grid.get_status();
 }
 
 /* Will check if the clicked square can be played and will mark it. */
 void TicTacToe::update_square(subgrid &s, sf::RenderWindow &window)
 {
-    if (m_grids[s.get_grid() - 1].grid == Status::EMPTY && 
+    if (m_grids[s.get_grid() - 1].m_grid == Status::EMPTY && 
         s.clicked(window) == true && 
        (m_next_grid == -1 || m_next_grid == s.get_grid()) && 
        s == Status::EMPTY)
@@ -197,7 +197,7 @@ void TicTacToe::update_square(subgrid &s, sf::RenderWindow &window)
         s.get_rectangle().setFillColor(WHITE);
         
         s = m_current_player;
-        m_grids[s.get_grid() - 1].subgrids_scored++;
+        m_grids[s.get_grid() - 1].m_subgrids_scored++;
         grid_score(s.get_grid());
         update_grid_tie(s.get_grid());
         check_win();
@@ -209,7 +209,7 @@ void TicTacToe::update_square(subgrid &s, sf::RenderWindow &window)
 
         m_current_player = (m_current_player == Status::X) ? Status::O : Status::X;
         
-        if (m_grids[s.get_subgrid() - 1].grid == Status::EMPTY)
+        if (m_grids[s.get_subgrid() - 1].m_grid == Status::EMPTY)
             m_next_grid = s.get_subgrid();
         else
             m_next_grid = -1;
@@ -322,9 +322,9 @@ void TicTacToe::check_win()
     // Checking the lines
     for (int i = 0; i < 7; i += 3)
     {
-        if (m_grids[i].grid == m_current_player && 
-            m_grids[i+1].grid == m_current_player && 
-            m_grids[i+2].grid == m_current_player)
+        if (m_grids[i].m_grid == m_current_player && 
+            m_grids[i+1].m_grid == m_current_player && 
+            m_grids[i+2].m_grid == m_current_player)
         {
             m_victory = m_current_player;
             
@@ -343,9 +343,9 @@ void TicTacToe::check_win()
     // Checking the columns
     for (int i = 0; i < 3; i++)
     {
-        if (m_grids[i].grid == m_current_player && 
-            m_grids[i+3].grid == m_current_player && 
-            m_grids[i+6].grid == m_current_player)
+        if (m_grids[i].m_grid == m_current_player && 
+            m_grids[i+3].m_grid == m_current_player && 
+            m_grids[i+6].m_grid == m_current_player)
         {
             m_victory = m_current_player;
 
@@ -362,18 +362,18 @@ void TicTacToe::check_win()
     }
     
     // Diagonals
-    if (m_grids[0].grid == m_current_player && 
-        m_grids[4].grid == m_current_player && 
-        m_grids[8].grid == m_current_player)
+    if (m_grids[0].m_grid == m_current_player && 
+        m_grids[4].m_grid == m_current_player && 
+        m_grids[8].m_grid == m_current_player)
     {
         m_victory = m_current_player;
         m_line = LineStatus::DIAGONAL1;
         set_line_parameters();
         return;
     }
-    else if (m_grids[2].grid == m_current_player && 
-        m_grids[4].grid == m_current_player && 
-        m_grids[6].grid == m_current_player)
+    else if (m_grids[2].m_grid == m_current_player && 
+        m_grids[4].m_grid == m_current_player && 
+        m_grids[6].m_grid == m_current_player)
     {
         m_victory = m_current_player;
         m_line = LineStatus::DIAGONAL2;
@@ -382,9 +382,9 @@ void TicTacToe::check_win()
     }
 
     // If neither of the players won and all the grids where marked, then it is a tie
-    uint8_t complete_grids = 0;
+    int complete_grids = 0;
     for (int i = 0; i < 9; i++)
-        if (m_grids[i].grid != Status::EMPTY)
+        if (m_grids[i].m_grid != Status::EMPTY)
             complete_grids++;
         
     if (complete_grids == 9)
@@ -411,18 +411,18 @@ std::pair<std::string, std::string>& TicTacToe::get_players_name()
 /* Returns the next grid that must be played.
  * If it returns -1, then any status::EMPTY grid can be played.
  */
-int8_t TicTacToe::get_next_grid() const
+int TicTacToe::get_next_grid() const
 {
     return m_next_grid;
 }
 
 /* Returns the grid status at the specified index. */
-Status TicTacToe::get_grid_status(uint8_t index) const
+Status TicTacToe::get_grid_status(int index) const
 {
     if (index >= 9)
         throw std::out_of_range("Grid index is out of range\n");
     
-    return m_grids[index].grid.get_status();
+    return m_grids[index].m_grid.get_status();
 }
 
 /* Returns a refference to the board. */
@@ -432,9 +432,9 @@ std::vector<std::vector<subgrid>>& TicTacToe::get_board()
 }
 
 /* Returns a refference to a square of the board. */
-subgrid& TicTacToe::get_board_at(uint8_t i, uint8_t j)
+subgrid& TicTacToe::get_board_at(int i, int j)
 {
-    if (i >= 9 || j >= 9)
+    if (i >= 9 || i < 0|| j >= 9 || j < 0)
         throw std::out_of_range("Board index is out of range\n");
     
     return m_board[i][j];
@@ -488,15 +488,15 @@ void TicTacToe::draw(sf::RenderWindow &window)
 
     for (auto &s : m_grids)
     {
-        if (s.grid == Status::X) 
+        if (s.m_grid == Status::X) 
         {
-            s.grid.get_rectangle().setFillColor(TRANSPARENT_RED);
-            s.grid.draw(window);
+            s.m_grid.get_rectangle().setFillColor(TRANSPARENT_RED);
+            s.m_grid.draw(window);
         }
-        else if (s.grid == Status::O)
+        else if (s.m_grid == Status::O)
         {
-            s.grid.get_rectangle().setFillColor(TRANSPARENT_BLUE);
-            s.grid.draw(window);
+            s.m_grid.get_rectangle().setFillColor(TRANSPARENT_BLUE);
+            s.m_grid.draw(window);
         }
     }
 }
@@ -529,8 +529,8 @@ void TicTacToe::reset()
 
     for (auto &g : m_grids)
     {
-        g.grid = Status::EMPTY;
-        g.subgrids_scored = 0;
+        g.m_grid = Status::EMPTY;
+        g.m_subgrids_scored = 0;
     }
     
     m_current_player_text.set_text(m_players_name.first, 40);

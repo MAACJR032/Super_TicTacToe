@@ -1,7 +1,7 @@
 #include "squares.hpp"
 
 /* Sets the size of the rectangle and the status as EMPTY */
-square::square(int8_t grid)
+square::square(int grid)
 {
     m_grid = grid;
     m_rect.setSize(sf::Vector2f(big_square_size, big_square_size));
@@ -18,7 +18,7 @@ void square::set_position(const sf::Vector2f &position)
     m_rect.setPosition(position);
 }
 
-int8_t square::get_grid() const
+int square::get_grid() const
 {
     return m_grid;
 }
@@ -69,7 +69,7 @@ void square::draw(sf::RenderWindow &window) const
 
 
 /* Sets the outline. */
-subgrid::subgrid(int8_t sub_grid, int8_t grid) : square(grid)
+subgrid::subgrid(int sub_grid, int grid) : square(grid)
 {
     m_sub_grid = sub_grid;
 
@@ -82,18 +82,7 @@ subgrid::subgrid(int8_t sub_grid, int8_t grid) : square(grid)
     #endif
 }
 
-void subgrid::set_subgrid(int8_t sub_grid)
-{
-    m_sub_grid = sub_grid;
-}
-
-void subgrid::set_subgrid(int8_t sub_grid, int8_t grid)
-{
-    m_sub_grid = sub_grid;
-    m_grid = grid;
-}
-
-int8_t subgrid::get_subgrid() const
+int subgrid::get_subgrid() const
 {
     return m_sub_grid;
 }
