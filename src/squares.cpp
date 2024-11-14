@@ -7,6 +7,10 @@ square::square(int8_t grid)
     m_rect.setSize(sf::Vector2f(big_square_size, big_square_size));
     m_rect.setFillColor(WHITE);
     m_status = Status::EMPTY;
+
+    #ifdef DEBUG
+        l.Debugf("square of grid %d initialized", m_grid);
+    #endif
 }
 
 void square::set_position(const sf::Vector2f &position)
@@ -65,14 +69,17 @@ void square::draw(sf::RenderWindow &window) const
 
 
 /* Sets the outline. */
-subgrid::subgrid(int8_t sub_grid, int8_t grid) : square(0)
+subgrid::subgrid(int8_t sub_grid, int8_t grid) : square(grid)
 {
     m_sub_grid = sub_grid;
-    m_grid = grid;
 
     m_rect.setSize({square_size, square_size});
     m_rect.setOutlineColor(DARK_GREY);
     m_rect.setOutlineThickness(square_thickness);
+
+    #ifdef DEBUG
+        l.Debugf("square of subgrid %d %d initialized", m_grid, m_sub_grid);
+    #endif
 }
 
 void subgrid::set_subgrid(int8_t sub_grid)
@@ -95,6 +102,10 @@ line::line()
 {
     m_line.setSize(sf::Vector2f(0.f, line_thickness));
     m_line.setOrigin(0.f, line_thickness / 2.f);
+
+    #ifdef DEBUG
+        l.Debug("line initialized");
+    #endif
 }
 
 void line::set_color(sf::Color color)

@@ -163,7 +163,7 @@ void Game::handle_button_pressed(GameState new_state)
 
             if (buttonPressed)
             {
-                m_current_state = new_state;           
+                m_current_state = new_state;
                 return;
             }
         }

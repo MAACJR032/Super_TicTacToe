@@ -15,7 +15,8 @@ RM = del /f
 
 # Paths
 SRC_DIR = src
-# para o windowns compilar no actions github
+
+# For windows to compile on github actions
 ifeq ($(OS),Windows_NT)
     SFML_INCLUDE = "SFML/include"
     SFML_LIB = "SFML/lib"
@@ -51,6 +52,14 @@ $(BIN_DIR)/$(EXE): $(OBJS)
 # Debug target with -DDEBUG flag
 debug: CXXFLAGS += -DDEBUG
 debug: $(BIN_DIR)/$(EXE)
+
+# Run target to execute the program after building
+run: $(BIN_DIR)/$(EXE)
+ifeq ($(OS),Windows_NT)
+	$(BIN_DIR)/$(EXE).exe
+else
+	$(BIN_DIR)/$(EXE)
+endif
 
 # Create necessary directories
 $(BIN_INT):
