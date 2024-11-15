@@ -25,7 +25,7 @@ class square
 {
     protected:
         int m_grid;
-        Status m_status;
+        Status m_status = Status::EMPTY;
         sf::RectangleShape m_rect;
 
     public:
@@ -92,7 +92,6 @@ class line
         void set_size(sf::Vector2f size);
         void set_is_drawing_line(bool is_drawing);
         void set_position(sf::Vector2f position, float angle);
-        void set_status(LineStatus status);
 
         LineStatus get_status() const;
         sf::Vector2f get_start() const;

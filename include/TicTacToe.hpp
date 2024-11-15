@@ -46,7 +46,7 @@ class TicTacToe
         void grid_score(int grid);
         Status update_grid_tie(int grid);
         void update_square(subgrid &s, sf::RenderWindow &window);
-        void iterate_board(sf::RenderWindow &window);
+        void update_all_squares(sf::RenderWindow &window);
         void set_line_parameters();
         void check_win();
 

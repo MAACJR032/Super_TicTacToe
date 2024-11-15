@@ -6,7 +6,6 @@ square::square(int grid)
     m_grid = grid;
     m_rect.setSize(sf::Vector2f(big_square_size, big_square_size));
     m_rect.setFillColor(WHITE);
-    m_status = Status::EMPTY;
 
     #ifdef DEBUG
         l.Debugf("square of grid %d initialized", m_grid);
@@ -34,7 +33,7 @@ sf::RectangleShape& square::get_rectangle()
     return m_rect;
 }
 
-/* Returns true if the square was clicked by the mouse. */
+/* Returns true if the square was clicked by the left mouse button. */
 bool square::clicked(sf::RenderWindow &window) const
 {
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && 
@@ -50,7 +49,7 @@ bool square::clicked(sf::RenderWindow &window) const
     return false;
 }
 
-/* Returns true if the square was clicked by the mouse. */
+/* Returns true if the mouse is over the square. */
 bool square::is_mouse_on_square(sf::RenderWindow &window) const
 {
     if (m_rect.getGlobalBounds().contains((sf::Vector2f) sf::Mouse::getPosition(window)))
@@ -68,7 +67,7 @@ void square::draw(sf::RenderWindow &window) const
 }
 
 
-/* Sets the outline. */
+/* Initializes a square with grid and subgrid. */
 subgrid::subgrid(int sub_grid, int grid) : square(grid)
 {
     m_sub_grid = sub_grid;
@@ -87,6 +86,7 @@ int subgrid::get_subgrid() const
     return m_sub_grid;
 }
 
+/* Initializes the result line. */
 line::line()
 {
     m_line.setSize(sf::Vector2f(0.f, line_thickness));
@@ -102,6 +102,7 @@ void line::set_color(sf::Color color)
     m_line.setFillColor(color);
 }
 
+/* Sets the starting and ending position of the line. */
 void line::set_start_end_points(sf::Vector2f start_position, sf::Vector2f end_position)
 {
     m_start = start_position;
@@ -134,21 +135,18 @@ void line::set_position(sf::Vector2f position, float angle)
     m_line.setRotation(angle);
 }
 
-void line::set_status(LineStatus status)
-{
-    m_line_status = status;
-}
-
 LineStatus line::get_status() const
 {
     return m_line_status;
 }
 
+/* Returns the starting point of the line. */
 sf::Vector2f line::get_start() const
 {
     return m_start;
 }
 
+/* Returns the ending point of the line. */
 sf::Vector2f line::get_end() const
 {
     return m_end;
@@ -179,6 +177,7 @@ void line::increment_length()
     m_current_length += speed * GROW_RATE;
 }
 
+/* Resets the line methods. */
 void line::clear()
 {
     m_drawing_line = false;
