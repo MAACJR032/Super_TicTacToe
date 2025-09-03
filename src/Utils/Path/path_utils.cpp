@@ -1,4 +1,5 @@
 #include "path_utils.hpp"
+#include <iostream>
 
 #ifdef _WIN32
     #include <windows.h>
@@ -20,8 +21,8 @@ std::string get_assets_path()
     std::string path(wstr.begin(), wstr.end());
 
     std::string::size_type pos = path.find_last_of("\\/");
-    std::string exe_dir = path.substr(0, pos);
-    std::string assets_dir = exe_dir + "/../assets/";
+    std::string exe_dir        = path.substr(0, pos);
+    std::string assets_dir     = exe_dir + "/../assets/";
     
     return assets_dir;
 #else
@@ -34,8 +35,8 @@ std::string get_assets_path()
         std::string path(buffer);
 
         std::string::size_type pos = path.find_last_of("/");
-        std::string exe_dir = path.substr(0, pos);
-        std::string assets_dir = exe_dir + "/../assets/";
+        std::string exe_dir        = path.substr(0, pos);
+        std::string assets_dir     = exe_dir + "/../assets/";
 
         return assets_dir;
     }

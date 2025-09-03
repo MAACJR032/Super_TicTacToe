@@ -1,53 +1,21 @@
 #include "Game.hpp"
 
-static const sf::Vector2u s_window_size(1680, 900);
+#include "Utils/Log/logger.hpp"
+#include "Utils/colors.hpp"
+#include "squares.hpp"
+#include "texture.hpp"
 
-/* Constructor */
 Game::Game() : m_window(sf::VideoMode(1680, 900), "Super Tic Tac Toe", sf::Style::Close), 
-               m_game_menu(s_window_size), m_credits_menu(s_window_size), m_name_input_menu(s_window_size),
-               m_end_screen_menu(s_window_size)
+               m_menu_manager(s_window_size, m_board)
 {
     m_window.setFramerateLimit(60);
- 
-    m_lines.reserve(4);
-    m_vertical_line.setSize(sf::Vector2f(10.f, 790.f));
-    m_vertical_line.setFillColor(BLACK);
 
-    m_horizontal_line.setSize(sf::Vector2f(790.f, 10.f));
-    m_horizontal_line.setFillColor(BLACK);
-
-    set_board_position();
-
-    #ifdef DEBUG
-        l.Debug("window initialized");
-    #endif
+    Texture::load_all();
+    
+    LOG_DEBUG("window initialized");
 }
 
-/* will set the position of all the board objects. */
-void Game::set_board_position()
-{
-    // seting the board's position
-    float x = 500.f, y = 100.f;
-    for (int i = 0; i < 9; i++)
-        for (int j = 0; j < 9; j++)
-            m_tic_tac_toe.get_board_at(i, j).get_rectangle().setPosition({x + j * 75, y + i * 75});
-    
-    // vertical lines
-    for (int i = 0; i < 2; i++)
-    {
-        m_vertical_line.setPosition({720 + static_cast<float>(225 * i), y-60});
-        m_lines.push_back(m_vertical_line);
-    }
-    
-    // horizontal lines
-    for (int i = 0; i < 2; i++)
-    {
-        m_horizontal_line.setPosition({x-55, y + 220 + static_cast<float>(225 * i)});
-        m_lines.push_back(m_horizontal_line);
-    }
-}
-
-void Game::update_poll_events()
+void Game::_update_poll_events()
 {
     while (m_window.pollEvent(m_event))
     {
@@ -62,14 +30,9 @@ void Game::update_poll_events()
                 if (m_event.key.code == sf::Keyboard::Escape)
                     m_window.close();
                 break;
-            
-            // Click on available squares to play
-            case sf::Event::MouseButtonPressed:
-                handle_mouse_button_pressed();
-                break;
-                
+
             case sf::Event::TextEntered:
-                handle_text_input();
+                _handle_text_input();
                 break;
 
             default:
@@ -78,216 +41,16 @@ void Game::update_poll_events()
     }
 }
 
-void Game::handle_mouse_button_pressed()
+void Game::_switch_game_state(GameState new_state)
 {
-    if (m_current_state == GameState::WAITING_INPUT || m_current_state == GameState::PLAYING)
-        handle_player_move(m_event, m_window, m_current_state, m_tic_tac_toe);
-    else if (m_current_state == GameState::NAME_INPUT)
-        handle_text_box_sel(m_name_input_menu.get_text_box(), m_window);
+    if (m_current_state != new_state)
+        m_current_state = new_state;
 }
 
-void Game::handle_text_input()
+void Game::_handle_text_input()
 {
     if (m_current_state == GameState::NAME_INPUT)
-    {
-        m_name_input_menu.get_text_box().typed(m_event.text.unicode);
-        get_player_name(m_name_input_menu, m_event.text.unicode, m_tic_tac_toe.get_players_name());
-        
-        if (!m_name_input_menu.is_player1_turn())
-        {
-            m_name_input_menu.set_type_message("O's Name:");
-        }
-        if (!m_tic_tac_toe.get_players_name().second.empty())
-        {
-            m_tic_tac_toe.set_players_name(m_tic_tac_toe.get_players_name().first, m_tic_tac_toe.get_players_name().second);
-            m_name_input_menu.set_player1_turn();
-            m_current_state = GameState::WAITING_INPUT;
-        }
-    }
-}
-
-/* Draws all the squares and lines of the board. */
-void Game::draw_board()
-{
-    m_tic_tac_toe.draw(m_window);
-    
-    for (const auto &l : m_lines)
-        m_window.draw(l);
-}
-
-/* Draws and handle events from the current game state. */
-void Game::state_manager()
-{
-    switch (m_current_state)
-    {
-        case GameState::MENU:
-            handle_main_menu();
-            break;
-        
-        case GameState::CREDITS:
-            handle_credits_menu();
-            break;
-        
-        case GameState::NAME_INPUT:
-            handle_name_input_menu();
-            break;
-        
-        case GameState::WAITING_INPUT: case GameState::PLAYING:
-            draw_board();
-            break;
-
-        case GameState::END_SCREEN:
-            handle_end_screen_menu();
-            break;
-
-        default:
-            break;
-    }
-}
-
-/* It will wait until the button is released and then switch the game state */
-void Game::handle_button_pressed(GameState new_state)
-{
-    m_timer.restart();
-    bool buttonPressed = false;
-
-    while (m_timer.getElapsedTime().asMilliseconds() < 300.f)
-    {
-        while (m_window.pollEvent(m_event))
-        {
-            if (m_event.type == sf::Event::MouseButtonReleased)
-            {
-                if (m_event.mouseButton.button == sf::Mouse::Left)
-                    buttonPressed = true;
-            }
-
-            if (buttonPressed)
-            {
-                m_current_state = new_state;
-                return;
-            }
-        }
-    }
-}
-
-void Game::handle_main_menu()
-{
-    m_game_menu.draw(m_window);
-
-    if (m_game_menu.start_button_clicked(m_window))
-    {
-        #ifdef DEBUG
-            l.Debug("start button clicked");
-        #endif
-
-        m_current_state = GameState::NAME_INPUT;
-    }
-    else if (m_game_menu.exit_button_clicked(m_window))
-    {
-        #ifdef DEBUG
-            l.Debug("exit button clicked");
-        #endif
-
-        m_window.close();
-    }
-    else if (m_game_menu.credits_button_clicked(m_window))
-    {
-        #ifdef DEBUG
-            l.Debug("credits button clicked");
-        #endif
-
-        m_current_state = GameState::CREDITS;
-    }
-}
-
-void Game::handle_credits_menu()
-{
-    m_credits_menu.draw(m_window);
-
-    if (m_credits_menu.return_button_clicked(m_window) && m_event.type == sf::Event::MouseButtonPressed)
-    {
-        #ifdef DEBUG
-            l.Debug("return button clicked");
-        #endif
-
-        handle_button_pressed(GameState::MENU);
-    }
-}
-
-void Game::handle_name_input_menu()
-{
-    m_name_input_menu.draw(m_window);
-
-    if (m_name_input_menu.return_button_clicked(m_window) && m_event.type == sf::Event::MouseButtonPressed)
-    {
-        #ifdef DEBUG
-            l.Debug("return button clicked");
-        #endif
-
-        m_tic_tac_toe.set_players_name("", "");
-        m_name_input_menu.get_text_box().clear(true);
-        m_name_input_menu.set_type_message("X's Name:");
-        m_name_input_menu.set_player1_turn();
-
-        handle_button_pressed(GameState::MENU);
-    }
-}
-
-void Game::handle_end_screen_menu()
-{
-    if (m_tic_tac_toe.is_drawing_line())
-    {
-        if (m_tic_tac_toe.is_line_max_size())
-        {
-            m_timer.restart();
-
-            while (m_timer.getElapsedTime().asSeconds() < 2.f) {};
-        }
-
-        draw_board();
-        m_tic_tac_toe.draw_endline(m_window);
-    }
-    else
-    {
-        if (m_tic_tac_toe.get_victory() == Status::X)
-        {
-            m_end_screen_menu.set_result(m_tic_tac_toe.get_players_name().first + " Win!!!", m_window.getSize());
-            m_end_screen_menu.draw(m_window);
-        }            
-        else if (m_tic_tac_toe.get_victory() == Status::O)
-        {
-            m_end_screen_menu.set_result(m_tic_tac_toe.get_players_name().second + " Win!!!", m_window.getSize());
-            m_end_screen_menu.draw(m_window);
-        }
-        else if (m_tic_tac_toe.get_victory() == Status::TIE)
-        {
-            m_end_screen_menu.set_result("It's a Tie!!!", m_window.getSize());
-            m_end_screen_menu.draw(m_window);
-        }
-
-        if (m_end_screen_menu.menu_button_clicked(m_window))
-        {
-            #ifdef DEBUG
-                l.Debug("menu button clicked");
-            #endif
-
-            m_tic_tac_toe.set_players_name("", "");
-            m_name_input_menu.set_type_message("X's Name:");
-            m_name_input_menu.get_text_box().clear(true);
-            
-            m_tic_tac_toe.reset();
-            handle_button_pressed(GameState::MENU);
-        }
-        else if (m_end_screen_menu.rematch_button_clicked(m_window))
-        {
-            #ifdef DEBUG
-                l.Debug("rematch button clicked");
-            #endif
-
-            m_tic_tac_toe.reset();
-            handle_button_pressed(GameState::WAITING_INPUT);
-        }
-    }
+        _switch_game_state(m_menu_manager.get_players_name(m_event.text.unicode, m_board->get_tic_tac_toe()));
 }
 
 // Accessors
@@ -296,23 +59,34 @@ bool Game::running() const
     return m_window.isOpen();
 }
 
-
-/* Update poll events and hoever effect. */
+/* Update poll events and hover effect. */
 void Game::update()
 {
-    update_poll_events();
-
+    _update_poll_events();
+    
     if (m_current_state == GameState::WAITING_INPUT)
-        hoever_effect(m_window, m_tic_tac_toe);
+        m_board->hover_effect(m_window);
 }
 
 /* Will render and display the objects in the screen. */
 void Game::render()
 {
-    m_window.clear(WHITE); // clear old frame
+    m_window.clear(WHITE);
 
-    // Draw game objects
-    state_manager();
-    
-    m_window.display(); // done drawing
+    if (m_current_state != GameState::PLAYING && m_current_state != GameState::WAITING_INPUT)
+    {
+        _switch_game_state(m_menu_manager.update(m_window));
+    }
+    else
+    {
+        m_match_status = m_board->play(m_window);
+        m_board->draw(m_window);
+        
+        if (m_match_status != Status::EMPTY)
+        {
+            _switch_game_state(GameState::END_SCREEN);
+            m_menu_manager.switch_menu(m_current_state);
+        }
+    }
+    m_window.display();
 }

@@ -3,10 +3,42 @@
 #include <iostream>
 #include <string>
 #include <chrono>
+#include <vector>
 
-class logger
+#ifdef DEBUG
+    #define LOG_DEBUG(msg) Logger::get().Debug(msg)
+    #define LOG_INFO(msg) Logger::get().Info(msg)
+    #define LOG_WARNING(msg) Logger::get().Warning(msg)
+    #define LOG_ERROR(msg) Logger::get().Error(msg)
+
+    #define LOG_DEBUGF(fmt, ...) Logger::get().Debugf(fmt, __VA_ARGS__)
+    #define LOG_INFOF(fmt, ...) Logger::get().Infof(fmt, __VA_ARGS__)
+    #define LOG_WARNINGF(fmt, ...) Logger::get().Warningf(fmt, __VA_ARGS__)
+    #define LOG_ERRORF(fmt, ...) Logger::get().Errorf(fmt, __VA_ARGS__)
+#else
+    // When not debugging, remove log calls from compilation (zero cost)
+    #define LOG_DEBUG(msg) do {} while(0)
+    #define LOG_INFO(msg) do {} while(0)
+    #define LOG_WARNING(msg) do {} while(0)
+    #define LOG_ERROR(msg) do {} while(0)
+
+    #define LOG_DEBUGF(fmt, ...) do {} while(0)
+    #define LOG_INFOF(fmt, ...) do {} while(0)
+    #define LOG_WARNINGF(fmt, ...) do {} while(0)
+    #define LOG_ERRORF(fmt, ...) do {} while(0)
+#endif
+
+class Logger
 {
     private:
+        Logger()  = default;
+        ~Logger() = default;
+
+        Logger(const Logger&) = delete;
+        Logger& operator=(const Logger&) = delete;
+
+        static std::string get_current_time();
+
         void Log(const std::string &prefix, const std::string &format);
 
         template <typename ...Args>
@@ -20,34 +52,30 @@ class logger
             {
                 // Allocate a buffer large enough to hold the formatted string
                 int size = std::snprintf(nullptr, 0, format.c_str(), args...) + 1; // Add 1 for the null terminator
-                if (size <= 0)
+                if (size < 0)
                 { 
-                    std::cerr << "Error during formatting\n";
+                    Error("snprintf failed due to an invalid format string or internal encoding error");
                     return;
                 }
 
-                std::string buffer(size, '\0');
-                std::snprintf(&buffer[0], size, format.c_str(), std::forward<Args>(args)...);
+                std::vector<char> buffer(size);
+                std::snprintf(buffer.data(), size, format.c_str(), std::forward<Args>(args)...);
 
-                // Get the current system time
-                auto now = std::chrono::system_clock::now();
-                std::time_t curr_time = std::chrono::system_clock::to_time_t(now);
-                
-                // Convert to a string and remove the newline
-                std::string time_str = std::ctime(&curr_time);
-                time_str.pop_back();
-
-                std::cout << prefix << time_str << " " << buffer << '\n';
+                Log(prefix, std::string(buffer.data()));
             }
         }
         
     public:
-        logger();
+        static Logger& get()
+        {
+            static Logger instance;
+            return instance;
+        }
 
-        void Debug(const std::string &format);
-        void Info(const std::string &format);
-        void Warning(const std::string &format);
-        void Error(const std::string &format);
+        void Debug(const std::string &msg);
+        void Info(const std::string &msg);
+        void Warning(const std::string &msg);
+        void Error(const std::string &msg);
 
         template <typename ...Args>
         void Debugf(const std::string &format, Args&& ...args)

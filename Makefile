@@ -2,10 +2,9 @@
 CC = g++
 
 # Compiler flags
-CXXFLAGS = -std=c++17 -Wall -Wextra -Wno-error=implicit-fallthrough \
+CXXFLAGS = -g -std=c++17 -Wall -Wextra -Wno-error=implicit-fallthrough \
             -I$(SFML_INCLUDE) \
-            -I$(INCLUDE_DIR) \
-            -I$(INCLUDE_DIR)/types \
+            -I$(SRC_DIR)/types \
             -I$(SRC_DIR) \
             -I$(UTILS_DIR) \
 	    	-I$(SFML_BIN)
@@ -27,7 +26,6 @@ else
 	SFML_BIN = SFML/bin
 endif
 
-INCLUDE_DIR = include
 UTILS_DIR = src/Utils
 BIN_INT = bin-int
 BIN_DIR = bin

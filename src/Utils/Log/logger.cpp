@@ -1,38 +1,38 @@
 #include "logger.hpp"
 
-void logger::Log(const std::string &prefix, const std::string &format)
+std::string Logger::get_current_time()
 {
-    // Get the current system time
     auto now = std::chrono::system_clock::now();
     std::time_t curr_time = std::chrono::system_clock::to_time_t(now);
-    
-    // Convert to a string and remove the newline
     std::string time_str = std::ctime(&curr_time);
-    time_str.pop_back();
 
-    std::cout << prefix << time_str << " " << format << '\n';
+    if (!time_str.empty() && time_str.back() == '\n')
+        time_str.pop_back();
+
+    return time_str;
 }
 
-logger::logger()
+void Logger::Log(const std::string &prefix, const std::string &msg)
 {
+    std::cout << prefix << get_current_time() << " " << msg << '\n';
 }
 
-void logger::Debug(const std::string &format)
+void Logger::Debug(const std::string &msg)
 {
-    Log("Debug: ", format);
+    Log("Debug: ", msg);
 }
 
-void logger::Info(const std::string &format)
+void Logger::Info(const std::string &msg)
 {
-    Log("Info: ", format);
+    Log("Info: ", msg);
 }
 
-void logger::Warning(const std::string &format)
+void Logger::Warning(const std::string &msg)
 {
-    Log("Warning: ", format);
+    Log("Warning: ", msg);
 }
 
-void logger::Error(const std::string &format)
+void Logger::Error(const std::string &msg)
 {
-    Log("Error: ", format);
+    Log("Error: ", msg);
 }
